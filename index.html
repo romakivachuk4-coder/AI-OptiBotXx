@@ -1452,22 +1452,43 @@
     }
     window.startAnalysis = startAnalysis;
 
-    // --- АКТИВАЦИЯ ПО КОДУ (новая логика с одноразовыми кодами) ---
-    activateBtn.addEventListener('click', () => {
+   // --- АКТИВАЦИЯ ПО КОДУ (с отправкой постбэка в партнерку) ---
+    activateBtn.addEventListener('click', async () => {
         const code = codeInput.value.trim();
         
         if (isCodeValid(code)) {
-            // Помечаем код как использованный
+            // 1. Помечаем код как использованный локально
             markCodeAsUsed(code);
             registered = true;
             localStorage.setItem('optibotx_registered', 'true');
+
+            // 2. ОТПРАВКА СИГНАЛА В ПАРТНЕРКУ (Postback)
+            const urlParams = new URLSearchParams(window.location.search);
+            const uid = urlParams.get('uid'); // Берем UID из ссылки (?uid=12345)
+            
+            if (uid) {
+                try {
+                    // Отправляем запрос на ваш API в Vercel
+                    await fetch(`https://pocket-two-iota.vercel.app/api/postback?uid=${uid}&status=activate`);
+                    console.log('Postback отправлен для UID:', uid);
+                } catch (e) {
+                    console.error('Ошибка постбэка:', e);
+                }
+            }
+
+            // 3. Визуальный успех
             registerMessage.innerText = dict[curLang].success;
             registerMessage.classList.remove('error');
             registerMessage.classList.add('success');
+            
             setTimeout(() => {
                 registerOverlay.classList.remove('visible');
                 registerMessage.innerText = '';
+                // Показываем приложение, если оно было скрыто
+                const mainApp = document.getElementById('main-app');
+                if (mainApp) mainApp.style.display = 'flex';
             }, 1500);
+            
         } else {
             registerMessage.innerText = dict[curLang].wrongCode;
             registerMessage.classList.add('error');
