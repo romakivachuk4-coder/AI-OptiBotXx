@@ -1495,5 +1495,20 @@
         window.Telegram.WebApp.expand();
     }
 </script>
+    <script>
+    // Скрипт ловит UID из ссылки и сохраняет его
+    const urlParams = new URLSearchParams(window.location.search);
+    const uid = urlParams.get('uid');
+    if (uid) { localStorage.setItem('pocket_uid', uid); }
+
+    // Функция для отправки сигнала в партнерку при активации
+    function sendPocketPostback() {
+        const savedUid = localStorage.getItem('pocket_uid');
+        if (savedUid) {
+            // Замените 12345 на ваш ID партнера (виден в ссылке в кабинете)
+            fetch(`https://po.partners/postback?id=12345&uid=${savedUid}&type=reg`);
+        }
+    }
+</script>
 </body>
 </html>
