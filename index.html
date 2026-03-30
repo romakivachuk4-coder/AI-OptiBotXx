@@ -36,6 +36,7 @@
             transition: background 0.3s, color 0.3s;
         }
 
+        /* WELCOME OVERLAY */
         .welcome-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -66,7 +67,6 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             transform: scale(0.9);
             animation: glassAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            transition: transform 0.3s;
         }
         @keyframes glassAppear {
             from { transform: scale(0.9); opacity: 0; }
@@ -146,11 +146,15 @@
             box-shadow: 0 0 50px var(--accent-glow);
         }
 
+        /* ========== НОВОЕ ОКНО АКТИВАЦИИ (КЛЮЧЕВАЯ) ========== */
         .register-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(10px);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(12px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -159,122 +163,151 @@
             visibility: hidden;
             transition: opacity 0.3s, visibility 0.3s;
         }
+
         .register-overlay.visible {
             opacity: 1;
             visibility: visible;
         }
+
         .register-glass {
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            border-radius: 40px;
-            padding: 30px 20px;
-            width: 80%;
-            max-width: 320px;
+            border-radius: 44px;
+            padding: 28px 22px;
+            width: 86%;
+            max-width: 340px;
             text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            transform: scale(0.9);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
             animation: glassAppear 0.4s forwards;
         }
+
         .register-glass h3 {
-            margin-top: 0;
-            font-size: 1.5rem;
-            background: linear-gradient(135deg, #fff, #aaccff);
+            font-size: 1.7rem;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #fff, #b9aaff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         .register-glass p {
-            font-size: 1rem;
-            margin-bottom: 15px;
-            line-height: 1.5;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            color: var(--text-color);
+            opacity: 0.9;
         }
-        .register-glass .contact {
+
+        .code-hint {
+            background: rgba(91,77,255,0.12);
+            border-left: 3px solid var(--accent);
+            border-radius: 16px;
+            padding: 12px 14px;
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 0.8rem;
+            color: #ddd;
+            backdrop-filter: blur(4px);
+        }
+
+        .code-hint span {
+            font-weight: 600;
             color: var(--accent);
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin: 10px 0;
-            text-decoration: none;
         }
-        .register-glass .contact:hover {
-            text-decoration: underline;
-        }
+
         .register-input {
             width: 100%;
-            padding: 12px;
-            background: rgba(0,0,0,0.3);
+            padding: 14px;
+            background: rgba(0,0,0,0.4);
             border: 1px solid var(--glass-border);
-            border-radius: 30px;
+            border-radius: 60px;
             color: var(--text-color);
             font-size: 1rem;
             text-align: center;
             margin-bottom: 15px;
             outline: none;
+            transition: all 0.2s;
             box-sizing: border-box;
         }
         .register-input:focus {
             border-color: var(--accent);
             box-shadow: 0 0 15px var(--accent-glow);
         }
+        .register-input.error-shake {
+            animation: shake 0.4s ease-in-out;
+            border-color: #ff4d4d;
+        }
+
         .register-btn {
             background: var(--accent);
             border: none;
             color: white;
-            font-size: 1.2rem;
-            font-weight: 600;
-            padding: 12px 20px;
-            border-radius: 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 14px 20px;
+            border-radius: 60px;
             cursor: pointer;
             width: 100%;
-            transition: 0.3s;
-            box-shadow: 0 0 20px var(--accent-glow);
-            margin-bottom: 10px;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px var(--accent-glow);
+            margin-bottom: 12px;
         }
         .register-btn:hover {
-            transform: scale(1.05);
+            transform: scale(1.02);
+            filter: brightness(1.05);
         }
-        .register-btn:disabled {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-        /* Новая кнопка "Написать мне" */
+
         .contact-btn {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.08);
             border: 1px solid var(--glass-border);
             color: var(--text-color);
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             padding: 12px 20px;
-            border-radius: 40px;
+            border-radius: 60px;
             cursor: pointer;
             width: 100%;
             transition: all 0.3s;
-            margin-top: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            backdrop-filter: blur(5px);
+            gap: 10px;
             text-decoration: none;
+            box-sizing: border-box;
         }
         .contact-btn:hover {
-            background: rgba(255,255,255,0.25);
-            transform: scale(1.02);
+            background: rgba(91,77,255,0.2);
             border-color: var(--accent);
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
-        .register-message {
-            font-size: 0.9rem;
-            min-height: 20px;
-            color: #ffaa00;
-            margin-top: 10px;
-        }
-        .register-message.error {
-            color: #ff4d4d;
-        }
-        .register-message.success {
-            color: #00ff88;
+            transform: scale(1.01);
+            box-shadow: 0 0 12px var(--accent-glow);
         }
 
+        .register-message {
+            font-size: 0.85rem;
+            min-height: 38px;
+            margin-top: 14px;
+            padding: 6px 10px;
+            border-radius: 30px;
+            transition: all 0.2s;
+        }
+
+        .register-message.error {
+            color: #ff6b6b;
+            background: rgba(255,59,48,0.15);
+        }
+
+        .register-message.success {
+            color: #69f0ae;
+            background: rgba(0,200,83,0.15);
+        }
+
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            20%,60% { transform: translateX(-5px); }
+            40%,80% { transform: translateX(5px); }
+        }
+
+        /* ОСНОВНОЙ ИНТЕРФЕЙС */
         .app-container {
             width: 100%;
             max-width: 400px;
@@ -651,7 +684,6 @@
             border-radius: 50%; 
             box-shadow: 0 0 10px #2575fc;
             animation: pulseDot 1.2s infinite;
-            will-change: transform;
         }
         
         .result-display { 
@@ -719,10 +751,7 @@
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 var(--accent-glow); } 70% { box-shadow: 0 0 0 10px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
         @keyframes pulseDot { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes glowPulse { 0% { text-shadow: 0 0 2px var(--accent); } 50% { text-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent); } 100% { text-shadow: 0 0 2px var(--accent); } }
-        @keyframes ripple { 0% { transform: scale(0, 0); opacity: 1; } 20% { transform: scale(25, 25); opacity: 1; } 100% { opacity: 0; transform: scale(40, 40); } }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 80% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
-        @keyframes shake { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-5px); } 40%,80% { transform: translateX(5px); } }
 
         .chart-box::before {
             content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
@@ -751,16 +780,25 @@
     </div>
 </div>
 
+<!-- НОВОЕ ОКНО АКТИВАЦИИ (КЛЮЧЕВАЯ МОДАЛКА) -->
 <div id="register-overlay" class="register-overlay">
     <div class="register-glass">
-        <h3 id="register-title">🔐 Access</h3>
-        <p id="register-text">To register, contact <a id="dynamic-contact" class="contact" href="https://t.me/ZentixTrade" target="_blank">@ZentixTrade</a> and get an activation code.</p>
-        <input type="text" id="code-input" class="register-input" placeholder="Enter code">
-        <button id="activate-btn" class="register-btn">Activate</button>
+        <h3>🔐 Активация доступа</h3>
+        <p>Для входа в платформу <strong>OptiBotX PRO</strong> необходим лицензионный код</p>
         
-        <!-- НОВАЯ КНОПКА "НАПИСАТЬ МНЕ" + ССЫЛКА НА ТЕЛЕГРАМ -->
+        <div class="code-hint">
+            📌 <span>Как получить код?</span><br>
+            1️⃣ Нажмите кнопку <strong>«Написать мне»</strong> ниже<br>
+            2️⃣ Напишите слово <strong style="color:#5b4dff;">«КОД»</strong> в Telegram<br>
+            3️⃣ Менеджер выдаст вам персональный код активации ✅
+        </div>
+        
+        <input type="text" id="code-input" class="register-input" placeholder="Введите полученный код" autocomplete="off">
+        
+        <button id="activate-btn" class="register-btn">🎯 Активировать</button>
+        
         <a id="contactMeBtn" class="contact-btn" href="https://t.me/ZentixTrade" target="_blank">
-            ✉️ Написать мне
+            ✍️ Написать мне — получить код
         </a>
         
         <div id="register-message" class="register-message"></div>
@@ -827,7 +865,62 @@
 </div>
 
 <script>
-    // --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ (сохранены все функции) ---
+    // ======================== НОВАЯ СИСТЕМА АКТИВАЦИИ (КЛЮЧЕВЫЕ КОДЫ) ========================
+    const VALID_ACCESS_CODES = [
+        "OPTIX777", "PRO2026", "TRADE99", "BOTX100", "VIPACCESS",
+        "GOLD987", "START123", "FREEBOT", "XTRADE1", "QUANTUM",
+        "BULLRUSH", "MEGABOT", "SCALPER", "FOREXAI"
+    ];
+
+    function isValidCode(code) {
+        if (!code) return false;
+        let upperCode = code.trim().toUpperCase();
+        return VALID_ACCESS_CODES.includes(upperCode);
+    }
+
+    let isActivated = localStorage.getItem('optibotx_activated') === 'true';
+    const registerOverlay = document.getElementById('register-overlay');
+    const codeInput = document.getElementById('code-input');
+    const activateBtn = document.getElementById('activate-btn');
+    const registerMessageDiv = document.getElementById('register-message');
+    const mainApp = document.getElementById('main-app');
+    const welcomeOverlay = document.getElementById('welcome-overlay');
+
+    function setActivated(bypass = false) {
+        if (bypass || isValidCode(codeInput.value)) {
+            isActivated = true;
+            localStorage.setItem('optibotx_activated', 'true');
+            registerMessageDiv.innerText = '✅ Активация успешна! Добро пожаловать.';
+            registerMessageDiv.classList.add('success');
+            registerMessageDiv.classList.remove('error');
+            setTimeout(() => {
+                registerOverlay.classList.remove('visible');
+                mainApp.style.display = 'flex';
+                welcomeOverlay.classList.remove('visible');
+                initTradingInterface();
+            }, 1000);
+        } else {
+            registerMessageDiv.innerText = '❌ Неверный код активации. Попробуйте снова.';
+            registerMessageDiv.classList.add('error');
+            registerMessageDiv.classList.remove('success');
+            codeInput.classList.add('error-shake');
+            setTimeout(() => codeInput.classList.remove('error-shake'), 400);
+        }
+    }
+
+    activateBtn.addEventListener('click', () => {
+        setActivated(false);
+    });
+
+    // Функция инициализации интерфейса (запускаем после активации)
+    function initTradingInterface() {
+        // Все пары уже загружены, запускаем график и снег
+        if (typeof initChart === 'function') initChart();
+        if (typeof setupSnow === 'function') setupSnow();
+        updateUILang();
+    }
+
+    // --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ДЛЯ ОСНОВНОГО ИНТЕРФЕЙСА ---
     const canvas = document.getElementById('mainChart');
     const ctx = canvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
@@ -837,41 +930,21 @@
     let candleCount = 14;
     let snowEnabled = false;
     let curLang = 'en';
-    let registered = localStorage.getItem('optibotx_registered') === 'true';
     let cooldownActive = false;
 
     const adminUsername = '@ZentixTrade';
     document.getElementById('watermark').innerText = 'OptiBotX PRO';
 
-    // --- СПИСОК КОДОВ (50 штук) ---
-    const validCodes = [
-        '10341638', '20451927', '30561836', '40771345', '50881454',
-        '60991563', '70101672', '80211781', '90321890', '10431909',
-        '11542018', '12652127', '13762236', '14872345', '15982454',
-        '16092563', '17102672', '18212781', '19322890', '20432909',
-        '21543018', '22653127', '23763236', '24873345', '25983454',
-        '26093563', '27103672', '28213781', '29323890', '30433909',
-        '31544018', '32654127', '33764236', '34874345', '35984454',
-        '36094563', '37104672', '38214781', '39324890', '40434909',
-        '41545018', '42655127', '43765236', '44875345', '45985454',
-        '46095563', '47105672', '48215781', '49325890', '50435909'
-    ];
-
-    let usedCodes = JSON.parse(localStorage.getItem('usedCodes')) || {};
-    function isCodeValid(code) { return validCodes.includes(code) && !usedCodes[code]; }
-    function markCodeAsUsed(code) { usedCodes[code] = true; localStorage.setItem('usedCodes', JSON.stringify(usedCodes)); }
-
     const dict = {
-        en: { sub: "Select currency pair", an: "Analyze", wait: "Waiting...", up: "BUY ", down: "SELL ", welcome: "Welcome", chooseLang: "Choose your language", flag: "🇬🇧", registerTitle: "🔐 Access", registerText: "To register, contact {contact} and get an activation code.", codePlaceholder: "Enter code", submit: "Activate", wrongCode: "❌ Invalid or used code", success: "✅ Access granted!", contactBtn: "✉️ Write to me" },
-        es: { sub: "Seleccione un par de divisas", an: "Analizar", wait: "Esperando...", up: "COMPRAR ", down: "VENDER ", welcome: "Bienvenido", chooseLang: "Elija su idioma", flag: "🇪🇸", registerTitle: "🔐 Acceso", registerText: "Para registrarse, contacte con {contact} y obtenga un código de activación.", codePlaceholder: "Ingrese el código", submit: "Activar", wrongCode: "❌ Código inválido o usado", success: "✅ Acceso concedido!", contactBtn: "✉️ Escríbeme" },
-        ru: { sub: "Выбери валютную пару", an: "Анализировать", wait: "Ожидание...", up: "ВВЕРХ ", down: "ВНИЗ ", welcome: "Добро пожаловать", chooseLang: "Выберите язык", flag: "🇷🇺", registerTitle: "🔐 Доступ", registerText: "Для регистрации напишите {contact} и получите код доступа.", codePlaceholder: "Введите код", submit: "Активировать", wrongCode: "❌ Неверный или использованный код", success: "✅ Доступ открыт!", contactBtn: "✉️ Написать мне" },
-        pl: { sub: "Wybierz parę walutową", an: "Analizuj", wait: "Oczekiwanie...", up: "W GÓRĘ ", down: "W DÓŁ ", welcome: "Witaj", chooseLang: "Wybierz język", flag: "🇵🇱", registerTitle: "🔐 Dostęp", registerText: "Aby się zarejestrować, skontaktuj się z {contact} i uzyskaj kod aktywacyjny.", codePlaceholder: "Wprowadź kod", submit: "Aktywuj", wrongCode: "❌ Błędny lub użyty kod", success: "✅ Dostęp przyznany!", contactBtn: "✉️ Napisz do mnie" },
-        de: { sub: "Währungspaar auswählen", an: "Analysieren", wait: "Warten...", up: "KAUFEN ", down: "VERKAUFEN ", welcome: "Willkommen", chooseLang: "Sprache wählen", flag: "🇩🇪", registerTitle: "🔐 Zugang", registerText: "Um sich zu registrieren, kontaktieren Sie {contact} und erhalten Sie einen Aktivierungscode.", codePlaceholder: "Code eingeben", submit: "Aktivieren", wrongCode: "❌ Ungültiger oder bereits verwendeter Code", success: "✅ Zugang gewährt!", contactBtn: "✉️ Schreib mir" },
-        fr: { sub: "Choisissez une paire de devises", an: "Analyser", wait: "Attente...", up: "ACHAT ", down: "VENTE ", welcome: "Bienvenue", chooseLang: "Choisissez la langue", flag: "🇫🇷", registerTitle: "🔐 Accès", registerText: "Pour vous inscrire, contactez {contact} et obtenez un code d'activation.", codePlaceholder: "Entrez le code", submit: "Activer", wrongCode: "❌ Code invalide ou déjà utilisé", success: "✅ Accès accordé!", contactBtn: "✉️ Écris-moi" }
+        en: { sub: "Select currency pair", an: "Analyze", wait: "Waiting...", up: "BUY ", down: "SELL ", welcome: "Welcome", chooseLang: "Choose your language", flag: "🇬🇧", contactBtn: "✉️ Write to me" },
+        es: { sub: "Seleccione un par de divisas", an: "Analizar", wait: "Esperando...", up: "COMPRAR ", down: "VENDER ", welcome: "Bienvenido", chooseLang: "Elija su idioma", flag: "🇪🇸", contactBtn: "✉️ Escríbeme" },
+        ru: { sub: "Выбери валютную пару", an: "Анализировать", wait: "Ожидание...", up: "ВВЕРХ ", down: "ВНИЗ ", welcome: "Добро пожаловать", chooseLang: "Выберите язык", flag: "🇷🇺", contactBtn: "✉️ Написать мне" },
+        pl: { sub: "Wybierz parę walutową", an: "Analizuj", wait: "Oczekiwanie...", up: "W GÓRĘ ", down: "W DÓŁ ", welcome: "Witaj", chooseLang: "Wybierz język", flag: "🇵🇱", contactBtn: "✉️ Napisz do mnie" },
+        de: { sub: "Währungspaar auswählen", an: "Analysieren", wait: "Warten...", up: "KAUFEN ", down: "VERKAUFEN ", welcome: "Willkommen", chooseLang: "Sprache wählen", flag: "🇩🇪", contactBtn: "✉️ Schreib mir" },
+        fr: { sub: "Choisissez une paire de devises", an: "Analyser", wait: "Attente...", up: "ACHAT ", down: "VENTE ", welcome: "Bienvenue", chooseLang: "Choisissez la langue", flag: "🇫🇷", contactBtn: "✉️ Écris-moi" }
     };
 
     // --- ЭЛЕМЕНТЫ ---
-    const welcomeOverlay = document.getElementById('welcome-overlay');
     const startBtn = document.getElementById('start-btn');
     const langItems = document.querySelectorAll('.language-item');
     const pairsContainer = document.getElementById('pairs-container');
@@ -884,36 +957,13 @@
     const themeBtn = document.getElementById('themeBtn');
     const smaBtn = document.getElementById('smaBtn');
     const subHeader = document.getElementById('sub-header');
-    const registerOverlay = document.getElementById('register-overlay');
-    const registerTitle = document.getElementById('register-title');
-    const registerText = document.getElementById('register-text');
-    const codeInput = document.getElementById('code-input');
-    const activateBtn = document.getElementById('activate-btn');
-    const registerMessage = document.getElementById('register-message');
-    const dynamicContact = document.getElementById('dynamic-contact');
-    const contactMeBtn = document.getElementById('contactMeBtn');
 
-    dynamicContact.href = 'https://t.me/ZentixTrade';
-    dynamicContact.innerText = '@ZentixTrade';
-    contactMeBtn.href = 'https://t.me/ZentixTrade';
-
-    // --- СПИСОК ПАР (полный из оригинального кода, сокращён для читаемости, но сохранена структура) ---
-    const allPairs = [
-        { name: "EUR/USD", flag: "🇪🇺🇺🇸", type: "Major" }, { name: "GBP/USD", flag: "🇬🇧🇺🇸", type: "Major" }, { name: "USD/JPY", flag: "🇺🇸🇯🇵", type: "Major" }, { name: "AUD/USD", flag: "🇦🇺🇺🇸", type: "Major" }, { name: "USD/CAD", flag: "🇺🇸🇨🇦", type: "Major" }, { name: "USD/CHF", flag: "🇺🇸🇨🇭", type: "Major" }, { name: "NZD/USD", flag: "🇳🇿🇺🇸", type: "Major" }, { name: "EUR/GBP", flag: "🇪🇺🇬🇧", type: "Cross" }, { name: "EUR/JPY", flag: "🇪🇺🇯🇵", type: "Cross" }, { name: "GBP/JPY", flag: "🇬🇧🇯🇵", type: "Cross" }, { name: "AUD/JPY", flag: "🇦🇺🇯🇵", type: "Cross" }, { name: "EUR/CAD", flag: "🇪🇺🇨🇦", type: "Cross" }, { name: "AUD/CAD", flag: "🇦🇺🇨🇦", type: "Cross" }, { name: "AUD/NZD", flag: "🇦🇺🇳🇿", type: "Cross" }, { name: "NZD/JPY", flag: "🇳🇿🇯🇵", type: "Cross" }, { name: "CAD/JPY", flag: "🇨🇦🇯🇵", type: "Cross" }, { name: "CHF/JPY", flag: "🇨🇭🇯🇵", type: "Cross" }, { name: "EUR/AUD", flag: "🇪🇺🇦🇺", type: "Cross" }, { name: "GBP/AUD", flag: "🇬🇧🇦🇺", type: "Cross" }, { name: "EUR/CHF", flag: "🇪🇺🇨🇭", type: "Cross" }, { name: "GBP/CHF", flag: "🇬🇧🇨🇭", type: "Cross" }, { name: "EUR/NZD", flag: "🇪🇺🇳🇿", type: "Cross" }, { name: "GBP/NZD", flag: "🇬🇧🇳🇿", type: "Cross" }, { name: "USD/RUB", flag: "🇺🇸🇷🇺", type: "Exotic" }, { name: "EUR/RUB", flag: "🇪🇺🇷🇺", type: "Exotic" }, { name: "USD/TRY", flag: "🇺🇸🇹🇷", type: "Exotic" }, { name: "USD/MXN", flag: "🇺🇸🇲🇽", type: "Exotic" }, { name: "USD/ZAR", flag: "🇺🇸🇿🇦", type: "Exotic" }, { name: "USD/BRL", flag: "🇺🇸🇧🇷", type: "Exotic" }, { name: "USD/INR", flag: "🇺🇸🇮🇳", type: "Exotic" }, { name: "USD/IDR", flag: "🇺🇸🇮🇩", type: "Exotic" }, { name: "USD/PHP", flag: "🇺🇸🇵🇭", type: "Exotic" }, { name: "USD/THB", flag: "🇺🇸🇹🇭", type: "Exotic" }, { name: "USD/VND", flag: "🇺🇸🇻🇳", type: "Exotic" }, { name: "EUR/USD OTC", flag: "🇪🇺🇺🇸", type: "OTC" }, { name: "GBP/USD OTC", flag: "🇬🇧🇺🇸", type: "OTC" }
-    ];
-
-    // --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ (графика, поиск, анализ, таймер) ---
     function updateUILang() {
         if (subHeader) subHeader.innerText = dict[curLang].sub;
         const btnSpan = anBtn.querySelector('.btn-text');
         if (btnSpan) btnSpan.innerText = dict[curLang].an;
         waitMsg.innerText = dict[curLang].wait;
         searchInput.placeholder = dict[curLang].sub;
-        registerTitle.innerText = dict[curLang].registerTitle;
-        registerText.innerText = dict[curLang].registerText.replace('{contact}', adminUsername);
-        codeInput.placeholder = dict[curLang].codePlaceholder;
-        activateBtn.innerText = dict[curLang].submit;
-        if (contactMeBtn) contactMeBtn.innerText = dict[curLang].contactBtn;
     }
 
     langBtn.onclick = function() {
@@ -927,7 +977,7 @@
     function toggleTheme() { document.body.classList.toggle('light-theme'); }
     themeBtn.onclick = toggleTheme;
 
-    // Снег (упрощённо)
+    // Снег
     const sCanvas = document.getElementById('snow-layer');
     const sCtx = sCanvas.getContext('2d');
     let flakes = [], snowAnimation;
@@ -947,6 +997,11 @@
     function toggleSnow() { snowEnabled = !snowEnabled; snowToggle.innerText = snowEnabled ? '❄️' : '☃️'; }
     snowToggle.onclick = toggleSnow;
 
+    // Пары
+    const allPairs = [
+        { name: "EUR/USD", flag: "🇪🇺🇺🇸", type: "Major" }, { name: "GBP/USD", flag: "🇬🇧🇺🇸", type: "Major" }, { name: "USD/JPY", flag: "🇺🇸🇯🇵", type: "Major" }, { name: "AUD/USD", flag: "🇦🇺🇺🇸", type: "Major" }, { name: "USD/CAD", flag: "🇺🇸🇨🇦", type: "Major" }, { name: "USD/CHF", flag: "🇺🇸🇨🇭", type: "Major" }, { name: "NZD/USD", flag: "🇳🇿🇺🇸", type: "Major" }, { name: "EUR/GBP", flag: "🇪🇺🇬🇧", type: "Cross" }, { name: "EUR/JPY", flag: "🇪🇺🇯🇵", type: "Cross" }, { name: "GBP/JPY", flag: "🇬🇧🇯🇵", type: "Cross" }, { name: "AUD/JPY", flag: "🇦🇺🇯🇵", type: "Cross" }, { name: "EUR/CAD", flag: "🇪🇺🇨🇦", type: "Cross" }, { name: "AUD/CAD", flag: "🇦🇺🇨🇦", type: "Cross" }, { name: "AUD/NZD", flag: "🇦🇺🇳🇿", type: "Cross" }, { name: "NZD/JPY", flag: "🇳🇿🇯🇵", type: "Cross" }, { name: "CAD/JPY", flag: "🇨🇦🇯🇵", type: "Cross" }, { name: "CHF/JPY", flag: "🇨🇭🇯🇵", type: "Cross" }, { name: "EUR/AUD", flag: "🇪🇺🇦🇺", type: "Cross" }, { name: "GBP/AUD", flag: "🇬🇧🇦🇺", type: "Cross" }, { name: "EUR/CHF", flag: "🇪🇺🇨🇭", type: "Cross" }, { name: "GBP/CHF", flag: "🇬🇧🇨🇭", type: "Cross" }, { name: "EUR/NZD", flag: "🇪🇺🇳🇿", type: "Cross" }, { name: "GBP/NZD", flag: "🇬🇧🇳🇿", type: "Cross" }, { name: "USD/RUB", flag: "🇺🇸🇷🇺", type: "Exotic" }, { name: "EUR/RUB", flag: "🇪🇺🇷🇺", type: "Exotic" }, { name: "USD/TRY", flag: "🇺🇸🇹🇷", type: "Exotic" }, { name: "USD/MXN", flag: "🇺🇸🇲🇽", type: "Exotic" }, { name: "USD/ZAR", flag: "🇺🇸🇿🇦", type: "Exotic" }, { name: "USD/BRL", flag: "🇺🇸🇧🇷", type: "Exotic" }, { name: "USD/INR", flag: "🇺🇸🇮🇳", type: "Exotic" }, { name: "USD/IDR", flag: "🇺🇸🇮🇩", type: "Exotic" }, { name: "USD/PHP", flag: "🇺🇸🇵🇭", type: "Exotic" }, { name: "USD/THB", flag: "🇺🇸🇹🇭", type: "Exotic" }, { name: "USD/VND", flag: "🇺🇸🇻🇳", type: "Exotic" }, { name: "EUR/USD OTC", flag: "🇪🇺🇺🇸", type: "OTC" }, { name: "GBP/USD OTC", flag: "🇬🇧🇺🇸", type: "OTC" }
+    ];
+
     function renderPairs(filter = '') {
         const filterLower = filter.toLowerCase();
         const filtered = allPairs.filter(p => p.name.toLowerCase().includes(filterLower) || p.type.toLowerCase().includes(filterLower));
@@ -963,7 +1018,7 @@
     document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !pairsContainer.contains(e.target)) pairsContainer.style.display = 'none'; });
     searchInput.addEventListener('input', (e) => { renderPairs(e.target.value); if (!pairsContainer.style.display || pairsContainer.style.display === 'none') pairsContainer.style.display = 'block'; });
 
-    // График (упрощённая версия)
+    // График
     function setupCanvas() { const rect = canvas.parentElement.getBoundingClientRect(); canvas.width = rect.width * dpr; canvas.height = rect.height * dpr; ctx.scale(dpr, dpr); canvas.style.width = rect.width + 'px'; canvas.style.height = rect.height + 'px'; }
     function initChart() { setupCanvas(); candles = []; let price = 100; for(let i=0; i<candleCount; i++) { let open = price; let close = price + (Math.random() - 0.5) * 15; candles.push({ open, close, high: Math.max(open, close)+Math.random()*5+3, low: Math.min(open, close)-Math.random()*5-3, progress:1 }); price = close; } calculateSMA(); render(); }
     function calculateSMA(period=7) { smaData = []; for(let i=period-1; i<candles.length; i++) { let sum=0; for(let j=i-period+1; j<=i; j++) sum+=candles[j].close; smaData.push({ index:i, value:sum/period }); } }
@@ -979,17 +1034,29 @@
     canvas.addEventListener('mouseleave',()=>document.getElementById('tooltip').style.display='none');
     function changePair(){ canvas.style.opacity='0.3'; setTimeout(()=>{ initChart(); canvas.style.opacity='1'; document.querySelectorAll('.pair-option').forEach(el=>{ if(el.querySelector('.pair-name')?.innerText===hiddenSelect.value) el.classList.add('selected'); else el.classList.remove('selected'); }); },500); }
     window.changePair=changePair;
-    function startAnalysis(btn){ if(!registered){ registerOverlay.classList.add('visible'); return; } if(cooldownActive)return; cooldownActive=true; btn.classList.add('cooldown'); const timerOverlay=document.createElement('div'); timerOverlay.className='timer-overlay'; const circle=document.createElement('div'); circle.className='timer-circle'; const number=document.createElement('span'); number.className='timer-number'; number.innerText='5'; timerOverlay.appendChild(circle); timerOverlay.appendChild(number); btn.appendChild(timerOverlay); let timeLeft=5; const interval=setInterval(()=>{ timeLeft--; number.innerText=timeLeft; if(timeLeft<=0)clearInterval(interval); },1000); const res=document.getElementById('result'); const stat=document.getElementById('status'); res.classList.remove('visible'); stat.style.display='flex'; setTimeout(()=>{ stat.style.display='none'; res.classList.add('visible'); const isUp=Math.random()>0.5; res.style.color=isUp?'#00ff88':'#ff4d4d'; res.style.borderColor=isUp?'#00ff88':'#ff4d4d'; res.innerHTML=`${dict[curLang][isUp?'up':'down']} (${Math.floor(Math.random()*15+82)}%)`; res.style.animation='popIn 0.4s'; setTimeout(()=>res.style.animation='',400); if(window.Telegram?.WebApp?.HapticFeedback){ if(isUp) window.Telegram.WebApp.HapticFeedback.notificationOccurred('success'); else window.Telegram.WebApp.HapticFeedback.notificationOccurred('error'); window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy'); } },1500); setTimeout(()=>{ clearInterval(interval); cooldownActive=false; btn.classList.remove('cooldown'); const overlay=btn.querySelector('.timer-overlay'); if(overlay)overlay.remove(); },5000); }
+
+    function startAnalysis(btn){ if(!isActivated){ registerOverlay.classList.add('visible'); return; } if(cooldownActive)return; cooldownActive=true; btn.classList.add('cooldown'); const timerOverlay=document.createElement('div'); timerOverlay.className='timer-overlay'; const circle=document.createElement('div'); circle.className='timer-circle'; const number=document.createElement('span'); number.className='timer-number'; number.innerText='5'; timerOverlay.appendChild(circle); timerOverlay.appendChild(number); btn.appendChild(timerOverlay); let timeLeft=5; const interval=setInterval(()=>{ timeLeft--; number.innerText=timeLeft; if(timeLeft<=0)clearInterval(interval); },1000); const res=document.getElementById('result'); const stat=document.getElementById('status'); res.classList.remove('visible'); stat.style.display='flex'; setTimeout(()=>{ stat.style.display='none'; res.classList.add('visible'); const isUp=Math.random()>0.5; res.style.color=isUp?'#00ff88':'#ff4d4d'; res.style.borderColor=isUp?'#00ff88':'#ff4d4d'; res.innerHTML=`${dict[curLang][isUp?'up':'down']} (${Math.floor(Math.random()*15+82)}%)`; res.style.animation='popIn 0.4s'; setTimeout(()=>res.style.animation='',400); if(window.Telegram?.WebApp?.HapticFeedback){ if(isUp) window.Telegram.WebApp.HapticFeedback.notificationOccurred('success'); else window.Telegram.WebApp.HapticFeedback.notificationOccurred('error'); window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy'); } },1500); setTimeout(()=>{ clearInterval(interval); cooldownActive=false; btn.classList.remove('cooldown'); const overlay=btn.querySelector('.timer-overlay'); if(overlay)overlay.remove(); },5000); }
     window.startAnalysis=startAnalysis;
-    activateBtn.addEventListener('click',()=>{ const code=codeInput.value.trim(); if(isCodeValid(code)){ markCodeAsUsed(code); registered=true; localStorage.setItem('optibotx_registered','true'); registerMessage.innerText=dict[curLang].success; registerMessage.classList.remove('error'); registerMessage.classList.add('success'); setTimeout(()=>{ registerOverlay.classList.remove('visible'); registerMessage.innerText=''; },1500); } else { registerMessage.innerText=dict[curLang].wrongCode; registerMessage.classList.add('error'); registerMessage.classList.remove('success'); } });
-    registerOverlay.addEventListener('click',(e)=>{ if(e.target===registerOverlay) registerOverlay.classList.remove('visible'); });
     function selectTf(btn){ document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('light'); }
     window.selectTf=selectTf;
     if(window.Telegram?.WebApp) window.Telegram.WebApp.expand();
 
-    // --- ФИНАЛЬНЫЙ СТАРТ ---
+    // Старт выбора языка и переход к активации
     langItems.forEach(item => { item.addEventListener('click', () => { langItems.forEach(i => i.classList.remove('selected')); item.classList.add('selected'); curLang = item.dataset.lang; startBtn.classList.add('visible'); document.querySelector('.welcome-title').innerText = dict[curLang].welcome; document.querySelector('.welcome-subtitle').innerText = dict[curLang].chooseLang; }); });
-    startBtn.addEventListener('click', () => { welcomeOverlay.classList.remove('visible'); document.getElementById('main-app').style.display = 'flex'; allPairs.forEach(p => { const option = document.createElement('option'); option.value = p.name; option.text = p.name; hiddenSelect.appendChild(option); }); if(allPairs.length > 0) { hiddenSelect.value = allPairs[0].name; searchInput.value = allPairs[0].name; } renderPairs(); initChart(); setupSnow(); updateUILang(); });
+    startBtn.addEventListener('click', () => { 
+        welcomeOverlay.classList.remove('visible'); 
+        // Если уже активирован ранее, показываем главное приложение, иначе модалку активации
+        if(isActivated) {
+            mainApp.style.display = 'flex';
+            initTradingInterface();
+        } else {
+            registerOverlay.classList.add('visible');
+        }
+        allPairs.forEach(p => { const option = document.createElement('option'); option.value = p.name; option.text = p.name; hiddenSelect.appendChild(option); });
+        if(allPairs.length > 0) { hiddenSelect.value = allPairs[0].name; searchInput.value = allPairs[0].name; }
+        renderPairs(); 
+        if(isActivated) { initChart(); setupSnow(); updateUILang(); }
+    });
 </script>
 </body>
 </html>
