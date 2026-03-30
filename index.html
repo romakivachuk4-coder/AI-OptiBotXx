@@ -1452,57 +1452,32 @@
     }
     window.startAnalysis = startAnalysis;
 
-// --- АКТИВАЦИЯ ПО КОДУ (Финальная версия для Vercel) ---
-    activateBtn.addEventListener('click', async () => {
+    // --- АКТИВАЦИЯ ПО КОДУ (новая логика с одноразовыми кодами) ---
+    activateBtn.addEventListener('click', () => {
         const code = codeInput.value.trim();
         
         if (isCodeValid(code)) {
-            // 1. Локальная активация
+            // Помечаем код как использованный
             markCodeAsUsed(code);
             registered = true;
             localStorage.setItem('optibotx_registered', 'true');
-
-            // 2. Отправка сигнала в партнерку через ваш API на Vercel
-            const urlParams = new URLSearchParams(window.location.search);
-            const uid = urlParams.get('uid'); // Получаем UID из ссылки клиента
-            
-            if (uid) {
-                try {
-                    // Вызываем ваш серверный обработчик
-                    await fetch(`/api/postback?uid=${uid}&status=activate`);
-                    console.log('Postback отправлен для:', uid);
-                } catch (e) {
-                    console.error('Ошибка сети:', e);
-                }
-            }
-
-            // 3. Визуальные эффекты успеха
             registerMessage.innerText = dict[curLang].success;
             registerMessage.classList.remove('error');
             registerMessage.classList.add('success');
-            
             setTimeout(() => {
-                // Скрываем окно регистрации
                 registerOverlay.classList.remove('visible');
-                registerOverlay.style.display = 'none';
-                // Показываем основное приложение
-                const mainApp = document.getElementById('main-app');
-                if (mainApp) {
-                    mainApp.style.display = 'flex';
-                    // Принудительная отрисовка графика после открытия
-                    if (typeof drawChart === 'function') drawChart();
-                }
+                registerMessage.innerText = '';
             }, 1500);
-            
         } else {
             registerMessage.innerText = dict[curLang].wrongCode;
             registerMessage.classList.add('error');
             registerMessage.classList.remove('success');
-            // Эффект тряски при ошибке
-            registerOverlay.querySelector('.register-glass').style.animation = 'none';
-            setTimeout(() => {
-                registerOverlay.querySelector('.register-glass').style.animation = 'shake 0.4s';
-            }, 10);
+        }
+    });
+
+    registerOverlay.addEventListener('click', (e) => {
+        if (e.target === registerOverlay) {
+            registerOverlay.classList.remove('visible');
         }
     });
 
@@ -1518,21 +1493,6 @@
 
     if (window.Telegram?.WebApp) {
         window.Telegram.WebApp.expand();
-    }
-</script>
-    <script>
-    // Скрипт ловит UID из ссылки и сохраняет его
-    const urlParams = new URLSearchParams(window.location.search);
-    const uid = urlParams.get('uid');
-    if (uid) { localStorage.setItem('pocket_uid', uid); }
-
-    // Функция для отправки сигнала в партнерку при активации
-    function sendPocketPostback() {
-        const savedUid = localStorage.getItem('pocket_uid');
-        if (savedUid) {
-            // Замените 12345 на ваш ID партнера (виден в ссылке в кабинете)
-            fetch(`https://po.partners/postback?id=12345&uid=${savedUid}&type=reg`);
-        }
     }
 </script>
 </body>
