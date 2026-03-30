@@ -153,7 +153,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             backdrop-filter: blur(12px);
             display: flex;
             justify-content: center;
@@ -895,9 +895,9 @@
             registerMessageDiv.classList.remove('error');
             setTimeout(() => {
                 registerOverlay.classList.remove('visible');
-                mainApp.style.display = 'flex';
-                welcomeOverlay.classList.remove('visible');
-                initTradingInterface();
+                registerMessageDiv.innerText = '';
+                // После активации разблокируем все функции
+                enableAllFeatures();
             }, 1000);
         } else {
             registerMessageDiv.innerText = '❌ Неверный код активации. Попробуйте снова.';
@@ -908,16 +908,38 @@
         }
     }
 
+    // Функция-перехватчик для кнопок: если не активирован, показываем окно
+    function requireActivation(callback) {
+        if (isActivated) {
+            if (callback) callback();
+        } else {
+            registerOverlay.classList.add('visible');
+        }
+    }
+
+    // Разблокировка всех функций после активации
+    function enableAllFeatures() {
+        // Инициализируем график и снег, если они еще не запущены
+        if (typeof initChart === 'function' && candles.length === 0) {
+            initChart();
+            setupSnow();
+            updateUILang();
+        }
+    }
+
     activateBtn.addEventListener('click', () => {
         setActivated(false);
     });
 
-    // Функция инициализации интерфейса (запускаем после активации)
-    function initTradingInterface() {
-        // Все пары уже загружены, запускаем график и снег
-        if (typeof initChart === 'function') initChart();
-        if (typeof setupSnow === 'function') setupSnow();
-        updateUILang();
+    // Перехват всех действий в приложении
+    function wrapWithActivationCheck(fn, ...args) {
+        return function() {
+            if (isActivated) {
+                if (fn) fn.apply(this, args);
+            } else {
+                registerOverlay.classList.add('visible');
+            }
+        };
     }
 
     // --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ДЛЯ ОСНОВНОГО ИНТЕРФЕЙСА ---
@@ -995,7 +1017,7 @@
         }); snowAnimation=requestAnimationFrame(drawSnow);
     }
     function toggleSnow() { snowEnabled = !snowEnabled; snowToggle.innerText = snowEnabled ? '❄️' : '☃️'; }
-    snowToggle.onclick = toggleSnow;
+    snowToggle.onclick = () => requireActivation(toggleSnow);
 
     // Пары
     const allPairs = [
@@ -1009,14 +1031,23 @@
         filtered.forEach(pair => {
             const div = document.createElement('div'); div.className = 'pair-option'; if(pair.name === hiddenSelect.value) div.classList.add('selected');
             div.innerHTML = `<span class="pair-flag">${pair.flag}</span><span class="pair-name">${pair.name}</span><span class="pair-type">${pair.type}</span>`;
-            div.addEventListener('click', () => { document.querySelectorAll('.pair-option').forEach(el => el.classList.remove('selected')); div.classList.add('selected'); hiddenSelect.value = pair.name; searchInput.value = pair.name; changePair(); pairsContainer.style.display = 'none'; });
+            div.addEventListener('click', () => { 
+                requireActivation(() => {
+                    document.querySelectorAll('.pair-option').forEach(el => el.classList.remove('selected')); 
+                    div.classList.add('selected'); 
+                    hiddenSelect.value = pair.name; 
+                    searchInput.value = pair.name; 
+                    changePair(); 
+                    pairsContainer.style.display = 'none';
+                });
+            });
             pairsContainer.appendChild(div);
         });
         if(filtered.length === 0) { const empty = document.createElement('div'); empty.className = 'pair-option'; empty.style.justifyContent = 'center'; empty.style.padding = '20px'; empty.innerText = '❌ Nothing found'; pairsContainer.appendChild(empty); }
     }
-    searchInput.addEventListener('focus', () => { pairsContainer.style.display = 'block'; });
+    searchInput.addEventListener('focus', () => { if(isActivated) pairsContainer.style.display = 'block'; });
     document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !pairsContainer.contains(e.target)) pairsContainer.style.display = 'none'; });
-    searchInput.addEventListener('input', (e) => { renderPairs(e.target.value); if (!pairsContainer.style.display || pairsContainer.style.display === 'none') pairsContainer.style.display = 'block'; });
+    searchInput.addEventListener('input', (e) => { if(isActivated) { renderPairs(e.target.value); if (!pairsContainer.style.display || pairsContainer.style.display === 'none') pairsContainer.style.display = 'block'; } });
 
     // График
     function setupCanvas() { const rect = canvas.parentElement.getBoundingClientRect(); canvas.width = rect.width * dpr; canvas.height = rect.height * dpr; ctx.scale(dpr, dpr); canvas.style.width = rect.width + 'px'; canvas.style.height = rect.height + 'px'; }
@@ -1024,38 +1055,73 @@
     function calculateSMA(period=7) { smaData = []; for(let i=period-1; i<candles.length; i++) { let sum=0; for(let j=i-period+1; j<=i; j++) sum+=candles[j].close; smaData.push({ index:i, value:sum/period }); } }
     function drawGrid(w,h,minP,maxP) { ctx.strokeStyle="#1e1e2f"; ctx.lineWidth=0.5; const levels=5; for(let i=0;i<=levels;i++){ let y=h*0.15+(h*0.7/levels)*i; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.strokeStyle=document.body.classList.contains('light-theme')?"#ccc":"#1e1e2f"; ctx.stroke(); let price=maxP-(i/levels)*(maxP-minP); ctx.fillStyle="#666"; ctx.font="8px 'Segoe UI'"; ctx.fillText(price.toFixed(2),5,y-2); } for(let i=1;i<candles.length;i++){ let x=(i/candles.length)*w; ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.strokeStyle=document.body.classList.contains('light-theme')?"#ddd":"#1a1a2a"; ctx.stroke(); } }
     function render() { const w=canvas.width/dpr; const h=canvas.height/dpr; ctx.clearRect(0,0,w,h); const allPrices=candles.flatMap(c=>[c.high,c.low]); const minP=Math.min(...allPrices); const maxP=Math.max(...allPrices); const range=(maxP-minP)||10; const getY=(p)=>h-((p-minP)/range)*(h*0.7)-(h*0.15); drawGrid(w,h,minP,maxP); const candleWidth=w/candles.length; candles.forEach((c,i)=>{ const x=i*candleWidth+(candleWidth*0.15); const isUp=c.close>=c.open; const color=isUp?'#00ff88':'#ff4d4d'; ctx.strokeStyle=color; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x+(candleWidth*0.35),getY(c.high)); ctx.lineTo(x+(candleWidth*0.35),getY(c.low)); ctx.stroke(); let openY=getY(c.open); let closeY=getY(c.close); let bodyY,bodyH; if(isUp){ let currentCloseY=openY-(openY-closeY)*c.progress; bodyY=currentCloseY; bodyH=openY-currentCloseY; } else { let currentCloseY=openY+(closeY-openY)*c.progress; bodyY=openY; bodyH=currentCloseY-openY; } if(c.progress>0&&bodyH>0.5){ ctx.fillStyle=color; let rectX=x, rectY=bodyY, rectW=candleWidth*0.7, rectH=bodyH, radius=2; ctx.beginPath(); ctx.moveTo(rectX+radius,rectY); ctx.lineTo(rectX+rectW-radius,rectY); ctx.quadraticCurveTo(rectX+rectW,rectY,rectX+rectW,rectY+radius); ctx.lineTo(rectX+rectW,rectY+rectH-radius); ctx.quadraticCurveTo(rectX+rectW,rectY+rectH,rectX+rectW-radius,rectY+rectH); ctx.lineTo(rectX+radius,rectY+rectH); ctx.quadraticCurveTo(rectX,rectY+rectH,rectX,rectY+rectH-radius); ctx.lineTo(rectX,rectY+radius); ctx.quadraticCurveTo(rectX,rectY,rectX+radius,rectY); ctx.closePath(); ctx.fill(); } }); if(showSMA&&smaData.length>1){ ctx.beginPath(); ctx.strokeStyle='#ffaa00'; ctx.lineWidth=2; smaData.forEach((pt,idx)=>{ let x=(pt.index/candles.length)*w+candleWidth/2; let y=getY(pt.value); if(idx===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }); ctx.stroke(); } }
-    setInterval(()=>{ if(candles.length===0)return; candles.shift(); let last=candles[candles.length-1]; let nO=last.close; let nC=nO+(Math.random()-0.5)*8; let newCandle={ open:nO, close:nC, high:Math.max(nO,nC)+Math.random()*4+2, low:Math.min(nO,nC)-Math.random()*4-2, progress:0 }; candles.push(newCandle); calculateSMA(); let progress=0; function animateNew(){ progress+=0.05; newCandle.progress=Math.min(progress,1); render(); if(progress<1) requestAnimationFrame(animateNew); } animateNew(); },3000);
+    setInterval(()=>{ if(candles.length===0 || !isActivated) return; candles.shift(); let last=candles[candles.length-1]; let nO=last.close; let nC=nO+(Math.random()-0.5)*8; let newCandle={ open:nO, close:nC, high:Math.max(nO,nC)+Math.random()*4+2, low:Math.min(nO,nC)-Math.random()*4-2, progress:0 }; candles.push(newCandle); calculateSMA(); let progress=0; function animateNew(){ progress+=0.05; newCandle.progress=Math.min(progress,1); render(); if(progress<1) requestAnimationFrame(animateNew); } animateNew(); },3000);
     function zoomIn(){ if(candleCount>5) candleCount-=2; initChart(); }
     function zoomOut(){ if(candleCount<30) candleCount+=2; initChart(); }
-    window.zoomIn=zoomIn; window.zoomOut=zoomOut;
+    window.zoomIn= () => requireActivation(zoomIn);
+    window.zoomOut= () => requireActivation(zoomOut);
     function toggleSMA(){ showSMA=!showSMA; smaBtn.classList.toggle('active',showSMA); render(); }
-    window.toggleSMA=toggleSMA;
-    canvas.addEventListener('mousemove',(e)=>{ const rect=canvas.getBoundingClientRect(); const scaleX=canvas.width/rect.width; const x=(e.clientX-rect.left)*scaleX/dpr; const candleWidth=(canvas.width/dpr)/candles.length; const idx=Math.floor(x/candleWidth); if(idx>=0&&idx<candles.length){ const c=candles[idx]; document.getElementById('tooltip').style.display='block'; document.getElementById('tooltip').style.left=e.pageX+10+'px'; document.getElementById('tooltip').style.top=e.pageY-20+'px'; document.getElementById('tooltip').innerHTML=`O: ${c.open.toFixed(2)} H: ${c.high.toFixed(2)} L: ${c.low.toFixed(2)} C: ${c.close.toFixed(2)}`; } else document.getElementById('tooltip').style.display='none'; });
+    window.toggleSMA = () => requireActivation(toggleSMA);
+    canvas.addEventListener('mousemove',(e)=>{ if(!isActivated) return; const rect=canvas.getBoundingClientRect(); const scaleX=canvas.width/rect.width; const x=(e.clientX-rect.left)*scaleX/dpr; const candleWidth=(canvas.width/dpr)/candles.length; const idx=Math.floor(x/candleWidth); if(idx>=0&&idx<candles.length){ const c=candles[idx]; document.getElementById('tooltip').style.display='block'; document.getElementById('tooltip').style.left=e.pageX+10+'px'; document.getElementById('tooltip').style.top=e.pageY-20+'px'; document.getElementById('tooltip').innerHTML=`O: ${c.open.toFixed(2)} H: ${c.high.toFixed(2)} L: ${c.low.toFixed(2)} C: ${c.close.toFixed(2)}`; } else document.getElementById('tooltip').style.display='none'; });
     canvas.addEventListener('mouseleave',()=>document.getElementById('tooltip').style.display='none');
     function changePair(){ canvas.style.opacity='0.3'; setTimeout(()=>{ initChart(); canvas.style.opacity='1'; document.querySelectorAll('.pair-option').forEach(el=>{ if(el.querySelector('.pair-name')?.innerText===hiddenSelect.value) el.classList.add('selected'); else el.classList.remove('selected'); }); },500); }
-    window.changePair=changePair;
+    window.changePair = () => requireActivation(changePair);
 
-    function startAnalysis(btn){ if(!isActivated){ registerOverlay.classList.add('visible'); return; } if(cooldownActive)return; cooldownActive=true; btn.classList.add('cooldown'); const timerOverlay=document.createElement('div'); timerOverlay.className='timer-overlay'; const circle=document.createElement('div'); circle.className='timer-circle'; const number=document.createElement('span'); number.className='timer-number'; number.innerText='5'; timerOverlay.appendChild(circle); timerOverlay.appendChild(number); btn.appendChild(timerOverlay); let timeLeft=5; const interval=setInterval(()=>{ timeLeft--; number.innerText=timeLeft; if(timeLeft<=0)clearInterval(interval); },1000); const res=document.getElementById('result'); const stat=document.getElementById('status'); res.classList.remove('visible'); stat.style.display='flex'; setTimeout(()=>{ stat.style.display='none'; res.classList.add('visible'); const isUp=Math.random()>0.5; res.style.color=isUp?'#00ff88':'#ff4d4d'; res.style.borderColor=isUp?'#00ff88':'#ff4d4d'; res.innerHTML=`${dict[curLang][isUp?'up':'down']} (${Math.floor(Math.random()*15+82)}%)`; res.style.animation='popIn 0.4s'; setTimeout(()=>res.style.animation='',400); if(window.Telegram?.WebApp?.HapticFeedback){ if(isUp) window.Telegram.WebApp.HapticFeedback.notificationOccurred('success'); else window.Telegram.WebApp.HapticFeedback.notificationOccurred('error'); window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy'); } },1500); setTimeout(()=>{ clearInterval(interval); cooldownActive=false; btn.classList.remove('cooldown'); const overlay=btn.querySelector('.timer-overlay'); if(overlay)overlay.remove(); },5000); }
-    window.startAnalysis=startAnalysis;
-    function selectTf(btn){ document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('light'); }
-    window.selectTf=selectTf;
+    function startAnalysis(btn){ 
+        if(!isActivated){ registerOverlay.classList.add('visible'); return; } 
+        if(cooldownActive)return; 
+        cooldownActive=true; 
+        btn.classList.add('cooldown'); 
+        const timerOverlay=document.createElement('div'); 
+        timerOverlay.className='timer-overlay'; 
+        const circle=document.createElement('div'); 
+        circle.className='timer-circle'; 
+        const number=document.createElement('span'); 
+        number.className='timer-number'; 
+        number.innerText='5'; 
+        timerOverlay.appendChild(circle); 
+        timerOverlay.appendChild(number); 
+        btn.appendChild(timerOverlay); 
+        let timeLeft=5; 
+        const interval=setInterval(()=>{ timeLeft--; number.innerText=timeLeft; if(timeLeft<=0)clearInterval(interval); },1000); 
+        const res=document.getElementById('result'); 
+        const stat=document.getElementById('status'); 
+        res.classList.remove('visible'); 
+        stat.style.display='flex'; 
+        setTimeout(()=>{ stat.style.display='none'; res.classList.add('visible'); const isUp=Math.random()>0.5; res.style.color=isUp?'#00ff88':'#ff4d4d'; res.style.borderColor=isUp?'#00ff88':'#ff4d4d'; res.innerHTML=`${dict[curLang][isUp?'up':'down']} (${Math.floor(Math.random()*15+82)}%)`; res.style.animation='popIn 0.4s'; setTimeout(()=>res.style.animation='',400); if(window.Telegram?.WebApp?.HapticFeedback){ if(isUp) window.Telegram.WebApp.HapticFeedback.notificationOccurred('success'); else window.Telegram.WebApp.HapticFeedback.notificationOccurred('error'); window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy'); } },1500); 
+        setTimeout(()=>{ clearInterval(interval); cooldownActive=false; btn.classList.remove('cooldown'); const overlay=btn.querySelector('.timer-overlay'); if(overlay)overlay.remove(); },5000); 
+    }
+    window.startAnalysis = startAnalysis;
+    
+    function selectTf(btn){ 
+        if(!isActivated){ registerOverlay.classList.add('visible'); return; }
+        document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('active')); 
+        btn.classList.add('active'); 
+        if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('light'); 
+    }
+    window.selectTf = selectTf;
     if(window.Telegram?.WebApp) window.Telegram.WebApp.expand();
 
-    // Старт выбора языка и переход к активации
+    // Старт выбора языка и переход к приложению (без активации сразу)
     langItems.forEach(item => { item.addEventListener('click', () => { langItems.forEach(i => i.classList.remove('selected')); item.classList.add('selected'); curLang = item.dataset.lang; startBtn.classList.add('visible'); document.querySelector('.welcome-title').innerText = dict[curLang].welcome; document.querySelector('.welcome-subtitle').innerText = dict[curLang].chooseLang; }); });
     startBtn.addEventListener('click', () => { 
         welcomeOverlay.classList.remove('visible'); 
-        // Если уже активирован ранее, показываем главное приложение, иначе модалку активации
+        mainApp.style.display = 'flex';
+        // Если уже активирован ранее, запускаем все функции сразу
         if(isActivated) {
-            mainApp.style.display = 'flex';
-            initTradingInterface();
+            initChart();
+            setupSnow();
+            updateUILang();
         } else {
-            registerOverlay.classList.add('visible');
+            // Приложение отображается, но все кнопки перехватываются и показывают окно активации
+            // Показываем уведомление о необходимости активации через небольшую задержку
+            setTimeout(() => {
+                registerOverlay.classList.add('visible');
+            }, 500);
         }
         allPairs.forEach(p => { const option = document.createElement('option'); option.value = p.name; option.text = p.name; hiddenSelect.appendChild(option); });
         if(allPairs.length > 0) { hiddenSelect.value = allPairs[0].name; searchInput.value = allPairs[0].name; }
         renderPairs(); 
-        if(isActivated) { initChart(); setupSnow(); updateUILang(); }
     });
 </script>
 </body>
