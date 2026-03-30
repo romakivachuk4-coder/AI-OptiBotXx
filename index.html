@@ -36,7 +36,6 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        /* WELCOME OVERLAY */
         .welcome-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -146,7 +145,6 @@
             box-shadow: 0 0 50px var(--accent-glow);
         }
 
-        /* ========== НОВОЕ ОКНО АКТИВАЦИИ (КЛЮЧЕВАЯ) ========== */
         .register-overlay {
             position: fixed;
             top: 0;
@@ -307,7 +305,6 @@
             40%,80% { transform: translateX(5px); }
         }
 
-        /* ОСНОВНОЙ ИНТЕРФЕЙС */
         .app-container {
             width: 100%;
             max-width: 400px;
@@ -780,17 +777,16 @@
     </div>
 </div>
 
-<!-- НОВОЕ ОКНО АКТИВАЦИИ (КЛЮЧЕВАЯ МОДАЛКА) -->
 <div id="register-overlay" class="register-overlay">
     <div class="register-glass">
-        <h3>🔐 Активация доступа</h3>
-        <p>Для входа в платформу <strong>OptiBotX PRO</strong> необходим лицензионный код</p>
+        <h3 id="register-title">🔐 Активация доступа</h3>
+        <p id="register-desc">Для входа в платформу <strong>OptiBotX PRO</strong> необходим лицензионный код</p>
         
-        <div class="code-hint">
-            📌 <span>Как получить код?</span><br>
-            1️⃣ Нажмите кнопку <strong>«Написать мне»</strong> ниже<br>
-            2️⃣ Напишите слово <strong style="color:#5b4dff;">«КОД»</strong> в Telegram<br>
-            3️⃣ Менеджер выдаст вам персональный код активации ✅
+        <div id="code-hint" class="code-hint">
+            📌 <span id="hint-title">Как получить код?</span><br>
+            <span id="hint-step1">1️⃣ Нажмите кнопку <strong>«Написать мне»</strong> ниже</span><br>
+            <span id="hint-step2">2️⃣ Напишите слово <strong style="color:#5b4dff;">«КОД»</strong> в Telegram</span><br>
+            <span id="hint-step3">3️⃣ Менеджер выдаст вам персональный код активации ✅</span>
         </div>
         
         <input type="text" id="code-input" class="register-input" placeholder="Введите полученный код" autocomplete="off">
@@ -865,7 +861,7 @@
 </div>
 
 <script>
-    // ======================== НОВАЯ СИСТЕМА АКТИВАЦИИ (КЛЮЧЕВЫЕ КОДЫ) ========================
+    // ======================== СИСТЕМА АКТИВАЦИИ ========================
     const VALID_ACCESS_CODES = [
         "OPTIX777", "PRO2026", "TRADE99", "BOTX100", "VIPACCESS",
         "GOLD987", "START123", "FREEBOT", "XTRADE1", "QUANTUM",
@@ -890,17 +886,15 @@
         if (bypass || isValidCode(codeInput.value)) {
             isActivated = true;
             localStorage.setItem('optibotx_activated', 'true');
-            registerMessageDiv.innerText = '✅ Активация успешна! Добро пожаловать.';
+            registerMessageDiv.innerText = getTranslation('activateSuccess');
             registerMessageDiv.classList.add('success');
             registerMessageDiv.classList.remove('error');
             setTimeout(() => {
                 registerOverlay.classList.remove('visible');
                 registerMessageDiv.innerText = '';
-                // После активации разблокируем все функции
-                enableAllFeatures();
             }, 1000);
         } else {
-            registerMessageDiv.innerText = '❌ Неверный код активации. Попробуйте снова.';
+            registerMessageDiv.innerText = getTranslation('wrongCode');
             registerMessageDiv.classList.add('error');
             registerMessageDiv.classList.remove('success');
             codeInput.classList.add('error-shake');
@@ -908,41 +902,47 @@
         }
     }
 
-    // Функция-перехватчик для кнопок: если не активирован, показываем окно
-    function requireActivation(callback) {
-        if (isActivated) {
-            if (callback) callback();
-        } else {
-            registerOverlay.classList.add('visible');
-        }
-    }
-
-    // Разблокировка всех функций после активации
-    function enableAllFeatures() {
-        // Инициализируем график и снег, если они еще не запущены
-        if (typeof initChart === 'function' && candles.length === 0) {
-            initChart();
-            setupSnow();
-            updateUILang();
-        }
-    }
-
     activateBtn.addEventListener('click', () => {
         setActivated(false);
     });
 
-    // Перехват всех действий в приложении
-    function wrapWithActivationCheck(fn, ...args) {
-        return function() {
-            if (isActivated) {
-                if (fn) fn.apply(this, args);
-            } else {
-                registerOverlay.classList.add('visible');
-            }
-        };
+    // Функция показа окна активации (вызывается только из кнопок)
+    function showActivationModal() {
+        if (!isActivated) {
+            updateRegisterLang();
+            registerOverlay.classList.add('visible');
+        }
+        return isActivated;
     }
 
-    // --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ДЛЯ ОСНОВНОГО ИНТЕРФЕЙСА ---
+    // Переводы для окна активации
+    const activationDict = {
+        en: { title: "🔐 Activation", desc: "To access <strong>OptiBotX PRO</strong> you need a license code", hintTitle: "How to get a code?", step1: "1️⃣ Click the <strong>«Write to me»</strong> button below", step2: "2️⃣ Write the word <strong style='color:#5b4dff;'>«CODE»</strong> in Telegram", step3: "3️⃣ The manager will give you a personal activation code ✅", placeholder: "Enter the received code", btnText: "🎯 Activate", contactBtn: "✍️ Write to me — get code", success: "✅ Activation successful! Welcome.", wrongCode: "❌ Invalid activation code. Try again." },
+        es: { title: "🔐 Activación", desc: "Para acceder a <strong>OptiBotX PRO</strong> necesitas un código de licencia", hintTitle: "¿Cómo obtener un código?", step1: "1️⃣ Haz clic en el botón <strong>«Escríbeme»</strong> abajo", step2: "2️⃣ Escribe la palabra <strong style='color:#5b4dff;'>«CODE»</strong> en Telegram", step3: "3️⃣ El gerente te dará un código de activación personal ✅", placeholder: "Ingresa el código recibido", btnText: "🎯 Activar", contactBtn: "✍️ Escríbeme — obtener código", success: "✅ ¡Activación exitosa! Bienvenido.", wrongCode: "❌ Código de activación inválido. Intenta de nuevo." },
+        ru: { title: "🔐 Активация доступа", desc: "Для входа в платформу <strong>OptiBotX PRO</strong> необходим лицензионный код", hintTitle: "Как получить код?", step1: "1️⃣ Нажмите кнопку <strong>«Написать мне»</strong> ниже", step2: "2️⃣ Напишите слово <strong style='color:#5b4dff;'>«КОД»</strong> в Telegram", step3: "3️⃣ Менеджер выдаст вам персональный код активации ✅", placeholder: "Введите полученный код", btnText: "🎯 Активировать", contactBtn: "✍️ Написать мне — получить код", success: "✅ Активация успешна! Добро пожаловать.", wrongCode: "❌ Неверный код активации. Попробуйте снова." },
+        pl: { title: "🔐 Aktywacja", desc: "Aby uzyskać dostęp do <strong>OptiBotX PRO</strong> potrzebny jest kod licencyjny", hintTitle: "Jak uzyskać kod?", step1: "1️⃣ Kliknij przycisk <strong>«Napisz do mnie»</strong> poniżej", step2: "2️⃣ Napisz słowo <strong style='color:#5b4dff;'>«KOD»</strong> w Telegramie", step3: "3️⃣ Menedżer wyda Ci osobisty kod aktywacyjny ✅", placeholder: "Wprowadź otrzymany kod", btnText: "🎯 Aktywuj", contactBtn: "✍️ Napisz do mnie — uzyskaj kod", success: "✅ Aktywacja udana! Witamy.", wrongCode: "❌ Nieprawidłowy kod aktywacyjny. Spróbuj ponownie." },
+        de: { title: "🔐 Aktivierung", desc: "Für den Zugriff auf <strong>OptiBotX PRO</strong> benötigen Sie einen Lizenzcode", hintTitle: "Wie erhalte ich einen Code?", step1: "1️⃣ Klicken Sie unten auf die Schaltfläche <strong>«Schreib mir»</strong>", step2: "2️⃣ Schreiben Sie das Wort <strong style='color:#5b4dff;'>«CODE»</strong> in Telegram", step3: "3️⃣ Der Manager gibt Ihnen einen persönlichen Aktivierungscode ✅", placeholder: "Geben Sie den erhaltenen Code ein", btnText: "🎯 Aktivieren", contactBtn: "✍️ Schreib mir — Code erhalten", success: "✅ Aktivierung erfolgreich! Willkommen.", wrongCode: "❌ Ungültiger Aktivierungscode. Versuchen Sie es erneut." },
+        fr: { title: "🔐 Activation", desc: "Pour accéder à <strong>OptiBotX PRO</strong> vous avez besoin d'un code de licence", hintTitle: "Comment obtenir un code ?", step1: "1️⃣ Cliquez sur le bouton <strong>«Écris-moi»</strong> ci-dessous", step2: "2️⃣ Écrivez le mot <strong style='color:#5b4dff;'>«CODE»</strong> dans Telegram", step3: "3️⃣ Le gestionnaire vous donnera un code d'activation personnel ✅", placeholder: "Entrez le code reçu", btnText: "🎯 Activer", contactBtn: "✍️ Écris-moi — obtenir un code", success: "✅ Activation réussie ! Bienvenue.", wrongCode: "❌ Code d'activation invalide. Réessayez." }
+    };
+
+    function updateRegisterLang() {
+        const langData = activationDict[curLang] || activationDict.en;
+        document.getElementById('register-title').innerHTML = langData.title;
+        document.getElementById('register-desc').innerHTML = langData.desc;
+        document.getElementById('hint-title').innerHTML = langData.hintTitle;
+        document.getElementById('hint-step1').innerHTML = langData.step1;
+        document.getElementById('hint-step2').innerHTML = langData.step2;
+        document.getElementById('hint-step3').innerHTML = langData.step3;
+        codeInput.placeholder = langData.placeholder;
+        activateBtn.innerHTML = langData.btnText;
+        contactMeBtn.innerHTML = langData.contactBtn;
+    }
+
+    function getTranslation(key) {
+        return (activationDict[curLang] || activationDict.en)[key] || activationDict.en[key];
+    }
+
+    // --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ---
     const canvas = document.getElementById('mainChart');
     const ctx = canvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
@@ -954,19 +954,15 @@
     let curLang = 'en';
     let cooldownActive = false;
 
-    const adminUsername = '@ZentixTrade';
-    document.getElementById('watermark').innerText = 'OptiBotX PRO';
-
     const dict = {
-        en: { sub: "Select currency pair", an: "Analyze", wait: "Waiting...", up: "BUY ", down: "SELL ", welcome: "Welcome", chooseLang: "Choose your language", flag: "🇬🇧", contactBtn: "✉️ Write to me" },
-        es: { sub: "Seleccione un par de divisas", an: "Analizar", wait: "Esperando...", up: "COMPRAR ", down: "VENDER ", welcome: "Bienvenido", chooseLang: "Elija su idioma", flag: "🇪🇸", contactBtn: "✉️ Escríbeme" },
-        ru: { sub: "Выбери валютную пару", an: "Анализировать", wait: "Ожидание...", up: "ВВЕРХ ", down: "ВНИЗ ", welcome: "Добро пожаловать", chooseLang: "Выберите язык", flag: "🇷🇺", contactBtn: "✉️ Написать мне" },
-        pl: { sub: "Wybierz parę walutową", an: "Analizuj", wait: "Oczekiwanie...", up: "W GÓRĘ ", down: "W DÓŁ ", welcome: "Witaj", chooseLang: "Wybierz język", flag: "🇵🇱", contactBtn: "✉️ Napisz do mnie" },
-        de: { sub: "Währungspaar auswählen", an: "Analysieren", wait: "Warten...", up: "KAUFEN ", down: "VERKAUFEN ", welcome: "Willkommen", chooseLang: "Sprache wählen", flag: "🇩🇪", contactBtn: "✉️ Schreib mir" },
-        fr: { sub: "Choisissez une paire de devises", an: "Analyser", wait: "Attente...", up: "ACHAT ", down: "VENTE ", welcome: "Bienvenue", chooseLang: "Choisissez la langue", flag: "🇫🇷", contactBtn: "✉️ Écris-moi" }
+        en: { sub: "Select currency pair", an: "Analyze", wait: "Waiting...", up: "BUY ", down: "SELL ", flag: "🇬🇧" },
+        es: { sub: "Seleccione un par de divisas", an: "Analizar", wait: "Esperando...", up: "COMPRAR ", down: "VENDER ", flag: "🇪🇸" },
+        ru: { sub: "Выбери валютную пару", an: "Анализировать", wait: "Ожидание...", up: "ВВЕРХ ", down: "ВНИЗ ", flag: "🇷🇺" },
+        pl: { sub: "Wybierz parę walutową", an: "Analizuj", wait: "Oczekiwanie...", up: "W GÓRĘ ", down: "W DÓŁ ", flag: "🇵🇱" },
+        de: { sub: "Währungspaar auswählen", an: "Analysieren", wait: "Warten...", up: "KAUFEN ", down: "VERKAUFEN ", flag: "🇩🇪" },
+        fr: { sub: "Choisissez une paire de devises", an: "Analyser", wait: "Attente...", up: "ACHAT ", down: "VENTE ", flag: "🇫🇷" }
     };
 
-    // --- ЭЛЕМЕНТЫ ---
     const startBtn = document.getElementById('start-btn');
     const langItems = document.querySelectorAll('.language-item');
     const pairsContainer = document.getElementById('pairs-container');
@@ -979,6 +975,7 @@
     const themeBtn = document.getElementById('themeBtn');
     const smaBtn = document.getElementById('smaBtn');
     const subHeader = document.getElementById('sub-header');
+    const contactMeBtn = document.getElementById('contactMeBtn');
 
     function updateUILang() {
         if (subHeader) subHeader.innerText = dict[curLang].sub;
@@ -995,6 +992,7 @@
         curLang = langs[idx];
         this.innerHTML = `${dict[curLang].flag} ${curLang.toUpperCase()}`;
         updateUILang();
+        updateRegisterLang();
     };
     function toggleTheme() { document.body.classList.toggle('light-theme'); }
     themeBtn.onclick = toggleTheme;
@@ -1017,7 +1015,7 @@
         }); snowAnimation=requestAnimationFrame(drawSnow);
     }
     function toggleSnow() { snowEnabled = !snowEnabled; snowToggle.innerText = snowEnabled ? '❄️' : '☃️'; }
-    snowToggle.onclick = () => requireActivation(toggleSnow);
+    snowToggle.onclick = toggleSnow;
 
     // Пары
     const allPairs = [
@@ -1032,22 +1030,20 @@
             const div = document.createElement('div'); div.className = 'pair-option'; if(pair.name === hiddenSelect.value) div.classList.add('selected');
             div.innerHTML = `<span class="pair-flag">${pair.flag}</span><span class="pair-name">${pair.name}</span><span class="pair-type">${pair.type}</span>`;
             div.addEventListener('click', () => { 
-                requireActivation(() => {
-                    document.querySelectorAll('.pair-option').forEach(el => el.classList.remove('selected')); 
-                    div.classList.add('selected'); 
-                    hiddenSelect.value = pair.name; 
-                    searchInput.value = pair.name; 
-                    changePair(); 
-                    pairsContainer.style.display = 'none';
-                });
+                document.querySelectorAll('.pair-option').forEach(el => el.classList.remove('selected')); 
+                div.classList.add('selected'); 
+                hiddenSelect.value = pair.name; 
+                searchInput.value = pair.name; 
+                changePair(); 
+                pairsContainer.style.display = 'none';
             });
             pairsContainer.appendChild(div);
         });
         if(filtered.length === 0) { const empty = document.createElement('div'); empty.className = 'pair-option'; empty.style.justifyContent = 'center'; empty.style.padding = '20px'; empty.innerText = '❌ Nothing found'; pairsContainer.appendChild(empty); }
     }
-    searchInput.addEventListener('focus', () => { if(isActivated) pairsContainer.style.display = 'block'; });
+    searchInput.addEventListener('focus', () => { pairsContainer.style.display = 'block'; });
     document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !pairsContainer.contains(e.target)) pairsContainer.style.display = 'none'; });
-    searchInput.addEventListener('input', (e) => { if(isActivated) { renderPairs(e.target.value); if (!pairsContainer.style.display || pairsContainer.style.display === 'none') pairsContainer.style.display = 'block'; } });
+    searchInput.addEventListener('input', (e) => { renderPairs(e.target.value); if (!pairsContainer.style.display || pairsContainer.style.display === 'none') pairsContainer.style.display = 'block'; });
 
     // График
     function setupCanvas() { const rect = canvas.parentElement.getBoundingClientRect(); canvas.width = rect.width * dpr; canvas.height = rect.height * dpr; ctx.scale(dpr, dpr); canvas.style.width = rect.width + 'px'; canvas.style.height = rect.height + 'px'; }
@@ -1058,17 +1054,16 @@
     setInterval(()=>{ if(candles.length===0 || !isActivated) return; candles.shift(); let last=candles[candles.length-1]; let nO=last.close; let nC=nO+(Math.random()-0.5)*8; let newCandle={ open:nO, close:nC, high:Math.max(nO,nC)+Math.random()*4+2, low:Math.min(nO,nC)-Math.random()*4-2, progress:0 }; candles.push(newCandle); calculateSMA(); let progress=0; function animateNew(){ progress+=0.05; newCandle.progress=Math.min(progress,1); render(); if(progress<1) requestAnimationFrame(animateNew); } animateNew(); },3000);
     function zoomIn(){ if(candleCount>5) candleCount-=2; initChart(); }
     function zoomOut(){ if(candleCount<30) candleCount+=2; initChart(); }
-    window.zoomIn= () => requireActivation(zoomIn);
-    window.zoomOut= () => requireActivation(zoomOut);
+    window.zoomIn=zoomIn; window.zoomOut=zoomOut;
     function toggleSMA(){ showSMA=!showSMA; smaBtn.classList.toggle('active',showSMA); render(); }
-    window.toggleSMA = () => requireActivation(toggleSMA);
+    window.toggleSMA=toggleSMA;
     canvas.addEventListener('mousemove',(e)=>{ if(!isActivated) return; const rect=canvas.getBoundingClientRect(); const scaleX=canvas.width/rect.width; const x=(e.clientX-rect.left)*scaleX/dpr; const candleWidth=(canvas.width/dpr)/candles.length; const idx=Math.floor(x/candleWidth); if(idx>=0&&idx<candles.length){ const c=candles[idx]; document.getElementById('tooltip').style.display='block'; document.getElementById('tooltip').style.left=e.pageX+10+'px'; document.getElementById('tooltip').style.top=e.pageY-20+'px'; document.getElementById('tooltip').innerHTML=`O: ${c.open.toFixed(2)} H: ${c.high.toFixed(2)} L: ${c.low.toFixed(2)} C: ${c.close.toFixed(2)}`; } else document.getElementById('tooltip').style.display='none'; });
     canvas.addEventListener('mouseleave',()=>document.getElementById('tooltip').style.display='none');
     function changePair(){ canvas.style.opacity='0.3'; setTimeout(()=>{ initChart(); canvas.style.opacity='1'; document.querySelectorAll('.pair-option').forEach(el=>{ if(el.querySelector('.pair-name')?.innerText===hiddenSelect.value) el.classList.add('selected'); else el.classList.remove('selected'); }); },500); }
-    window.changePair = () => requireActivation(changePair);
+    window.changePair=changePair;
 
     function startAnalysis(btn){ 
-        if(!isActivated){ registerOverlay.classList.add('visible'); return; } 
+        if(!isActivated){ showActivationModal(); return; } 
         if(cooldownActive)return; 
         cooldownActive=true; 
         btn.classList.add('cooldown'); 
@@ -1094,7 +1089,7 @@
     window.startAnalysis = startAnalysis;
     
     function selectTf(btn){ 
-        if(!isActivated){ registerOverlay.classList.add('visible'); return; }
+        if(!isActivated){ showActivationModal(); return; }
         document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('active')); 
         btn.classList.add('active'); 
         if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('light'); 
@@ -1102,22 +1097,27 @@
     window.selectTf = selectTf;
     if(window.Telegram?.WebApp) window.Telegram.WebApp.expand();
 
-    // Старт выбора языка и переход к приложению (без активации сразу)
-    langItems.forEach(item => { item.addEventListener('click', () => { langItems.forEach(i => i.classList.remove('selected')); item.classList.add('selected'); curLang = item.dataset.lang; startBtn.classList.add('visible'); document.querySelector('.welcome-title').innerText = dict[curLang].welcome; document.querySelector('.welcome-subtitle').innerText = dict[curLang].chooseLang; }); });
+    // Старт
+    langItems.forEach(item => { item.addEventListener('click', () => { langItems.forEach(i => i.classList.remove('selected')); item.classList.add('selected'); curLang = item.dataset.lang; startBtn.classList.add('visible'); document.querySelector('.welcome-title').innerText = curLang === 'en' ? 'Welcome' : (curLang === 'es' ? 'Bienvenido' : (curLang === 'ru' ? 'Добро пожаловать' : (curLang === 'pl' ? 'Witaj' : (curLang === 'de' ? 'Willkommen' : 'Bienvenue')))); document.querySelector('.welcome-subtitle').innerText = curLang === 'en' ? 'Choose your language' : (curLang === 'es' ? 'Elija su idioma' : (curLang === 'ru' ? 'Выберите язык' : (curLang === 'pl' ? 'Wybierz język' : (curLang === 'de' ? 'Sprache wählen' : 'Choisissez la langue')))); }); });
     startBtn.addEventListener('click', () => { 
         welcomeOverlay.classList.remove('visible'); 
         mainApp.style.display = 'flex';
-        // Если уже активирован ранее, запускаем все функции сразу
         if(isActivated) {
             initChart();
             setupSnow();
             updateUILang();
         } else {
-            // Приложение отображается, но все кнопки перехватываются и показывают окно активации
-            // Показываем уведомление о необходимости активации через небольшую задержку
-            setTimeout(() => {
-                registerOverlay.classList.add('visible');
-            }, 500);
+            // Показываем заглушку на графике, но не показываем окно активации сразу
+            setupCanvas();
+            ctx.fillStyle = 'rgba(0,0,0,0.5)';
+            ctx.fillRect(0, 0, canvas.width/dpr, canvas.height/dpr);
+            ctx.fillStyle = 'white';
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('🔐 Активация не выполнена', (canvas.width/dpr)/2, (canvas.height/dpr)/2);
+            ctx.fillText('Нажмите "Analyze" для активации', (canvas.width/dpr)/2, (canvas.height/dpr)/2 + 25);
+            setupSnow();
+            updateUILang();
         }
         allPairs.forEach(p => { const option = document.createElement('option'); option.value = p.name; option.text = p.name; hiddenSelect.appendChild(option); });
         if(allPairs.length > 0) { hiddenSelect.value = allPairs[0].name; searchInput.value = allPairs[0].name; }
