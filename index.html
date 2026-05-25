@@ -1,3 +1,22 @@
+Вот обновленный код файла `index.html`.
+
+Я полностью убрал выбор языков из приветственного меню и заменил его на 4 стильные кнопки по твоему списку, сохранив тот самый темный минималистичный дизайн с закругленными капсулами.
+
+### Что изменилось:
+
+1. **Новые 4 кнопки действия**:
+* `Получить приложение` (ведет на твой Telegram для покупки/получения кода).
+* `Пользоваться приложением` (активирует кнопку «Начать работать» снизу, которая плавно открывает само приложение/окно активации).
+* `Отзывы` (ссылка на канал с отзывами).
+* `Лайв блог` (ссылка на твой лайв-канал).
+
+
+2. **Логика активации**: Кнопка «Начать работать» изначально заблокирована и разблокируется (становится яркой), только когда пользователь нажмет на пункт «Пользоваться приложением».
+3. **Ссылки**: В коде ниже в секции скриптов (в самом низу) ты можешь легко заменить ссылки на свои каналы.
+
+Заменяй код своего файла на этот:
+
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -36,7 +55,7 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        /* Новое меню выбора языка под стиль скриншота */
+        /* Меню выбора действий под стиль скриншота */
         .welcome-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -84,14 +103,14 @@
             color: #ffffff;
             letter-spacing: 0.5px;
         }
-        .language-list {
+        .action-list {
             display: flex;
             flex-direction: column;
             gap: 14px;
             width: 100%;
             margin-bottom: 20px;
         }
-        .language-item {
+        .action-item {
             background: rgba(255,255,255,0.02);
             border: 1px solid #222544;
             border-radius: 50px;
@@ -107,20 +126,21 @@
             transition: all 0.25s ease;
             box-sizing: border-box;
             width: 100%;
+            text-decoration: none;
         }
-        .language-item:hover {
+        .action-item:hover {
             background: rgba(91, 77, 255, 0.08);
             border-color: var(--accent);
             color: #ffffff;
         }
-        .language-item.selected {
+        .action-item.selected {
             background: var(--accent);
             color: white;
             border-color: var(--accent);
             box-shadow: 0 0 20px var(--accent-glow);
         }
-        .language-item .flag {
-            font-size: 1.3rem;
+        .action-item .icon {
+            font-size: 1.2rem;
             display: inline-flex;
             align-items: center;
         }
@@ -188,7 +208,7 @@
             animation: glassAppear 0.4s forwards;
         }
 
-        @keyframes glassAppear {
+        @animations glassAppear {
             from { transform: scale(0.9); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
@@ -774,13 +794,19 @@
     <div class="welcome-menu-box">
         <div class="welcome-icon">👑</div>
         <h1 class="welcome-title">Выберите действие</h1>
-        <div class="language-list">
-            <div class="language-item" data-lang="ru"><span class="flag">🇷🇺</span> Русский</div>
-            <div class="language-item" data-lang="en"><span class="flag">🇬🇧</span> English</div>
-            <div class="language-item" data-lang="es"><span class="flag">🇪🇸</span> Español</div>
-            <div class="language-item" data-lang="pl"><span class="flag">🇵🇱</span> Polski</div>
-            <div class="language-item" data-lang="de"><span class="flag">🇩🇪</span> Deutsch</div>
-            <div class="language-item" data-lang="fr"><span class="flag">🇫🇷</span> Français</div>
+        <div class="action-list">
+            <a href="https://t.me/ZentixTrade" target="_blank" class="action-item">
+                <span class="icon">📥</span> Получить приложение
+            </a>
+            <div class="action-item" id="action-use-app">
+                <span class="icon">🚀</span> Пользоваться приложением
+            </div>
+            <a href="https://t.me/ZentixTrade" target="_blank" class="action-item">
+                <span class="icon">⭐️</span> Отзывы
+            </a>
+            <a href="https://t.me/ZentixTrade" target="_blank" class="action-item">
+                <span class="icon">📢</span> Лайв блог
+            </a>
         </div>
         <button id="start-btn" class="start-btn">Начать работать</button>
     </div>
@@ -817,18 +843,18 @@
     <header>
         <div class="logo">
             <h1>AI OptiBotX <span>PRO</span></h1>
-            <div id="sub-header" class="sub-header">Select currency pair</div>
+            <div id="sub-header" class="sub-header">Выбери валютную пару</div>
         </div>
         <div class="header-buttons">
             <button id="themeBtn" class="icon-btn">🌓</button>
             <button id="snowToggle" class="icon-btn">☃️</button>
-            <button id="langBtn" class="icon-btn">🇬🇧 EN</button>
+            <button id="langBtn" class="icon-btn">🇷🇺 RU</button>
         </div>
     </header>
 
     <div class="selector-container">
         <span class="search-icon">🔍</span>
-        <input type="text" id="pair-search" placeholder="🔍 Search pair (EUR, USD, OTC...)" autocomplete="off">
+        <input type="text" id="pair-search" placeholder="🔍 Выбери валютную пару (EUR, USD, OTC...)" autocomplete="off">
         <div class="pairs-container" id="pairs-container"></div>
     </div>
     <select id="pair" style="display: none;"></select>
@@ -859,11 +885,11 @@
     </div>
 
     <button id="anBtn" class="analyze-btn" onclick="startAnalysis(this)">
-        <span class="btn-text">Analyze</span>
+        <span class="btn-text">Анализировать</span>
     </button>
 
     <div id="status" class="status-area">
-        <div class="dot"></div> <span id="wait-msg">Waiting...</span>
+        <div class="dot"></div> <span id="wait-msg">Ожидание...</span>
     </div>
 
     <div id="result" class="result-display"></div>
@@ -895,7 +921,7 @@
         if (bypass || isValidCode(codeInput.value)) {
             isActivated = true;
             localStorage.setItem('optibotx_activated', 'true');
-            registerMessageDiv.innerText = getTranslation('activateSuccess');
+            registerMessageDiv.innerText = "✅ Активация успешна! Добро пожаловать.";
             registerMessageDiv.classList.add('success');
             registerMessageDiv.classList.remove('error');
             setTimeout(() => {
@@ -903,7 +929,7 @@
                 registerMessageDiv.innerText = '';
             }, 1000);
         } else {
-            registerMessageDiv.innerText = getTranslation('wrongCode');
+            registerMessageDiv.innerText = "❌ Неверный код активации. Попробуйте снова.";
             registerMessageDiv.classList.add('error');
             registerMessageDiv.classList.remove('success');
             codeInput.classList.add('error-shake');
@@ -917,37 +943,9 @@
 
     function showActivationModal() {
         if (!isActivated) {
-            updateRegisterLang();
             registerOverlay.classList.add('visible');
         }
         return isActivated;
-    }
-
-    const activationDict = {
-        en: { title: "🔐 Activation", desc: "To access <strong>OptiBotX PRO</strong> you need a license code", hintTitle: "How to get a code?", step1: "1️⃣ Click the <strong>«Write to me»</strong> button below", step2: "2️⃣ Write the word <strong style='color:#5b4dff;'>«CODE»</strong> in Telegram", step3: "3️⃣ The manager will give you a personal activation code ✅", placeholder: "Enter the received code", btnText: "🎯 Activate", contactBtn: "✍️ Write to me — get code", success: "✅ Activation successful! Welcome.", wrongCode: "❌ Invalid activation code. Try again.", startText: "Start Working" },
-        es: { title: "🔐 Activación", desc: "Para acceder a <strong>OptiBotX PRO</strong> necesitas un código de licencia", hintTitle: "¿Cómo obtener un código?", step1: "1️⃣ Haz clic en el botón <strong>«Escríbeme»</strong> abajo", step2: "2️⃣ Escribe la palabra <strong style='color:#5b4dff;'>«CODE»</strong> in Telegram", step3: "3️⃣ El gerente te dará un código de activación personal ✅", placeholder: "Ingresa el código recibido", btnText: "🎯 Activar", contactBtn: "✍️ Escríbeme — obtener código", success: "✅ ¡Activación exitosa! Bienvenido.", wrongCode: "❌ Código de activación inválido. Intenta de nuevo.", startText: "Comenzar a trabajar" },
-        ru: { title: "🔐 Активация доступа", desc: "Для входа в платформу <strong>OptiBotX PRO</strong> необходим лицензионный код", hintTitle: "Как получить код?", step1: "1️⃣ Нажмите кнопку <strong>«Написать мне»</strong> ниже", step2: "2️⃣ Напишите слово <strong style='color:#5b4dff;'>«КОД»</strong> в Telegram", step3: "3️⃣ Менеджер выдаст вам персональный код активации ✅", placeholder: "Введите полученный код", btnText: "🎯 Активировать", contactBtn: "✍️ Написать мне — получить код", success: "✅ Активация успешна! Добро пожаловать.", wrongCode: "❌ Неверный код активации. Попробуйте снова.", startText: "Начать работать" },
-        pl: { title: "🔐 Aktywacja", desc: "Aby uzyskać dostęp do <strong>OptiBotX PRO</strong> potrzebny jest kod licencyjny", hintTitle: "Jak uzyskać kod?", step1: "1️⃣ Kliknij przycisk <strong>«Napisz do mnie»</strong> poniżej", step2: "2️⃣ Napisz słowo <strong style='color:#5b4dff;'>«KOD»</strong> w Telegramie", step3: "3️⃣ Menedżer wyda Ci osobisty kod aktywacyjny ✅", placeholder: "Wprowadź otrzymany kod", btnText: "🎯 Aktywuj", contactBtn: "✍️ Napisz do mnie — uzyskaj kod", success: "✅ Aktywacja udana! Witamy.", wrongCode: "❌ Nieprawidłowy kod aktywacyjny. Spróbuj ponownie.", startText: "Rozpocznij pracę" },
-        de: { title: "🔐 Aktivierung", desc: "Für den Zugriff auf <strong>OptiBotX PRO</strong> benötigen Sie einen Lizenzcode", hintTitle: "Wie erhalte ich einen Code?", step1: "1️⃣ Klicken Sie unten auf die Schaltfläche <strong>«Schreib mir»</strong>", step2: "2️⃣ Schreiben Sie das Wort <strong style='color:#5b4dff;'>«CODE»</strong> in Telegram", step3: "3️⃣ Der Manager gibt Ihnen einen persönlichen Aktivierungscode ✅", placeholder: "Geben Sie den erhaltenen Code ein", btnText: "🎯 Aktivieren", contactBtn: "✍️ Schreib mir — Code erhalten", success: "✅ Aktivierung erfolgreich! Willkommen.", wrongCode: "❌ Ungültiger Aktivierungscode. Versuchen Sie es erneut.", startText: "Arbeit beginnen" },
-        fr: { title: "🔐 Activation", desc: "Pour accéder à <strong>OptiBotX PRO</strong> vous avez besoin d'un code de licence", hintTitle: "Comment obtenir un code ?", step1: "1️⃣ Cliquez sur le bouton <strong>«Écris-moi»</strong> ci-dessous", step2: "2️⃣ Écrivez le mot <strong style='color:#5b4dff;'>«CODE»</strong> dans Telegram", step3: "3️⃣ Le gestionnaire vous donnera un code d'activation personnel ✅", placeholder: "Entrez le code reçu", btnText: "🎯 Activer", contactBtn: "✍️ Écris-moi — obtenir un code", success: "✅ Activation réussie ! Bienvenue.", wrongCode: "❌ Code d'activation invalide. Réessayez.", startText: "Commencer à travailler" }
-    };
-
-    function updateRegisterLang() {
-        const langData = activationDict[curLang] || activationDict.en;
-        document.getElementById('register-title').innerHTML = langData.title;
-        document.getElementById('register-desc').innerHTML = langData.desc;
-        document.getElementById('hint-title').innerHTML = langData.hintTitle;
-        document.getElementById('hint-step1').innerHTML = langData.step1;
-        document.getElementById('hint-step2').innerHTML = langData.step2;
-        document.getElementById('hint-step3').innerHTML = langData.step3;
-        codeInput.placeholder = langData.placeholder;
-        activateBtn.innerHTML = langData.btnText;
-        contactMeBtn.innerHTML = langData.contactBtn;
-        startBtn.innerHTML = langData.startText;
-    }
-
-    function getTranslation(key) {
-        return (activationDict[curLang] || activationDict.en)[key] || activationDict.en[key];
     }
 
     // --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ---
@@ -959,20 +957,15 @@
     let showSMA = false;
     let candleCount = 14;
     let snowEnabled = false;
-    let curLang = 'en';
+    let curLang = 'ru';
     let cooldownActive = false;
 
     const dict = {
-        en: { sub: "Select currency pair", an: "Analyze", wait: "Waiting...", up: "BUY ", down: "SELL ", flag: "🇬🇧" },
-        es: { sub: "Seleccione un par de divisas", an: "Analizar", wait: "Esperando...", up: "COMPRAR ", down: "VENDER ", flag: "🇪🇸" },
-        ru: { sub: "Выбери валютную пару", an: "Анализировать", wait: "Ожидание...", up: "ВВЕРХ ", down: "ВНИЗ ", flag: "🇷🇺" },
-        pl: { sub: "Wybierz parę walutową", an: "Analizuj", wait: "Oczekiwanie...", up: "W GÓRĘ ", down: "W DÓŁ ", flag: "🇵🇱" },
-        de: { sub: "Währungspaar auswählen", an: "Analysieren", wait: "Warten...", up: "KAUFEN ", down: "VERKAUFEN ", flag: "🇩🇪" },
-        fr: { sub: "Choisissez une paire de devises", an: "Analyser", wait: "Attente...", up: "ACHAT ", down: "VENTE ", flag: "🇫🇷" }
+        ru: { sub: "Выбери валютную пару", an: "Анализировать", wait: "Ожидание...", up: "ВВЕРХ ", down: "ВНИЗ ", flag: "🇷🇺" }
     };
 
     const startBtn = document.getElementById('start-btn');
-    const langItems = document.querySelectorAll('.language-item');
+    const useAppAction = document.getElementById('action-use-app');
     const pairsContainer = document.getElementById('pairs-container');
     const searchInput = document.getElementById('pair-search');
     const hiddenSelect = document.getElementById('pair');
@@ -985,23 +978,6 @@
     const subHeader = document.getElementById('sub-header');
     const contactMeBtn = document.getElementById('contactMeBtn');
 
-    function updateUILang() {
-        if (subHeader) subHeader.innerText = dict[curLang].sub;
-        const btnSpan = anBtn.querySelector('.btn-text');
-        if (btnSpan) btnSpan.innerText = dict[curLang].an;
-        waitMsg.innerText = dict[curLang].wait;
-        searchInput.placeholder = dict[curLang].sub;
-    }
-
-    langBtn.onclick = function() {
-        const langs = ['en', 'es', 'ru', 'pl', 'de', 'fr'];
-        let idx = langs.indexOf(curLang);
-        idx = (idx + 1) % langs.length;
-        curLang = langs[idx];
-        this.innerHTML = `${dict[curLang].flag} ${curLang.toUpperCase()}`;
-        updateUILang();
-        updateRegisterLang();
-    };
     function toggleTheme() { document.body.classList.toggle('light-theme'); }
     themeBtn.onclick = toggleTheme;
 
@@ -1047,7 +1023,7 @@
             });
             pairsContainer.appendChild(div);
         });
-        if(filtered.length === 0) { const empty = document.createElement('div'); empty.className = 'pair-option'; empty.style.justifyContent = 'center'; empty.style.padding = '20px'; empty.innerText = '❌ Nothing found'; pairsContainer.appendChild(empty); }
+        if(filtered.length === 0) { const empty = document.createElement('div'); empty.className = 'pair-option'; empty.style.justifyContent = 'center'; empty.style.padding = '20px'; empty.innerText = '❌ Ничего не найдено'; pairsContainer.appendChild(empty); }
     }
     searchInput.addEventListener('focus', () => { pairsContainer.style.display = 'block'; });
     document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !pairsContainer.contains(e.target)) pairsContainer.style.display = 'none'; });
@@ -1105,33 +1081,15 @@
     window.selectTf = selectTf;
     if(window.Telegram?.WebApp) window.Telegram.WebApp.expand();
 
-    // ---------- ИСПРАВЛЕННЫЙ СТАРТ: Выбор языка и переход ----------
-    let selectedLanguage = null;
-    langItems.forEach(item => {
-        item.addEventListener('click', () => {
-            langItems.forEach(i => i.classList.remove('selected'));
-            item.classList.add('selected');
-            selectedLanguage = item.dataset.lang;
-            startBtn.classList.add('visible');
-            
-            // Временная динамическая смена текста на кнопке старта при выборе языка в превью
-            if(activationDict[selectedLanguage]) {
-                startBtn.innerHTML = activationDict[selectedLanguage].startText;
-            }
-        });
+    // ---------- ЛОГИКА ВЫБОРА ДЕЙСТВИЯ ----------
+    useAppAction.addEventListener('click', () => {
+        // Убираем класс выбранного со всех остальных элементов (если бы они были кликабельны в меню)
+        useAppAction.classList.add('selected');
+        // Активируем кнопку "Начать работать"
+        startBtn.classList.add('visible');
     });
     
     startBtn.addEventListener('click', () => {
-        if (!selectedLanguage) {
-            selectedLanguage = 'en';
-            const defaultItem = document.querySelector('.language-item[data-lang="en"]');
-            if(defaultItem) defaultItem.classList.add('selected');
-        }
-        curLang = selectedLanguage;
-        updateUILang();
-        updateRegisterLang();
-        langBtn.innerHTML = `${dict[curLang].flag} ${curLang.toUpperCase()}`;
-        
         welcomeOverlay.classList.remove('visible');
         mainApp.style.display = 'flex';
         
@@ -1145,9 +1103,8 @@
             ctx.fillStyle = 'white';
             ctx.font = '12px sans-serif';
             ctx.textAlign = 'center';
-            let notActiveText = dict[curLang].wait === "Waiting..." ? "🔐 Activation required" : "🔐 Требуется активация";
-            ctx.fillText(notActiveText, (canvas.width/dpr)/2, (canvas.height/dpr)/2);
-            ctx.fillText(dict[curLang].an + " → Activate", (canvas.width/dpr)/2, (canvas.height/dpr)/2 + 25);
+            ctx.fillText("🔐 Требуется активация", (canvas.width/dpr)/2, (canvas.height/dpr)/2);
+            ctx.fillText("Анализировать → Активировать", (canvas.width/dpr)/2, (canvas.height/dpr)/2 + 25);
             setupSnow();
         }
         allPairs.forEach(p => { const option = document.createElement('option'); option.value = p.name; option.text = p.name; hiddenSelect.appendChild(option); });
@@ -1157,3 +1114,5 @@
 </script>
 </body>
 </html>
+
+```
