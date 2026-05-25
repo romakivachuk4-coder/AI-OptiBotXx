@@ -18,12 +18,6 @@
             --glass-border: rgba(0, 210, 255, 0.25);
         }
         body.light-theme {
-            --bg-color: #f0f2f5;
-            --app-bg: #ffffff;
-            --border-color: #ddd;
-            --text-color: #222
-        }
-        body.light-theme {
             --bg-color: #f5f6fa;
             --app-bg: #ffffff;
             --card-bg: #ebeeef;
@@ -43,39 +37,6 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        /* ЭКРАН 1: Приветствие и выбор языка */
-        .welcome-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-color); display: flex; justify-content: center; align-items: center; z-index: 10000;
-            transition: opacity 0.4s ease, visibility 0.4s;
-        }
-        .welcome-overlay:not(.visible) {
-            opacity: 0; visibility: hidden; pointer-events: none;
-        }
-        .welcome-glass {
-            background: var(--app-bg); border: 2px solid var(--border-color); border-radius: 24px;
-            padding: 30px 24px; width: 85%; max-width: 340px; text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-        }
-        .welcome-title { font-size: 1.8rem; font-weight: 800; margin: 0 0 8px 0; color: var(--text-color); }
-        .welcome-subtitle { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; }
-        .language-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
-        .language-item {
-            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px;
-            padding: 12px 20px; font-size: 1.05rem; font-weight: 600; color: #ffffff;
-            display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.25s ease;
-        }
-        .language-item:hover { border-color: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
-        .language-item.selected { background: var(--btn-gradient); color: #000000; border-color: transparent; font-weight: 700; }
-        .language-item .flag { font-size: 1.4rem; }
-        
-        .start-btn {
-            background: var(--btn-gradient); border: none; color: #000000; font-weight: 800;
-            padding: 15px; border-radius: 14px; cursor: pointer; width: 100%; font-size: 1.1rem;
-            box-shadow: 0 4px 15px var(--accent-glow); transition: 0.25s; opacity: 0; transform: translateY(10px); pointer-events: none;
-        }
-        .start-btn.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
-
         /* ЭКРАН 2: Модалка активации */
         .register-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -85,29 +46,29 @@
         }
         .register-overlay.visible { opacity: 1; visibility: visible; }
         .register-glass {
-            background: var(--glass-bg); border: 2px solid var(--glass-border); border-radius: 24px;
+            background: var(--glass-bg); border: 2px solid var(--glass-border); border-radius: 0px; /* Прямые углы */
             padding: 28px 22px; width: 86%; max-width: 340px; text-align: center; box-shadow: 0 0 30px rgba(0,210,255,0.2);
         }
         .register-glass h3 { font-size: 1.4rem; margin-top: 0; margin-bottom: 12px; color: var(--text-color); }
         .register-glass p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4; }
         .code-hint {
             background: rgba(0, 210, 255, 0.05); border-left: 3px solid var(--accent);
-            border-radius: 10px; padding: 12px; margin-bottom: 20px; text-align: left; font-size: 0.8rem; color: #ffffff;
+            border-radius: 0px; padding: 12px; margin-bottom: 20px; text-align: left; font-size: 0.8rem; color: #ffffff; /* Прямые углы */
         }
         .register-input {
             width: 100%; padding: 14px; background: #000000; border: 1px solid var(--border-color);
-            border-radius: 14px; color: #ffffff; font-size: 1rem; text-align: center;
+            border-radius: 0px; color: #ffffff; font-size: 1rem; text-align: center; /* Прямые углы */
             margin-bottom: 15px; outline: none; box-sizing: border-box; transition: all 0.2s;
         }
         .register-input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
         .register-btn {
             background: var(--btn-gradient); border: none; color: #000000; font-weight: 800;
-            padding: 14px 20px; border-radius: 14px; cursor: pointer; width: 100%; font-size: 1rem;
+            padding: 14px 20px; border-radius: 0px; cursor: pointer; width: 100%; font-size: 1rem; /* Прямые углы */
             box-shadow: 0 4px 15px var(--accent-glow); margin-bottom: 12px; transition: 0.2s;
         }
         .contact-btn {
             background: rgba(255,255,255,0.05); border: 1px solid var(--border-color);
-            color: #ffffff; padding: 12px; border-radius: 14px; display: flex;
+            color: #ffffff; padding: 12px; border-radius: 0px; display: flex; /* Прямые углы */
             align-items: center; justify-content: center; gap: 8px; text-decoration: none; font-size: 0.95rem; transition: 0.2s;
         }
         .contact-btn:hover { border-color: #ffffff; }
@@ -120,7 +81,7 @@
         /* ЭКРАН 3: Основной интерфейс приложения */
         .app-container {
             width: 100%; max-width: 430px; height: 100vh; background: var(--app-bg);
-            display: none; flex-direction: column; padding: 16px; box-sizing: border-box;
+            display: flex; flex-direction: column; padding: 16px; box-sizing: border-box;
             position: relative; overflow-y: auto; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color);
         }
         #snow-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; }
@@ -132,7 +93,7 @@
         .header-buttons { display: flex; gap: 6px; }
         .icon-btn {
             background: var(--card-bg); border: 1px solid var(--border-color); color: #ffffff;
-            padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 0.85rem;
+            padding: 6px 10px; border-radius: 0px; cursor: pointer; font-size: 0.85rem; /* Прямые углы */
             display: flex; align-items: center; gap: 4px; transition: all 0.2s;
         }
         .icon-btn:hover { border-color: var(--accent); }
@@ -141,7 +102,7 @@
         .selector-container { position: relative; margin-bottom: 12px; z-index: 2000; }
         #pair-search {
             width: 100%; background: var(--card-bg); color: #ffffff;
-            border: 1px solid var(--border-color); border-radius: 12px;
+            border: 1px solid var(--border-color); border-radius: 0px; /* Прямые углы */
             padding: 12px 14px 12px 40px; font-size: 0.95rem; outline: none; box-sizing: border-box;
             transition: all 0.25s; font-weight: 600;
         }
@@ -150,7 +111,7 @@
         
         .pairs-container {
             position: absolute; top: 100%; left: 0; width: 100%; background: var(--card-bg);
-            border: 2px solid var(--border-color); border-radius: 12px; margin-top: 6px;
+            border: 2px solid var(--border-color); border-radius: 0px; margin-top: 6px; /* Прямые углы */
             max-height: 220px; overflow-y: auto; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.8);
         }
         .pair-option {
@@ -160,11 +121,11 @@
         .pair-option:hover { background: #000000; border-color: var(--accent); }
         .pair-option.selected { background: rgba(0, 210, 255, 0.15); color: var(--accent); font-weight: 700; }
         .pair-option .pair-left { display: flex; align-items: center; gap: 8px; }
-        .pair-option .pair-type { font-size: 0.7rem; background: #000000; padding: 2px 6px; border-radius: 4px; color: var(--accent); border: 1px solid var(--border-color); }
+        .pair-option .pair-type { font-size: 0.7rem; background: #000000; padding: 2px 6px; border-radius: 0px; color: var(--accent); border: 1px solid var(--border-color); } /* Прямые углы */
 
         /* ЖИВОЙ ГРАФИК TRADINGVIEW */
         .chart-container {
-            width: 100%; height: 280px; background: #000000; border-radius: 16px;
+            width: 100%; height: 280px; background: #000000; border-radius: 0px; /* Прямые углы */
             border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 12px;
             position: relative; min-height: 280px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
@@ -182,7 +143,7 @@
         .tf-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
         .tf-btn {
             background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-muted);
-            padding: 10px 0; border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+            padding: 10px 0; border-radius: 0px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.2s; /* Прямые углы */
         }
         .tf-btn:hover { background: #000000; color: #ffffff; border-color: var(--accent); }
         .tf-btn.active { background: #000000; color: var(--accent); border-color: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
@@ -190,7 +151,7 @@
         /* КНОПКА АНАЛИЗА */
         .analyze-btn {
             width: 100%; background: var(--btn-gradient); border: none; padding: 16px;
-            border-radius: 14px; color: #000000; font-weight: 900; cursor: pointer;
+            border-radius: 0px; color: #000000; font-weight: 900; cursor: pointer; /* Прямые углы */
             font-size: 1.1rem; margin-bottom: 12px; transition: all 0.25s;
             box-shadow: 0 5px 15px var(--accent-glow); text-align: center; position: relative;
             text-transform: uppercase; letter-spacing: 0.5px;
@@ -200,7 +161,7 @@
 
         /* ПАНЕЛЬ РЕЗУЛЬТАТА СИГНАЛА */
         .result-display {
-            width: 100%; height: 54px; background: #000000; border-radius: 14px; 
+            width: 100%; height: 54px; background: #000000; border-radius: 0px; /* Прямые углы */
             text-align: center; font-weight: 900; font-size: 1.25rem; line-height: 50px;
             margin-bottom: 12px; box-sizing: border-box; display: none; transition: all 0.3s;
             text-transform: uppercase; letter-spacing: 1px;
@@ -232,22 +193,6 @@
     </style>
 </head>
 <body>
-
-<div id="welcome-overlay" class="welcome-overlay visible">
-    <div class="welcome-glass">
-        <h1 class="welcome-title">Welcome</h1>
-        <p class="welcome-subtitle">Choose your language</p>
-        <div class="language-list">
-            <div class="language-item" data-lang="en"><span class="flag">🇬🇧</span> English</div>
-            <div class="language-item" data-lang="es"><span class="flag">🇪🇸</span> Español</div>
-            <div class="language-item" data-lang="ru"><span class="flag">🇷🇺</span> Русский</div>
-            <div class="language-item" data-lang="pl"><span class="flag">🇵🇱</span> Polski</div>
-            <div class="language-item" data-lang="de"><span class="flag">🇩🇪</span> Deutsch</div>
-            <div class="language-item" data-lang="fr"><span class="flag">🇫🇷</span> Français</div>
-        </div>
-        <button id="start-btn" class="start-btn">Start</button>
-    </div>
-</div>
 
 <div id="register-overlay" class="register-overlay">
     <div class="register-glass">
@@ -359,7 +304,6 @@
         fr: { title: "🔐 Activation", desc: "Pour accéder à <strong>OptiBotX PRO</strong> vous avez besoin d'un code de licence", hintTitle: "Comment obtenir un code ?", step1: "1️⃣ Cliquez sur le bouton <strong>«Écris-moi»</strong> ci-dessous", step2: "2️⃣ Écrivez le mot <strong style='color:#00d2ff;'>«CODE»</strong> in Telegram", step3: "3️⃣ Le gestionnaire vous donnera un code d'activation personnel ✅", placeholder: "Entrez le code reçu", btnText: "🎯 Activation", contactBtn: "✍️ Écris-moi — obtenir un code", success: "✅ Activation réussie ! Bienvenue.", wrongCode: "❌ Code d'activation invalide. Réessayez." }
     };
 
-    const welcomeOverlay = document.getElementById('welcome-overlay');
     const registerOverlay = document.getElementById('register-overlay');
     const mainApp = document.getElementById('main-app');
     const codeInput = document.getElementById('code-input');
@@ -371,7 +315,6 @@
     const waitMsg = document.getElementById('wait-msg');
     const langBtn = document.getElementById('langBtn');
     const themeBtn = document.getElementById('themeBtn');
-    const snowToggle = document.getElementById('snowToggle');
     const resultDiv = document.getElementById('result');
     const chartLock = document.getElementById('chart-lock');
 
@@ -492,7 +435,7 @@
         btn.classList.add('cooldown');
         btn.innerHTML = `<span class="btn-text">${dict[curLang].anProcess}</span><span class="loader-dots"><span>.</span><span>.</span><span>.</span></span>`;
         resultDiv.style.display = 'none';
-        resultDiv.className = 'result-display'; // сброс стилей цвета
+        resultDiv.className = 'result-display'; 
         document.getElementById('status').style.display = 'flex';
 
         setTimeout(() => {
@@ -538,80 +481,30 @@
             registerMessageDiv.innerText = activationDict[curLang].wrongCode;
             registerMessageDiv.className = "register-message error";
             codeInput.classList.add('error-shake');
-            setTimeout(() => codeInput.classList.remove('error-shake'), 400);
+            setTimeout(() => codeInput.classList.remove('error-shake'), 3000);
         }
     });
 
-    // Первоначальный выбор языка на Экране 1
-    let selectedLanguage = null;
-    document.querySelectorAll('.language-item').forEach(item => {
-        item.addEventListener('click', () => {
-            document.querySelectorAll('.language-item').forEach(i => i.classList.remove('selected'));
-            item.classList.add('selected');
-            selectedLanguage = item.dataset.lang;
-            document.getElementById('start-btn').classList.add('visible');
-        });
-    });
-    
-    document.getElementById('start-btn').addEventListener('click', () => {
-        curLang = selectedLanguage || 'en';
+    // Точка входа без экрана выбора языка
+    window.onload = function() {
+        // Проверяем локаль пользователя (или по умолчанию 'en')
+        const userLang = navigator.language || navigator.userLanguage;
+        if (userLang.includes('ru')) curLang = 'ru';
+        else if (userLang.includes('es')) curLang = 'es';
+        else if (userLang.includes('pl')) curLang = 'pl';
+        else if (userLang.includes('de')) curLang = 'de';
+        else if (userLang.includes('fr')) curLang = 'fr';
+        
+        langBtn.innerHTML = `${dict[curLang].flag} ${curLang.toUpperCase()}`;
         updateUILang();
         updateRegisterLang();
-        langBtn.innerHTML = `${dict[curLang].flag} ${curLang.toUpperCase()}`;
-        
-        welcomeOverlay.classList.remove('visible');
-        mainApp.style.display = 'flex';
-        
-        setupSnowCanvas();
-        searchInput.value = allPairs[0].name;
-        currentSymbol = allPairs[0].symbol;
-        
-        if(isActivated) {
+
+        if (isActivated) {
             initTradingView();
         } else {
             registerOverlay.classList.add('visible');
         }
-    });
-
-    // Система Снега
-    const sCanvas = document.getElementById('snow-layer');
-    const sCtx = sCanvas.getContext('2d');
-    let flakes = [], snowAnimation;
-
-    function setupSnowCanvas() {
-        sCanvas.width = sCanvas.parentElement.clientWidth;
-        sCanvas.height = sCanvas.parentElement.clientHeight;
-        flakes = Array.from({length: 45}, () => ({
-            x: Math.random() * sCanvas.width,
-            y: Math.random() * sCanvas.height,
-            r: Math.random() * 2.5 + 1,
-            d: Math.random() * 0.8 + 0.4,
-            angle: Math.random() * 360
-        }));
-        if (snowAnimation) cancelAnimationFrame(snowAnimation);
-        loopSnow();
-    }
-    function loopSnow() {
-        sCtx.clearRect(0, 0, sCanvas.width, sCanvas.height);
-        if (snowEnabled) {
-            sCtx.fillStyle = "rgba(255,255,255,0.3)";
-            flakes.forEach(f => {
-                sCtx.beginPath();
-                sCtx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-                sCtx.fill();
-                f.y += f.d;
-                f.x += Math.sin(f.angle) * 0.15;
-                if (f.y > sCanvas.height) { f.y = -5; f.x = Math.random() * sCanvas.width; }
-            });
-        }
-        snowAnimation = requestAnimationFrame(loopSnow);
-    }
-    snowToggle.onclick = () => {
-        snowEnabled = !snowEnabled;
-        snowToggle.innerText = snowEnabled ? '❄️' : '☃️';
     };
-
-    if(window.Telegram?.WebApp) window.Telegram.WebApp.expand();
 </script>
 </body>
 </html>
