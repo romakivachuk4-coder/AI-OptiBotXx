@@ -4,20 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>OptiBotX PRO</title>
-    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <style>
         :root {
             --bg-color: #000000;         /* Чистый черный фон */
             --app-bg: #0b0c10;          /* Глубокий темный графит */
-            --card-bg: #1f2833;         /* Контрастный графит для карточек */
             --border-color: #2f3c4f;    /* Четкие границы */
             --text-color: #ffffff;      /* Яркий белый текст */
-            --text-muted: #c5c6c7;      /* Светло-серый вспомогательный текст */
+            --secondary-bg: #1f2833;    /* Контрастный графит для элементов */
+            --hover-color: #2d3748;     /* Цвет при наведении */
             --accent: #00d2ff;          /* Насыщенный неоновый синий */
             --accent-glow: rgba(0, 210, 255, 0.4);
-            --glass-bg: rgba(15, 20, 30, 0.9);
-            --glass-border: rgba(0, 210, 255, 0.2);
-            --btn-gradient: linear-gradient(135deg, #00d2ff, #0066ff);
+            --glass-bg: rgba(11, 12, 16, 0.9);
+            --glass-border: rgba(0, 210, 255, 0.25);
+        }
+        body.light-theme {
+            --bg-color: #f0f2f5;
+            --app-bg: #ffffff;
+            --border-color: #ddd;
+            --text-color: #222
         }
         body.light-theme {
             --bg-color: #f5f6fa;
