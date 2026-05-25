@@ -4,31 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>OptiBotX PRO</title>
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
     <style>
         :root {
-            --bg-color: #000000;         /* Чистый черный фон */
-            --app-bg: #0b0c10;          /* Глубокий темный графит */
-            --border-color: #2f3c4f;    /* Четкие границы */
-            --text-color: #ffffff;      /* Яркий белый текст */
-            --secondary-bg: #1f2833;    /* Контрастный графит для элементов */
-            --hover-color: #2d3748;     /* Цвет при наведении */
-            --accent: #00d2ff;          /* Насыщенный неоновый синий */
-            --accent-glow: rgba(0, 210, 255, 0.4);
-            --glass-bg: rgba(11, 12, 16, 0.9);
-            --glass-border: rgba(0, 210, 255, 0.25);
+            --bg-color: #06060c;
+            --app-bg: #0d0d1e;
+            --card-bg: #131326;
+            --border-color: #1e1e38;
+            --text-color: #ffffff;
+            --text-muted: #797e9b;
+            --accent: #00d2ff; /* Фирменный неоновый синий */
+            --accent-glow: rgba(0, 210, 255, 0.35);
+            --glass-bg: rgba(14, 14, 32, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --btn-gradient: linear-gradient(135deg, #00d2ff, #0088ff);
         }
         body.light-theme {
-            --bg-color: #f5f6fa;
+            --bg-color: #f0f2f5;
             --app-bg: #ffffff;
-            --card-bg: #ebeeef;
+            --card-bg: #f5f6fa;
             --border-color: #dcdde1;
-            --text-color: #000000;
-            --text-muted: #626d7a;
-            --accent: #0088ff;
-            --accent-glow: rgba(0, 136, 255, 0.2);
-            --glass-bg: rgba(255, 255, 255, 0.95);
-            --glass-border: rgba(0, 0, 0, 0.15);
-            --btn-gradient: linear-gradient(135deg, #0088ff, #0044cc);
+            --text-color: #1e272e;
+            --text-muted: #7f8c8d;
+            --accent: #00a8ff;
+            --accent-glow: rgba(0, 168, 255, 0.2);
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --btn-gradient: linear-gradient(135deg, #00a8ff, #007cb3);
         }
         body {
             margin: 0; padding: 0; background: var(--bg-color); color: var(--text-color);
@@ -37,162 +39,196 @@
             transition: background 0.3s, color 0.3s;
         }
 
+        /* ЭКРАН 1: Приветствие и выбор языка */
+        .welcome-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-color); display: flex; justify-content: center; align-items: center; z-index: 10000;
+            transition: opacity 0.4s ease, visibility 0.4s;
+        }
+        .welcome-overlay:not(.visible) {
+            opacity: 0; visibility: hidden; pointer-events: none;
+        }
+        .welcome-glass {
+            background: var(--app-bg); border: 1px solid var(--border-color); border-radius: 32px;
+            padding: 30px 24px; width: 85%; max-width: 340px; text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .welcome-title { font-size: 1.8rem; font-weight: 800; margin: 0 0 8px 0; }
+        .welcome-subtitle { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 24px; }
+        .language-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+        .language-item {
+            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 50px;
+            padding: 12px 20px; font-size: 1.05rem; font-weight: 600; color: var(--text-color);
+            display: flex; align-items: center; gap: 12px; cursor: pointer; transition: all 0.25s ease;
+        }
+        .language-item:hover { border-color: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
+        .language-item.selected { background: var(--btn-gradient); color: #000; border-color: transparent; font-weight: 700; }
+        .language-item .flag { font-size: 1.4rem; }
+        
+        .start-btn {
+            background: var(--btn-gradient); border: none; color: #000; font-weight: 800;
+            padding: 15px; border-radius: 50px; cursor: pointer; width: 100%; font-size: 1.1rem;
+            box-shadow: 0 4px 15px var(--accent-glow); transition: 0.25s; opacity: 0; transform: translateY(10px); pointer-events: none;
+        }
+        .start-btn.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
         /* ЭКРАН 2: Модалка активации */
         .register-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
             display: flex; justify-content: center; align-items: center; z-index: 20000;
             opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
         }
         .register-overlay.visible { opacity: 1; visibility: visible; }
         .register-glass {
-            background: var(--glass-bg); border: 2px solid var(--glass-border); border-radius: 0px; /* Прямые углы */
-            padding: 28px 22px; width: 86%; max-width: 340px; text-align: center; box-shadow: 0 0 30px rgba(0,210,255,0.2);
+            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 32px;
+            padding: 28px 22px; width: 86%; max-width: 340px; text-align: center;
         }
-        .register-glass h3 { font-size: 1.4rem; margin-top: 0; margin-bottom: 12px; color: var(--text-color); }
+        .register-glass h3 { font-size: 1.4rem; margin-top: 0; margin-bottom: 12px; }
         .register-glass p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4; }
         .code-hint {
-            background: rgba(0, 210, 255, 0.05); border-left: 3px solid var(--accent);
-            border-radius: 0px; padding: 12px; margin-bottom: 20px; text-align: left; font-size: 0.8rem; color: #ffffff; /* Прямые углы */
+            background: rgba(0, 210, 255, 0.08); border-left: 3px solid var(--accent);
+            border-radius: 14px; padding: 12px; margin-bottom: 20px; text-align: left; font-size: 0.8rem;
         }
         .register-input {
-            width: 100%; padding: 14px; background: #000000; border: 1px solid var(--border-color);
-            border-radius: 0px; color: #ffffff; font-size: 1rem; text-align: center; /* Прямые углы */
+            width: 100%; padding: 14px; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color);
+            border-radius: 50px; color: var(--text-color); font-size: 1rem; text-align: center;
             margin-bottom: 15px; outline: none; box-sizing: border-box; transition: all 0.2s;
         }
         .register-input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
         .register-btn {
-            background: var(--btn-gradient); border: none; color: #000000; font-weight: 800;
-            padding: 14px 20px; border-radius: 0px; cursor: pointer; width: 100%; font-size: 1rem; /* Прямые углы */
+            background: var(--btn-gradient); border: none; color: #000; font-weight: 800;
+            padding: 14px 20px; border-radius: 50px; cursor: pointer; width: 100%; font-size: 1rem;
             box-shadow: 0 4px 15px var(--accent-glow); margin-bottom: 12px; transition: 0.2s;
         }
         .contact-btn {
             background: rgba(255,255,255,0.05); border: 1px solid var(--border-color);
-            color: #ffffff; padding: 12px; border-radius: 0px; display: flex; /* Прямые углы */
-            align-items: center; justify-content: center; gap: 8px; text-decoration: none; font-size: 0.95rem; transition: 0.2s;
+            color: var(--text-color); padding: 12px; border-radius: 50px; display: flex;
+            align-items: center; justify-content: center; gap: 8px; text-decoration: none; font-size: 0.95rem;
         }
-        .contact-btn:hover { border-color: #ffffff; }
-        .register-message { font-size: 0.85rem; min-height: 20px; margin-top: 10px; font-weight: 700; }
-        .register-message.error { color: #ff3333; }
-        .register-message.success { color: #00ff66; }
+        .register-message { font-size: 0.85rem; min-height: 20px; margin-top: 10px; }
+        .register-message.error { color: #ff4d4d; }
+        .register-message.success { color: #00ff88; }
         @keyframes shake { 0%,100% {transform:translateX(0)} 20%,60% {transform:translateX(-6px)} 40%,80% {transform:translateX(6px)} }
-        .error-shake { animation: shake 0.3s ease-in-out; border-color: #ff3333 !important; }
+        .error-shake { animation: shake 0.3s ease-in-out; border-color: #ff4d4d !important; }
 
         /* ЭКРАН 3: Основной интерфейс приложения */
         .app-container {
             width: 100%; max-width: 430px; height: 100vh; background: var(--app-bg);
-            display: flex; flex-direction: column; padding: 16px; box-sizing: border-box;
-            position: relative; overflow-y: auto; border-left: 1px solid var(--border-color); border-right: 1px solid var(--border-color);
+            display: none; flex-direction: column; padding: 16px; box-sizing: border-box;
+            position: relative; overflow-y: auto;
         }
         #snow-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; }
 
         /* ШАПКА */
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
-        .logo h1 { font-size: 1.25rem; margin: 0; font-weight: 800; color: #ffffff; }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .logo h1 { font-size: 1.25rem; margin: 0; font-weight: 800; }
         .logo span { color: var(--accent); text-shadow: 0 0 10px var(--accent-glow); }
         .header-buttons { display: flex; gap: 6px; }
         .icon-btn {
-            background: var(--card-bg); border: 1px solid var(--border-color); color: #ffffff;
-            padding: 6px 10px; border-radius: 0px; cursor: pointer; font-size: 0.85rem; /* Прямые углы */
+            background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color);
+            padding: 6px 10px; border-radius: 10px; cursor: pointer; font-size: 0.85rem;
             display: flex; align-items: center; gap: 4px; transition: all 0.2s;
         }
-        .icon-btn:hover { border-color: var(--accent); }
+        .icon-btn:hover { background: var(--border-color); }
 
-        /* ПОИСК И СЕЛЕКТОР ПАР */
+        /* КАСТОМНЫЙ СЕЛЕКТОР ВАЛЮТНЫХ ПАР */
         .selector-container { position: relative; margin-bottom: 12px; z-index: 2000; }
         #pair-search {
-            width: 100%; background: var(--card-bg); color: #ffffff;
-            border: 1px solid var(--border-color); border-radius: 0px; /* Прямые углы */
+            width: 100%; background: var(--card-bg); color: var(--text-color);
+            border: 1px solid var(--border-color); border-radius: 14px;
             padding: 12px 14px 12px 40px; font-size: 0.95rem; outline: none; box-sizing: border-box;
             transition: all 0.25s; font-weight: 600;
         }
-        #pair-search:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); background: #000000; }
+        #pair-search:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
         .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
         
         .pairs-container {
             position: absolute; top: 100%; left: 0; width: 100%; background: var(--card-bg);
-            border: 2px solid var(--border-color); border-radius: 0px; margin-top: 6px; /* Прямые углы */
-            max-height: 220px; overflow-y: auto; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            border: 1px solid var(--border-color); border-radius: 14px; margin-top: 6px;
+            max-height: 220px; overflow-y: auto; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
         .pair-option {
-            padding: 12px 14px; cursor: pointer; display: flex; align-items: center; justify-content: space-between;
-            border-bottom: 1px solid var(--border-color); font-size: 0.9rem; transition: background 0.2s; color: #ffffff;
+            padding: 10px 14px; cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.02); font-size: 0.9rem; transition: background 0.2s;
         }
-        .pair-option:hover { background: #000000; border-color: var(--accent); }
-        .pair-option.selected { background: rgba(0, 210, 255, 0.15); color: var(--accent); font-weight: 700; }
-        .pair-option .pair-left { display: flex; align-items: center; gap: 8px; }
-        .pair-option .pair-type { font-size: 0.7rem; background: #000000; padding: 2px 6px; border-radius: 0px; color: var(--accent); border: 1px solid var(--border-color); } /* Прямые углы */
+        .pair-option:hover { background: var(--border-color); }
+        .pair-option.selected { background: rgba(0, 210, 255, 0.1); color: var(--accent); }
+        .pair-option .pair-left { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+        .pair-option .pair-type { font-size: 0.7rem; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; color: var(--text-muted); }
 
         /* ЖИВОЙ ГРАФИК TRADINGVIEW */
         .chart-container {
-            width: 100%; height: 280px; background: #000000; border-radius: 0px; /* Прямые углы */
+            width: 100%; height: 280px; background: #131722; border-radius: 20px;
             border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 12px;
-            position: relative; min-height: 280px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            position: relative; min-height: 280px; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
         #tv-chart-box { width: 100%; height: 100%; }
         
         /* Заглушка до активации */
         .chart-lock-overlay {
-            position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.95);
+            position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(11,11,26,0.9);
             display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; box-sizing: border-box; z-index: 10;
         }
-        .lock-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; color: #ffffff; }
-        .lock-desc { font-size: 0.85rem; color: var(--accent); }
+        .lock-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+        .lock-desc { font-size: 0.85rem; color: var(--text-muted); }
 
         /* СЕТКА ТАЙМФРЕЙМОВ */
         .tf-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
         .tf-btn {
             background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-muted);
-            padding: 10px 0; border-radius: 0px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.2s; /* Прямые углы */
+            padding: 10px 0; border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
         }
-        .tf-btn:hover { background: #000000; color: #ffffff; border-color: var(--accent); }
-        .tf-btn.active { background: #000000; color: var(--accent); border-color: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
+        .tf-btn:hover { background: var(--border-color); color: var(--text-color); }
+        .tf-btn.active { background: rgba(0, 210, 255, 0.15); color: var(--accent); border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+
+        /* РЕЗУЛЬТАТЫ СИГНАЛОВ */
+        .result-display {
+            width: 100%; height: 48px; background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 14px; text-align: center; font-weight: 800; font-size: 1.05rem; line-height: 46px;
+            margin-bottom: 12px; box-sizing: border-box; display: none; transition: all 0.3s;
+        }
 
         /* КНОПКА АНАЛИЗА */
         .analyze-btn {
             width: 100%; background: var(--btn-gradient); border: none; padding: 16px;
-            border-radius: 0px; color: #000000; font-weight: 900; cursor: pointer; /* Прямые углы */
-            font-size: 1.1rem; margin-bottom: 12px; transition: all 0.25s;
+            border-radius: 16px; color: #000; font-weight: 800; cursor: pointer;
+            font-size: 1.05rem; margin-bottom: 12px; transition: all 0.25s;
             box-shadow: 0 5px 15px var(--accent-glow); text-align: center; position: relative;
-            text-transform: uppercase; letter-spacing: 0.5px;
         }
-        .analyze-btn:hover { transform: translateY(-1px); filter: brightness(1.1); box-shadow: 0 7px 20px var(--accent-glow); }
-        .analyze-btn.cooldown { pointer-events: none; opacity: 0.5; background: var(--card-bg); color: #ffffff; border: 1px solid var(--border-color); box-shadow: none; }
+        .analyze-btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
+        .analyze-btn.cooldown { pointer-events: none; opacity: 0.6; }
 
-        /* ПАНЕЛЬ РЕЗУЛЬТАТА СИГНАЛА */
-        .result-display {
-            width: 100%; height: 54px; background: #000000; border-radius: 0px; /* Прямые углы */
-            text-align: center; font-weight: 900; font-size: 1.25rem; line-height: 50px;
-            margin-bottom: 12px; box-sizing: border-box; display: none; transition: all 0.3s;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .result-display.signal-up {
-            color: #00ff66; /* Четкий зеленый */
-            border: 2px solid #00ff66;
-            box-shadow: 0 0 20px rgba(0, 255, 102, 0.4);
-            background: rgba(0, 255, 102, 0.05);
-        }
-        .result-display.signal-down {
-            color: #ff3333; /* Четкий красный */
-            border: 2px solid #ff3333;
-            box-shadow: 0 0 20px rgba(255, 51, 51, 0.4);
-            background: rgba(255, 51, 51, 0.05);
-        }
-
-        /* ТЕКСТОВЫЙ СТАТУС */
+        /* СОСТОЯНИЕ ОЖИДАНИЯ */
         .status-area { display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px; }
         .dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); animation: pulseDot 1.2s infinite; }
         
-        .loader-dots span { animation: blink 1.4s infinite both; font-size: 1.4rem; line-height: 1; color: var(--accent); }
+        .loader-dots span { animation: blink 1.4s infinite both; font-size: 1.4rem; line-height: 1; }
         .loader-dots span:nth-child(2) { animation-delay: .2s; }
         .loader-dots span:nth-child(3) { animation-delay: .4s; }
 
         @keyframes blink { 0% { opacity: .2; } 20% { opacity: 1; } 100% { opacity: .2; } }
         @keyframes pulseDot { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.5; } }
-        @keyframes popIn { 0% { transform: scale(0.95); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
+
+<div id="welcome-overlay" class="welcome-overlay visible">
+    <div class="welcome-glass">
+        <h1 class="welcome-title">Welcome</h1>
+        <p class="welcome-subtitle">Choose your language</p>
+        <div class="language-list">
+            <div class="language-item" data-lang="en"><span class="flag">🇬🇧</span> English</div>
+            <div class="language-item" data-lang="es"><span class="flag">🇪🇸</span> Español</div>
+            <div class="language-item" data-lang="ru"><span class="flag">🇷🇺</span> Русский</div>
+            <div class="language-item" data-lang="pl"><span class="flag">🇵🇱</span> Polski</div>
+            <div class="language-item" data-lang="de"><span class="flag">🇩🇪</span> Deutsch</div>
+            <div class="language-item" data-lang="fr"><span class="flag">🇫🇷</span> Français</div>
+        </div>
+        <button id="start-btn" class="start-btn">Start</button>
+    </div>
+</div>
 
 <div id="register-overlay" class="register-overlay">
     <div class="register-glass">
@@ -275,7 +311,7 @@
     let tvWidget = null;
     
     let currentSymbol = "FX:EURUSD";
-    let currentInterval = "15"; 
+    let currentInterval = "15"; // По умолчанию 15m как на скрине
 
     const allPairs = [
         { name: "EUR/USD", symbol: "FX:EURUSD", flag: "🇪🇺🇺🇸", type: "Major" },
@@ -297,13 +333,14 @@
 
     const activationDict = {
         en: { title: "🔐 Activation", desc: "To access <strong>OptiBotX PRO</strong> you need a license code", hintTitle: "How to get a code?", step1: "1️⃣ Click the <strong>«Write to me»</strong> button below", step2: "2️⃣ Write the word <strong style='color:#00d2ff;'>«CODE»</strong> in Telegram", step3: "3️⃣ The manager will give you a personal activation code ✅", placeholder: "Enter the received code", btnText: "🎯 Activate", contactBtn: "✍️ Write to me — get code", success: "✅ Activation successful! Welcome.", wrongCode: "❌ Invalid activation code. Try again." },
-        es: { title: "🔐 Activación", desc: "Para acceder a <strong>OptiBotX PRO</strong> necesitas un código de licencia", hintTitle: "¿Cómo obtener un código?", step1: "1️⃣ Haz clic en el botón <strong>«Escríbeme»</strong> abajo", step2: "2️⃣ Escribe la palabra <strong style='color:#00d2ff;'>«CODE»</strong> in Telegram", step3: "3️⃣ El gerente te dará un código de activación personal ✅", placeholder: "Ingresa el código recibido", btnText: "🎯 Activar", contactBtn: "✍️ Escríbeme — obtener código", success: "✅ ¡Activación exitosa! Bienvenido.", wrongCode: "❌ Código de activación inválido. Intenta de nuevo." },
+        es: { title: "🔐 Activación", desc: "Para acceder a <strong>OptiBotX PRO</strong> necesitas un código de licencia", hintTitle: "¿Cómo obtener un código?", step1: "1️⃣ Haz clic en el botón <strong>«Escríbeme»</strong> abajo", step2: "2️⃣ Escribe la palabra <strong style='color:#00d2ff;'>«CODE»</strong> en Telegram", step3: "3️⃣ El gerente te dará un código de activación personal ✅", placeholder: "Ingresa el código recibido", btnText: "🎯 Activar", contactBtn: "✍️ Escríbeme — obtener código", success: "✅ ¡Activación exitosa! Bienvenido.", wrongCode: "❌ Código de activación inválido. Intenta de nuevo." },
         ru: { title: "🔐 Активация доступа", desc: "Для входа в платформу <strong>OptiBotX PRO</strong> необходим лицензионный код", hintTitle: "Как получить код?", step1: "1️⃣ Нажмите кнопку <strong>«Написать мне»</strong> ниже", step2: "2️⃣ Напишите слово <strong style='color:#00d2ff;'>«КОД»</strong> в Telegram", step3: "3️⃣ Менеджер выдаст вам персональный код активации ✅", placeholder: "Введите полученный код", btnText: "🎯 Активировать", contactBtn: "✍️ Написать мне — получить код", success: "✅ Активация успешна! Добро пожаловать.", wrongCode: "❌ Неверный код активации. Попробуйте снова." },
         pl: { title: "🔐 Aktywacja", desc: "Aby uzyskać dostęp do <strong>OptiBotX PRO</strong> potrzebny jest kod licencyjny", hintTitle: "Jak uzyskać kod?", step1: "1️⃣ Kliknij przycisk <strong>«Napisz do mnie»</strong> poniżej", step2: "2️⃣ Napisz słowo <strong style='color:#00d2ff;'>«KOD»</strong> w Telegramie", step3: "3️⃣ Menedżer wyda Ci osobisty kod aktywacyjny ✅", placeholder: "Wprowadź otrzymany kod", btnText: "🎯 Aktywuj", contactBtn: "✍️ Napisz do mnie — uzyskaj kod", success: "✅ Aktywacja udana! Witamy.", wrongCode: "❌ Nieprawidłowy kod aktywacyjny. Spróbuj ponownie." },
         de: { title: "🔐 Aktivierung", desc: "Für den Zugriff auf <strong>OptiBotX PRO</strong> benötigen Sie einen Lizenzcode", hintTitle: "Wie erhalte ich einen Code?", step1: "1️⃣ Klicken Sie unten auf die Schaltfläche <strong>«Schreib mir»</strong>", step2: "2️⃣ Schreiben Sie das Wort <strong style='color:#00d2ff;'>«CODE»</strong> in Telegram", step3: "3️⃣ Der Manager gibt Ihnen einen persönlichen Aktivierungscode ✅", placeholder: "Geben Sie den erhaltenen Code ein", btnText: "🎯 Aktivieren", contactBtn: "✍️ Schreib mir — Code erhalten", success: "✅ Aktivierung erfolgreich! Willkommen.", wrongCode: "❌ Ungültiger Aktivierungscode. Versuchen Sie es erneut." },
-        fr: { title: "🔐 Activation", desc: "Pour accéder à <strong>OptiBotX PRO</strong> vous avez besoin d'un code de licence", hintTitle: "Comment obtenir un code ?", step1: "1️⃣ Cliquez sur le bouton <strong>«Écris-moi»</strong> ci-dessous", step2: "2️⃣ Écrivez le mot <strong style='color:#00d2ff;'>«CODE»</strong> in Telegram", step3: "3️⃣ Le gestionnaire vous donnera un code d'activation personnel ✅", placeholder: "Entrez le code reçu", btnText: "🎯 Activation", contactBtn: "✍️ Écris-moi — obtenir un code", success: "✅ Activation réussie ! Bienvenue.", wrongCode: "❌ Code d'activation invalide. Réessayez." }
+        fr: { title: "🔐 Activation", desc: "Pour accéder à <strong>OptiBotX PRO</strong> vous avez besoin d'un code de licence", hintTitle: "Comment obtenir un code ?", step1: "1️⃣ Cliquez sur le bouton <strong>«Écris-moi»</strong> ci-dessous", step2: "2️⃣ Écrivez le mot <strong style='color:#00d2ff;'>«CODE»</strong> in Telegram", step3: "3️⃣ Le gestionnaire vous donnera un code d'activation personnel ✅", placeholder: "Entrez le code reçu", btnText: "🎯 Activer", contactBtn: "✍️ Écris-moi — obtenir un code", success: "✅ Activation réussie ! Bienvenue.", wrongCode: "❌ Code d'activation invalide. Réessayez." }
     };
 
+    const welcomeOverlay = document.getElementById('welcome-overlay');
     const registerOverlay = document.getElementById('register-overlay');
     const mainApp = document.getElementById('main-app');
     const codeInput = document.getElementById('code-input');
@@ -315,6 +352,7 @@
     const waitMsg = document.getElementById('wait-msg');
     const langBtn = document.getElementById('langBtn');
     const themeBtn = document.getElementById('themeBtn');
+    const snowToggle = document.getElementById('snowToggle');
     const resultDiv = document.getElementById('result');
     const chartLock = document.getElementById('chart-lock');
 
@@ -426,7 +464,7 @@
         }
     }
 
-    // Симуляция анализа и выдача сигналов (КРАСНЫЙ / ЗЕЛЕНЫЙ)
+    // Симуляция анализа и выдача сигналов
     function startAnalysis(btn) {
         if(!isActivated) { registerOverlay.classList.add('visible'); return; }
         if(cooldownActive) return;
@@ -435,7 +473,6 @@
         btn.classList.add('cooldown');
         btn.innerHTML = `<span class="btn-text">${dict[curLang].anProcess}</span><span class="loader-dots"><span>.</span><span>.</span><span>.</span></span>`;
         resultDiv.style.display = 'none';
-        resultDiv.className = 'result-display'; 
         document.getElementById('status').style.display = 'flex';
 
         setTimeout(() => {
@@ -445,10 +482,12 @@
             
             resultDiv.style.display = 'block';
             if (isUp) {
-                resultDiv.classList.add('signal-up');
+                resultDiv.style.color = '#00ff88';
+                resultDiv.style.borderColor = 'rgba(0, 255, 136, 0.2)';
                 resultDiv.innerText = `🟢 ${dict[curLang].up} (${accuracy}%)`;
             } else {
-                resultDiv.classList.add('signal-down');
+                resultDiv.style.color = '#ff4d4d';
+                resultDiv.style.borderColor = 'rgba(255, 77, 77, 0.2)';
                 resultDiv.innerText = `🔴 ${dict[curLang].down} (${accuracy}%)`;
             }
             resultDiv.style.animation = 'popIn 0.3s ease-out';
@@ -481,30 +520,80 @@
             registerMessageDiv.innerText = activationDict[curLang].wrongCode;
             registerMessageDiv.className = "register-message error";
             codeInput.classList.add('error-shake');
-            setTimeout(() => codeInput.classList.remove('error-shake'), 3000);
+            setTimeout(() => codeInput.classList.remove('error-shake'), 400);
         }
     });
 
-    // Точка входа без экрана выбора языка
-    window.onload = function() {
-        // Проверяем локаль пользователя (или по умолчанию 'en')
-        const userLang = navigator.language || navigator.userLanguage;
-        if (userLang.includes('ru')) curLang = 'ru';
-        else if (userLang.includes('es')) curLang = 'es';
-        else if (userLang.includes('pl')) curLang = 'pl';
-        else if (userLang.includes('de')) curLang = 'de';
-        else if (userLang.includes('fr')) curLang = 'fr';
-        
-        langBtn.innerHTML = `${dict[curLang].flag} ${curLang.toUpperCase()}`;
+    // Первоначальный выбор языка на Экране 1
+    let selectedLanguage = null;
+    document.querySelectorAll('.language-item').forEach(item => {
+        item.addEventListener('click', () => {
+            document.querySelectorAll('.language-item').forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+            selectedLanguage = item.dataset.lang;
+            document.getElementById('start-btn').classList.add('visible');
+        });
+    });
+    
+    document.getElementById('start-btn').addEventListener('click', () => {
+        curLang = selectedLanguage || 'en';
         updateUILang();
         updateRegisterLang();
-
-        if (isActivated) {
+        langBtn.innerHTML = `${dict[curLang].flag} ${curLang.toUpperCase()}`;
+        
+        welcomeOverlay.classList.remove('visible');
+        mainApp.style.display = 'flex';
+        
+        setupSnowCanvas();
+        searchInput.value = allPairs[0].name;
+        currentSymbol = allPairs[0].symbol;
+        
+        if(isActivated) {
             initTradingView();
         } else {
             registerOverlay.classList.add('visible');
         }
+    });
+
+    // Система Снега
+    const sCanvas = document.getElementById('snow-layer');
+    const sCtx = sCanvas.getContext('2d');
+    let flakes = [], snowAnimation;
+
+    function setupSnowCanvas() {
+        sCanvas.width = sCanvas.parentElement.clientWidth;
+        sCanvas.height = sCanvas.parentElement.clientHeight;
+        flakes = Array.from({length: 45}, () => ({
+            x: Math.random() * sCanvas.width,
+            y: Math.random() * sCanvas.height,
+            r: Math.random() * 2.5 + 1,
+            d: Math.random() * 0.8 + 0.4,
+            angle: Math.random() * 360
+        }));
+        if (snowAnimation) cancelAnimationFrame(snowAnimation);
+        loopSnow();
+    }
+    function loopSnow() {
+        sCtx.clearRect(0, 0, sCanvas.width, sCanvas.height);
+        if (snowEnabled) {
+            sCtx.fillStyle = "rgba(255,255,255,0.4)";
+            flakes.forEach(f => {
+                sCtx.beginPath();
+                sCtx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+                sCtx.fill();
+                f.y += f.d;
+                f.x += Math.sin(f.angle) * 0.15;
+                if (f.y > sCanvas.height) { f.y = -5; f.x = Math.random() * sCanvas.width; }
+            });
+        }
+        snowAnimation = requestAnimationFrame(loopSnow);
+    }
+    snowToggle.onclick = () => {
+        snowEnabled = !snowEnabled;
+        snowToggle.innerText = snowEnabled ? '❄️' : '☃️';
     };
+
+    if(window.Telegram?.WebApp) window.Telegram.WebApp.expand();
 </script>
 </body>
 </html>
