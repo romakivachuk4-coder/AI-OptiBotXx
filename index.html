@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -37,7 +36,7 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        /* Меню выбора действий под стиль скриншота */
+        /* Меню выбора действий */
         .welcome-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -90,13 +89,12 @@
             flex-direction: column;
             gap: 14px;
             width: 100%;
-            margin-bottom: 20px;
         }
         .action-item {
             background: rgba(255,255,255,0.02);
             border: 1px solid #222544;
             border-radius: 50px;
-            padding: 14px 20px;
+            padding: 15px 20px;
             font-size: 1.05rem;
             font-weight: 600;
             color: #e0e0e6;
@@ -111,56 +109,20 @@
             text-decoration: none;
         }
         .action-item:hover {
-            background: rgba(91, 77, 255, 0.08);
+            background: rgba(91, 77, 255, 0.12);
             border-color: var(--accent);
             color: #ffffff;
-        }
-        .action-item.selected {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-            box-shadow: 0 0 20px var(--accent-glow);
+            box-shadow: 0 0 15px rgba(91, 77, 255, 0.2);
         }
         .action-item .icon {
             font-size: 1.2rem;
             display: inline-flex;
             align-items: center;
         }
-        .start-btn {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.15);
-            color: rgba(255,255,255,0.4);
-            font-size: 1.1rem;
-            font-weight: 700;
-            padding: 14px 30px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            box-sizing: border-box;
-            margin-top: 10px;
-            pointer-events: none;
-            opacity: 0.5;
-        }
-        .start-btn.visible {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
-            opacity: 1;
-            pointer-events: auto;
-            box-shadow: 0 0 20px var(--accent-glow);
-        }
-        .start-btn.visible:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 0 30px var(--accent-glow);
-        }
 
         .register-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85);
             backdrop-filter: blur(12px);
             display: flex;
@@ -171,12 +133,10 @@
             visibility: hidden;
             transition: opacity 0.3s, visibility 0.3s;
         }
-
         .register-overlay.visible {
             opacity: 1;
             visibility: visible;
         }
-
         .register-glass {
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
@@ -187,132 +147,52 @@
             max-width: 340px;
             text-align: center;
             box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-            animation: glassAppear 0.4s forwards;
-        }
-
-        @animations glassAppear {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
         }
 
         .register-glass h3 {
-            font-size: 1.7rem;
-            margin-bottom: 12px;
+            font-size: 1.7rem; margin-bottom: 12px;
             background: linear-gradient(135deg, #fff, #b9aaff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
-        .register-glass p {
-            font-size: 0.95rem;
-            margin-bottom: 20px;
-            line-height: 1.4;
-            color: var(--text-color);
-            opacity: 0.9;
-        }
+        .register-glass p { font-size: 0.95rem; margin-bottom: 20px; line-height: 1.4; color: var(--text-color); opacity: 0.9; }
 
         .code-hint {
             background: rgba(91,77,255,0.12);
             border-left: 3px solid var(--accent);
             border-radius: 16px;
-            padding: 12px 14px;
-            margin-bottom: 20px;
-            text-align: left;
-            font-size: 0.8rem;
-            color: #ddd;
-            backdrop-filter: blur(4px);
+            padding: 12px 14px; margin-bottom: 20px;
+            text-align: left; font-size: 0.8rem; color: #ddd;
         }
-
-        .code-hint span {
-            font-weight: 600;
-            color: var(--accent);
-        }
+        .code-hint span { font-weight: 600; color: var(--accent); }
 
         .register-input {
-            width: 100%;
-            padding: 14px;
-            background: rgba(0,0,0,0.4);
-            border: 1px solid var(--glass-border);
-            border-radius: 60px;
-            color: var(--text-color);
-            font-size: 1rem;
-            text-align: center;
-            margin-bottom: 15px;
-            outline: none;
-            transition: all 0.2s;
-            box-sizing: border-box;
+            width: 100%; padding: 14px; background: rgba(0,0,0,0.4);
+            border: 1px solid var(--glass-border); border-radius: 60px;
+            color: var(--text-color); font-size: 1rem; text-align: center;
+            margin-bottom: 15px; outline: none; transition: all 0.2s; box-sizing: border-box;
         }
-        .register-input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
-        .register-input.error-shake {
-            animation: shake 0.4s ease-in-out;
-            border-color: #ff4d4d;
-        }
+        .register-input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+        .register-input.error-shake { animation: shake 0.4s ease-in-out; border-color: #ff4d4d; }
 
         .register-btn {
-            background: var(--accent);
-            border: none;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 700;
-            padding: 14px 20px;
-            border-radius: 60px;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.2s;
-            box-shadow: 0 4px 12px var(--accent-glow);
-            margin-bottom: 12px;
+            background: var(--accent); border: none; color: white;
+            font-size: 1.1rem; font-weight: 700; padding: 14px 20px;
+            border-radius: 60px; cursor: pointer; width: 100%; transition: 0.2s;
+            box-shadow: 0 4px 12px var(--accent-glow); margin-bottom: 12px;
         }
-        .register-btn:hover {
-            transform: scale(1.02);
-            filter: brightness(1.05);
-        }
+        .register-btn:hover { transform: scale(1.02); filter: brightness(1.05); }
 
         .contact-btn {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid var(--glass-border);
-            color: var(--text-color);
-            font-size: 1rem;
-            font-weight: 600;
-            padding: 12px 20px;
-            border-radius: 60px;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            text-decoration: none;
-            box-sizing: border-box;
+            background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border);
+            color: var(--text-color); font-size: 1rem; font-weight: 600; padding: 12px 20px;
+            border-radius: 60px; cursor: pointer; width: 100%; transition: all 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            text-decoration: none; box-sizing: border-box;
         }
-        .contact-btn:hover {
-            background: rgba(91, 77, 255, 0.2);
-            border-color: var(--accent);
-            transform: scale(1.01);
-            box-shadow: 0 0 12px var(--accent-glow);
-        }
-
-        .register-message {
-            font-size: 0.85rem;
-            min-height: 38px;
-            margin-top: 14px;
-            padding: 6px 10px;
-            border-radius: 30px;
-            transition: all 0.2s;
-        }
-
-        .register-message.error {
-            color: #ff6b6b;
-            background: rgba(255,59,48,0.15);
-        }
-
-        .register-message.success {
-            color: #69f0ae;
-            background: rgba(0,200,83,0.15);
-        }
+        .contact-btn:hover { background: rgba(91, 77, 255, 0.2); border-color: var(--accent); transform: scale(1.01); box-shadow: 0 0 12px var(--accent-glow); }
+        .register-message { font-size: 0.85rem; min-height: 38px; margin-top: 14px; padding: 6px 10px; border-radius: 30px; transition: all 0.2s; }
+        .register-message.error { color: #ff6b6b; background: rgba(255,59,48,0.15); }
+        .register-message.success { color: #69f0ae; background: rgba(0,200,83,0.15); }
 
         @keyframes shake {
             0%,100% { transform: translateX(0); }
@@ -321,452 +201,74 @@
         }
 
         .app-container {
-            width: 100%;
-            max-width: 400px;
-            height: 100vh;
-            background: var(--app-bg);
-            display: none;
-            flex-direction: column;
-            padding: 12px 15px;
-            box-sizing: border-box;
-            position: relative;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            animation: fadeInScale 0.5s ease-out;
-            transition: background 0.3s, border-color 0.3s;
-            overflow-y: auto;
+            width: 100%; max-width: 400px; height: 100vh; background: var(--app-bg);
+            display: none; flex-direction: column; padding: 12px 15px; box-sizing: border-box;
+            position: relative; border: 1px solid var(--border-color); border-radius: 12px;
+            animation: fadeInScale 0.5s ease-out; transition: background 0.3s, border-color 0.3s; overflow-y: auto;
         }
         @media (max-height: 700px) {
-            .app-container {
-                padding: 8px 12px;
-            }
-            .chart-container {
-                height: 180px;
-            }
-            .tf-btn {
-                padding: 6px 0;
-                font-size: 10px;
-            }
-            .analyze-btn {
-                padding: 12px;
-                margin: 6px 0;
-            }
+            .app-container { padding: 8px 12px; }
+            .chart-container { height: 180px; }
+            .tf-btn { padding: 6px 0; font-size: 10px; }
+            .analyze-btn { padding: 12px; margin: 6px 0; }
         }
-        header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 8px; 
-            flex-shrink: 0;
-        }
-        .logo h1 { 
-            font-size: clamp(16px, 4vw, 18px); 
-            margin: 0; 
-            color: var(--text-color); 
-            animation: glowPulse 2s infinite; 
-        }
-        .logo span { 
-            color: var(--accent); 
-            font-weight: 800; 
-            text-shadow: 0 0 8px var(--accent); 
-        }
-        .sub-header {
-            font-size: 10px;
-            color: #444;
-            margin-top: 2px;
-        }
-        .header-buttons { 
-            display: flex; 
-            gap: 4px; 
-            flex-wrap: wrap; 
-            justify-content: flex-end;
-        }
-        .icon-btn { 
-            background: var(--secondary-bg); 
-            border: 1px solid var(--border-color); 
-            color: var(--text-color); 
-            padding: 5px 8px; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            font-size: 13px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .icon-btn:hover { 
-            background: var(--hover-color); 
-            transform: scale(1.05); 
-        }
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-shrink: 0; }
+        .logo h1 { font-size: clamp(16px, 4vw, 18px); margin: 0; color: var(--text-color); animation: glowPulse 2s infinite; }
+        .logo span { color: var(--accent); font-weight: 800; text-shadow: 0 0 8px var(--accent); }
+        .sub-header { font-size: 10px; color: #444; margin-top: 2px; }
+        .header-buttons { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+        .icon-btn { background: var(--secondary-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: all 0.3s; display: flex; align-items: center; gap: 4px; }
+        .icon-btn:hover { background: var(--hover-color); transform: scale(1.05); }
 
-        .selector-container {
-            position: relative;
-            margin-bottom: 8px;
-            flex-shrink: 0;
-        }
-        .search-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #8899ac;
-            font-size: 16px;
-            pointer-events: none;
-            z-index: 2;
-        }
-        #pair-search {
-            width: 100%;
-            background: var(--secondary-bg);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 10px 12px 10px 40px;
-            font-size: 14px;
-            outline: none;
-            box-sizing: border-box;
-            transition: all 0.3s;
-            margin-bottom: 8px;
-        }
-        #pair-search:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
-        #pair-search::placeholder {
-            color: #8899ac;
-            font-size: 14px;
-        }
-        .pairs-container {
-            max-height: 200px;
-            overflow-y: auto;
-            background: var(--secondary-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 5px 0;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent) var(--secondary-bg);
-            display: none;
-            position: absolute;
-            width: 100%;
-            z-index: 100;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-        }
-        .pairs-container::-webkit-scrollbar {
-            width: 6px;
-        }
-        .pairs-container::-webkit-scrollbar-track {
-            background: var(--secondary-bg);
-            border-radius: 10px;
-        }
-        .pairs-container::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 10px;
-        }
-        .pair-option {
-            padding: 8px 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-size: 13px;
-        }
-        .pair-option:last-child {
-            border-bottom: none;
-        }
-        .pair-option:hover {
-            background: var(--hover-color);
-        }
-        .pair-option.selected {
-            background: var(--accent);
-            color: white;
-        }
-        .pair-option .pair-flag {
-            font-size: 1.2rem;
-            min-width: 24px;
-            text-align: center;
-        }
-        .pair-option .pair-name {
-            flex: 1;
-            font-weight: 500;
-        }
-        .pair-option .pair-type {
-            font-size: 10px;
-            color: #8899ac;
-            background: rgba(0,0,0,0.3);
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-        .pair-option.selected .pair-type {
-            color: white;
-            background: rgba(255,255,255,0.2);
-        }
+        .selector-container { position: relative; margin-bottom: 8px; flex-shrink: 0; }
+        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #8899ac; font-size: 16px; pointer-events: none; z-index: 2; }
+        #pair-search { width: 100%; background: var(--secondary-bg); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 10px; padding: 10px 12px 10px 40px; font-size: 14px; outline: none; box-sizing: border-box; transition: all 0.3s; margin-bottom: 8px; }
+        #pair-search:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+        #pair-search::placeholder { color: #8899ac; font-size: 14px; }
+        .pairs-container { max-height: 200px; overflow-y: auto; background: var(--secondary-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 5px 0; display: none; position: absolute; width: 100%; z-index: 100; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+        .pair-option { padding: 8px 12px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
+        .pair-option:hover { background: var(--hover-color); }
+        .pair-option.selected { background: var(--accent); color: white; }
+        .pair-option .pair-flag { font-size: 1.2rem; min-width: 24px; text-align: center; }
+        .pair-option .pair-name { flex: 1; font-weight: 500; }
+        .pair-option .pair-type { font-size: 10px; color: #8899ac; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; }
 
-        #pair {
-            display: none;
-        }
+        .chart-container { position: relative; width: 100%; height: 240px; margin-bottom: 8px; flex-shrink: 0; }
+        .chart-box { width: 100%; height: 100%; background: var(--app-bg); border-radius: 10px; border: 1px solid var(--border-color); position: relative; overflow: hidden; transition: box-shadow 0.3s; }
+        .chart-box:hover { box-shadow: 0 0 20px var(--accent-glow); }
+        #mainChart { width: 100%; height: 100%; display: block; }
+        .watermark { position: absolute; bottom: 5px; right: 10px; font-size: 10px; color: rgba(255,255,255,0.2); pointer-events: none; z-index: 5; }
+        .chart-controls { position: absolute; top: 5px; right: 5px; display: flex; gap: 5px; z-index: 10; }
+        .chart-controls button { background: var(--secondary-bg); border: 1px solid var(--border-color); color: var(--text-color); width: 28px; height: 28px; border-radius: 14px; cursor: pointer; font-weight: bold; transition: all 0.3s; font-size: 14px; }
+        .chart-controls button:hover { background: var(--accent); color: white; }
 
-        .chart-container {
-            position: relative;
-            width: 100%;
-            height: 240px;
-            margin-bottom: 8px;
-            flex-shrink: 0;
-        }
-        .chart-box { 
-            width: 100%; 
-            height: 100%; 
-            background: var(--app-bg); 
-            border-radius: 10px; 
-            border: 1px solid var(--border-color);
-            position: relative; 
-            overflow: hidden;
-            transition: box-shadow 0.3s;
-        }
-        .chart-box:hover { 
-            box-shadow: 0 0 20px var(--accent-glow); 
-        }
-        #mainChart { 
-            width: 100%; 
-            height: 100%; 
-            display: block; 
-        }
-        .watermark {
-            position: absolute;
-            bottom: 5px;
-            right: 10px;
-            font-size: 10px;
-            color: rgba(255,255,255,0.2);
-            pointer-events: none;
-            z-index: 5;
-            text-shadow: 0 0 2px rgba(0,0,0,0.5);
-        }
-        body.light-theme .watermark {
-            color: rgba(0,0,0,0.2);
-        }
-        .chart-controls {
-            position: absolute; 
-            top: 5px; 
-            right: 5px; 
-            display: flex; 
-            gap: 5px; 
-            z-index: 10;
-        }
-        .chart-controls button {
-            background: var(--secondary-bg); 
-            border: 1px solid var(--border-color); 
-            color: var(--text-color);
-            width: 28px; 
-            height: 28px; 
-            border-radius: 14px; 
-            cursor: pointer; 
-            font-weight: bold;
-            transition: all 0.3s;
-            font-size: 14px;
-        }
-        .chart-controls button:hover { 
-            background: var(--accent); 
-            color: white; 
-        }
+        .tf-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 5px; flex-shrink: 0; }
+        .tf-btn { background: var(--secondary-bg); border: 1px solid var(--border-color); color: #666; padding: 8px 0; border-radius: 8px; font-size: 11px; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; font-weight: 600; }
+        .tf-btn:hover { transform: scale(1.05); background: var(--hover-color); color: var(--text-color); border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+        .tf-btn.active { background: var(--accent); color: white; border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
 
-        .tf-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 5px; 
-            margin-bottom: 5px; 
-            flex-shrink: 0;
-        }
-        
-        .tf-btn, .analyze-btn {
-            will-change: transform;
-        }
-        .tf-btn { 
-            background: var(--secondary-bg); 
-            border: 1px solid var(--border-color); 
-            color: #666; 
-            padding: 8px 0; 
-            border-radius: 8px; 
-            font-size: 11px; 
-            cursor: pointer; 
-            transition: all 0.3s ease;
-            position: relative; 
-            overflow: hidden;
-            font-weight: 600;
-        }
-        
-        .tf-btn:hover {
-            transform: scale(1.05);
-            background: var(--hover-color);
-            color: var(--text-color);
-            border-color: var(--accent);
-            z-index: 10;
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
+        .analyze-btn { width: 100%; background: var(--accent); border: none; padding: 14px; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; font-size: clamp(14px, 4vw, 16px); margin: 5px 0; transition: all 0.3s; position: relative; overflow: hidden; flex-shrink: 0; }
+        .analyze-btn:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 10px 20px var(--accent-glow); }
+        .analyze-btn.cooldown { pointer-events: none; opacity: 0.7; }
+        .timer-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+        .timer-circle { width: 36px; height: 36px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.3); border-top-color: white; animation: spin 1s linear infinite; }
+        .timer-number { position: absolute; font-size: 16px; font-weight: bold; color: white; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .tf-btn.active { 
-            background: var(--accent); 
-            color: white; 
-            border-color: var(--accent); 
-            box-shadow: 0 0 15px var(--accent-glow);
-            animation: pulse 1.5s infinite;
-        }
+        .status-area { display: flex; justify-content: center; align-items: center; gap: 8px; height: 24px; margin: 5px 0; font-size: 13px; flex-shrink: 0; }
+        .dot { width: 10px; height: 10px; background: #2575fc; border-radius: 50%; box-shadow: 0 0 10px #2575fc; animation: pulseDot 1.2s infinite; }
+        .result-display { width: 100%; height: 36px; background: var(--secondary-bg); border: 1px solid var(--border-color); border-radius: 10px; text-align: center; font-weight: bold; line-height: 36px; margin-bottom: 5px; opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s; box-sizing: border-box; font-size: 14px; flex-shrink: 0; }
+        .result-display.visible { opacity: 1; visibility: visible; }
 
-        .analyze-btn { 
-            width: 100%; 
-            background: var(--accent); 
-            border: none; 
-            padding: 14px; 
-            border-radius: 12px; 
-            color: white; 
-            font-weight: bold; 
-            cursor: pointer; 
-            font-size: clamp(14px, 4vw, 16px); 
-            margin: 5px 0;
-            transition: all 0.3s; 
-            position: relative; 
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-        .analyze-btn:hover { 
-            background: var(--accent); 
-            transform: translateY(-2px); 
-            box-shadow: 0 10px 20px var(--accent-glow);
-        }
-        .analyze-btn.cooldown {
-            pointer-events: none;
-            opacity: 0.7;
-        }
-        .analyze-btn .btn-text {
-            transition: opacity 0.2s;
-        }
-        .analyze-btn.cooldown .btn-text {
-            opacity: 0;
-        }
-        .timer-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-        }
-        .timer-circle {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top-color: white;
-            animation: spin 1s linear infinite;
-            position: absolute;
-        }
-        .timer-number {
-            position: absolute;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            text-shadow: 0 0 5px var(--accent);
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        #snow-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; }
+        #tooltip { position: absolute; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 4px; font-size: 10px; pointer-events: none; z-index: 1001; display: none; }
+        .indicator-btn { background: var(--secondary-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; transition: all 0.3s; margin-right: 5px; }
+        .indicator-btn.active { background: var(--accent); color: white; }
 
-        .status-area { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 8px; 
-            height: 24px; 
-            margin: 5px 0;
-            font-size: 13px;
-            flex-shrink: 0;
-        }
-        .dot { 
-            width: 10px; 
-            height: 10px; 
-            background: #2575fc; 
-            border-radius: 50%; 
-            box-shadow: 0 0 10px #2575fc;
-            animation: pulseDot 1.2s infinite;
-        }
-        
-        .result-display { 
-            width: 100%;
-            height: 36px;
-            background: var(--secondary-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            text-align: center;
-            font-weight: bold;
-            line-height: 36px;
-            margin-bottom: 5px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.2s, visibility 0.2s;
-            box-sizing: border-box;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-        .result-display.visible {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        #snow-layer { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            pointer-events: none; 
-            z-index: 1000; 
-            transition: opacity 0.3s;
-        }
-        #tooltip {
-            position: absolute; 
-            background: rgba(0,0,0,0.8); 
-            color: white; 
-            padding: 4px 8px;
-            border-radius: 4px; 
-            font-size: 10px; 
-            pointer-events: none; 
-            z-index: 1001;
-            display: none;
-        }
-        .navigator-btn { display: none; }
-        .indicator-btn {
-            background: var(--secondary-bg); 
-            border: 1px solid var(--border-color); 
-            color: var(--text-color);
-            padding: 4px 8px; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-size: 10px;
-            transition: all 0.3s; 
-            margin-right: 5px;
-        }
-        .indicator-btn.active { 
-            background: var(--accent); 
-            color: white; 
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes fadeInScale { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 var(--accent-glow); } 70% { box-shadow: 0 0 0 10px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
         @keyframes pulseDot { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes glowPulse { 0% { text-shadow: 0 0 2px var(--accent); } 50% { text-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent); } 100% { text-shadow: 0 0 2px var(--accent); } }
-        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 80% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
-
-        .chart-box::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(91, 77, 255, 0.05), transparent 50%);
-            animation: rotate 20s linear infinite;
-            pointer-events: none;
-        }
+        .chart-box::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 50%, rgba(91, 77, 255, 0.05), transparent 50%); animation: rotate 20s linear infinite; pointer-events: none; }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
@@ -790,7 +292,6 @@
                 <span class="icon">📢</span> Лайв блог
             </a>
         </div>
-        <button id="start-btn" class="start-btn">Начать работать</button>
     </div>
 </div>
 
@@ -800,20 +301,17 @@
         <p id="register-desc">Для входа в платформу <strong>OptiBotX PRO</strong> необходим лицензионный код</p>
         
         <div id="code-hint" class="code-hint">
-            📌 <span id="hint-title">Как получить код?</span><br>
-            <span id="hint-step1">1️⃣ Нажмите кнопку <strong>«Написать мне»</strong> ниже</span><br>
-            <span id="hint-step2">2️⃣ Напишите слово <strong style="color:#5b4dff;">«КОД»</strong> в Telegram</span><br>
-            <span id="hint-step3">3️⃣ Менеджер выдаст вам персональный код активации ✅</span>
+            📌 <span>Как получить код?</span><br>
+            <span>1️⃣ Нажмите кнопку <strong>«Написать мне»</strong> ниже</span><br>
+            <span>2️⃣ Напишите слово <strong style="color:#5b4dff;">«КОД»</strong> в Telegram</span><br>
+            <span>3️⃣ Менеджер выдаст вам персональный код активации ✅</span>
         </div>
         
         <input type="text" id="code-input" class="register-input" placeholder="Введите полученный код" autocomplete="off">
-        
         <button id="activate-btn" class="register-btn">🎯 Активировать</button>
-        
         <a id="contactMeBtn" class="contact-btn" href="https://t.me/ZentixTrade" target="_blank">
             ✍️ Написать мне — получить код
         </a>
-        
         <div id="register-message" class="register-message"></div>
     </div>
 </div>
@@ -919,14 +417,10 @@
         }
     }
 
-    activateBtn.addEventListener('click', () => {
-        setActivated(false);
-    });
+    activateBtn.addEventListener('click', () => { setActivated(false); });
 
     function showActivationModal() {
-        if (!isActivated) {
-            registerOverlay.classList.add('visible');
-        }
+        if (!isActivated) { registerOverlay.classList.add('visible'); }
         return isActivated;
     }
 
@@ -946,7 +440,6 @@
         ru: { sub: "Выбери валютную пару", an: "Анализировать", wait: "Ожидание...", up: "ВВЕРХ ", down: "ВНИЗ ", flag: "🇷🇺" }
     };
 
-    const startBtn = document.getElementById('start-btn');
     const useAppAction = document.getElementById('action-use-app');
     const pairsContainer = document.getElementById('pairs-container');
     const searchInput = document.getElementById('pair-search');
@@ -957,8 +450,6 @@
     const langBtn = document.getElementById('langBtn');
     const themeBtn = document.getElementById('themeBtn');
     const smaBtn = document.getElementById('smaBtn');
-    const subHeader = document.getElementById('sub-header');
-    const contactMeBtn = document.getElementById('contactMeBtn');
 
     function toggleTheme() { document.body.classList.toggle('light-theme'); }
     themeBtn.onclick = toggleTheme;
@@ -1005,73 +496,51 @@
             });
             pairsContainer.appendChild(div);
         });
-        if(filtered.length === 0) { const empty = document.createElement('div'); empty.className = 'pair-option'; empty.style.justifyContent = 'center'; empty.style.padding = '20px'; empty.innerText = '❌ Ничего не найдено'; pairsContainer.appendChild(empty); }
     }
     searchInput.addEventListener('focus', () => { pairsContainer.style.display = 'block'; });
     document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !pairsContainer.contains(e.target)) pairsContainer.style.display = 'none'; });
-    searchInput.addEventListener('input', (e) => { renderPairs(e.target.value); if (!pairsContainer.style.display || pairsContainer.style.display === 'none') pairsContainer.style.display = 'block'; });
+    searchInput.addEventListener('input', (e) => { renderPairs(e.target.value); if (pairsContainer.style.display === 'none') pairsContainer.style.display = 'block'; });
 
     // График
     function setupCanvas() { const rect = canvas.parentElement.getBoundingClientRect(); canvas.width = rect.width * dpr; canvas.height = rect.height * dpr; ctx.scale(dpr, dpr); canvas.style.width = rect.width + 'px'; canvas.style.height = rect.height + 'px'; }
     function initChart() { setupCanvas(); candles = []; let price = 100; for(let i=0; i<candleCount; i++) { let open = price; let close = price + (Math.random() - 0.5) * 15; candles.push({ open, close, high: Math.max(open, close)+Math.random()*5+3, low: Math.min(open, close)-Math.random()*5-3, progress:1 }); price = close; } calculateSMA(); render(); }
     function calculateSMA(period=7) { smaData = []; for(let i=period-1; i<candles.length; i++) { let sum=0; for(let j=i-period+1; j<=i; j++) sum+=candles[j].close; smaData.push({ index:i, value:sum/period }); } }
-    function drawGrid(w,h,minP,maxP) { ctx.strokeStyle="#1e1e2f"; ctx.lineWidth=0.5; const levels=5; for(let i=0;i<=levels;i++){ let y=h*0.15+(h*0.7/levels)*i; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.strokeStyle=document.body.classList.contains('light-theme')?"#ccc":"#1e1e2f"; ctx.stroke(); let price=maxP-(i/levels)*(maxP-minP); ctx.fillStyle="#666"; ctx.font="8px 'Segoe UI'"; ctx.fillText(price.toFixed(2),5,y-2); } for(let i=1;i<candles.length;i++){ let x=(i/candles.length)*w; ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.strokeStyle=document.body.classList.contains('light-theme')?"#ddd":"#1a1a2a"; ctx.stroke(); } }
-    function render() { const w=canvas.width/dpr; const h=canvas.height/dpr; ctx.clearRect(0,0,w,h); const allPrices=candles.flatMap(c=>[c.high,c.low]); const minP=Math.min(...allPrices); const maxP=Math.max(...allPrices); const range=(maxP-minP)||10; const getY=(p)=>h-((p-minP)/range)*(h*0.7)-(h*0.15); drawGrid(w,h,minP,maxP); const candleWidth=w/candles.length; candles.forEach((c,i)=>{ const x=i*candleWidth+(candleWidth*0.15); const isUp=c.close>=c.open; const color=isUp?'#00ff88':'#ff4d4d'; ctx.strokeStyle=color; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x+(candleWidth*0.35),getY(c.high)); ctx.lineTo(x+(candleWidth*0.35),getY(c.low)); ctx.stroke(); let openY=getY(c.open); let closeY=getY(c.close); let bodyY,bodyH; if(isUp){ let currentCloseY=openY-(openY-closeY)*c.progress; bodyY=currentCloseY; bodyH=openY-currentCloseY; } else { let currentCloseY=openY+(closeY-openY)*c.progress; bodyY=openY; bodyH=currentCloseY-openY; } if(c.progress>0&&bodyH>0.5){ ctx.fillStyle=color; let rectX=x, rectY=bodyY, rectW=candleWidth*0.7, rectH=bodyH, radius=2; ctx.beginPath(); ctx.moveTo(rectX+radius,rectY); ctx.lineTo(rectX+rectW-radius,rectY); ctx.quadraticCurveTo(rectX+rectW,rectY,rectX+rectW,rectY+radius); ctx.lineTo(rectX+rectW,rectY+rectH-radius); ctx.quadraticCurveTo(rectX+rectW,rectY+rectH,rectX+rectW-radius,rectY+rectH); ctx.lineTo(rectX+radius,rectY+rectH); ctx.quadraticCurveTo(rectX,rectY+rectH,rectX,rectY+rectH-radius); ctx.lineTo(rectX,rectY+radius); ctx.quadraticCurveTo(rectX,rectY,rectX+radius,rectY); ctx.closePath(); ctx.fill(); } }); if(showSMA&&smaData.length>1){ ctx.beginPath(); ctx.strokeStyle='#ffaa00'; ctx.lineWidth=2; smaData.forEach((pt,idx)=>{ let x=(pt.index/candles.length)*w+candleWidth/2; let y=getY(pt.value); if(idx===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }); ctx.stroke(); } }
+    function drawGrid(w,h,minP,maxP) { ctx.strokeStyle="#1e1e2f"; ctx.lineWidth=0.5; const levels=5; for(let i=0;i<=levels;i++){ let y=h*0.15+(h*0.7/levels)*i; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.strokeStyle=document.body.classList.contains('light-theme')?"#ccc":"#1e1e2f"; ctx.stroke(); let price=maxP-(i/levels)*(maxP-minP); ctx.fillStyle="#666"; ctx.font="8px 'Segoe UI'"; ctx.fillText(price.toFixed(2),5,y-2); } }
+    function render() { const w=canvas.width/dpr; const h=canvas.height/dpr; ctx.clearRect(0,0,w,h); const allPrices=candles.flatMap(c=>[c.high,c.low]); const minP=Math.min(...allPrices); const maxP=Math.max(...allPrices); const range=(maxP-minP)||10; const getY=(p)=>h-((p-minP)/range)*(h*0.7)-(h*0.15); drawGrid(w,h,minP,maxP); const candleWidth=w/candles.length; candles.forEach((c,i)=>{ const x=i*candleWidth+(candleWidth*0.15); const isUp=c.close>=c.open; const color=isUp?'#00ff88':'#ff4d4d'; ctx.strokeStyle=color; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x+(candleWidth*0.35),getY(c.high)); ctx.lineTo(x+(candleWidth*0.35),getY(c.low)); ctx.stroke(); let openY=getY(c.open); let closeY=getY(c.close); let bodyY,bodyH; if(isUp){ let currentCloseY=openY-(openY-closeY)*c.progress; bodyY=currentCloseY; bodyH=openY-currentCloseY; } else { let currentCloseY=openY+(closeY-openY)*c.progress; bodyY=openY; bodyH=currentCloseY-openY; } if(c.progress>0&&bodyH>0.5){ ctx.fillStyle=color; ctx.fillRect(x,bodyY,candleWidth*0.7,bodyH); } }); if(showSMA&&smaData.length>1){ ctx.beginPath(); ctx.strokeStyle='#ffaa00'; ctx.lineWidth=2; smaData.forEach((pt,idx)=>{ let x=(pt.index/candles.length)*w+candleWidth/2; let y=getY(pt.value); if(idx===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }); ctx.stroke(); } }
     setInterval(()=>{ if(candles.length===0 || !isActivated) return; candles.shift(); let last=candles[candles.length-1]; let nO=last.close; let nC=nO+(Math.random()-0.5)*8; let newCandle={ open:nO, close:nC, high:Math.max(nO,nC)+Math.random()*4+2, low:Math.min(nO,nC)-Math.random()*4-2, progress:0 }; candles.push(newCandle); calculateSMA(); let progress=0; function animateNew(){ progress+=0.05; newCandle.progress=Math.min(progress,1); render(); if(progress<1) requestAnimationFrame(animateNew); } animateNew(); },3000);
     function zoomIn(){ if(candleCount>5) candleCount-=2; initChart(); }
     function zoomOut(){ if(candleCount<30) candleCount+=2; initChart(); }
     window.zoomIn=zoomIn; window.zoomOut=zoomOut;
     function toggleSMA(){ showSMA=!showSMA; smaBtn.classList.toggle('active',showSMA); render(); }
     window.toggleSMA=toggleSMA;
-    canvas.addEventListener('mousemove',(e)=>{ if(!isActivated) return; const rect=canvas.getBoundingClientRect(); const scaleX=canvas.width/rect.width; const x=(e.clientX-rect.left)*scaleX/dpr; const candleWidth=(canvas.width/dpr)/candles.length; const idx=Math.floor(x/candleWidth); if(idx>=0&&idx<candles.length){ const c=candles[idx]; document.getElementById('tooltip').style.display='block'; document.getElementById('tooltip').style.left=e.pageX+10+'px'; document.getElementById('tooltip').style.top=e.pageY-20+'px'; document.getElementById('tooltip').innerHTML=`O: ${c.open.toFixed(2)} H: ${c.high.toFixed(2)} L: ${c.low.toFixed(2)} C: ${c.close.toFixed(2)}`; } else document.getElementById('tooltip').style.display='none'; });
-    canvas.addEventListener('mouseleave',()=>document.getElementById('tooltip').style.display='none');
-    function changePair(){ canvas.style.opacity='0.3'; setTimeout(()=>{ initChart(); canvas.style.opacity='1'; document.querySelectorAll('.pair-option').forEach(el=>{ if(el.querySelector('.pair-name')?.innerText===hiddenSelect.value) el.classList.add('selected'); else el.classList.remove('selected'); }); },500); }
+    function changePair(){ canvas.style.opacity='0.3'; setTimeout(()=>{ initChart(); canvas.style.opacity='1'; },500); }
     window.changePair=changePair;
 
     function startAnalysis(btn){ 
         if(!isActivated){ showActivationModal(); return; } 
-        if(cooldownActive)return; 
-        cooldownActive=true; 
-        btn.classList.add('cooldown'); 
-        const timerOverlay=document.createElement('div'); 
-        timerOverlay.className='timer-overlay'; 
-        const circle=document.createElement('div'); 
-        circle.className='timer-circle'; 
-        const number=document.createElement('span'); 
-        number.className='timer-number'; 
-        number.innerText='5'; 
-        timerOverlay.appendChild(circle); 
-        timerOverlay.appendChild(number); 
-        btn.appendChild(timerOverlay); 
-        let timeLeft=5; 
-        const interval=setInterval(()=>{ timeLeft--; number.innerText=timeLeft; if(timeLeft<=0)clearInterval(interval); },1000); 
-        const res=document.getElementById('result'); 
-        const stat=document.getElementById('status'); 
-        res.classList.remove('visible'); 
-        stat.style.display='flex'; 
-        setTimeout(()=>{ stat.style.display='none'; res.classList.add('visible'); const isUp=Math.random()>0.5; res.style.color=isUp?'#00ff88':'#ff4d4d'; res.style.borderColor=isUp?'#00ff88':'#ff4d4d'; res.innerHTML=`${dict[curLang][isUp?'up':'down']} (${Math.floor(Math.random()*15+82)}%)`; res.style.animation='popIn 0.4s'; setTimeout(()=>res.style.animation='',400); if(window.Telegram?.WebApp?.HapticFeedback){ if(isUp) window.Telegram.WebApp.HapticFeedback.notificationOccurred('success'); else window.Telegram.WebApp.HapticFeedback.notificationOccurred('error'); window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy'); } },1500); 
+        if(cooldownActive)return; cooldownActive=true; btn.classList.add('cooldown'); 
+        const timerOverlay=document.createElement('div'); timerOverlay.className='timer-overlay'; 
+        const circle=document.createElement('div'); circle.className='timer-circle'; 
+        const number=document.createElement('span'); number.className='timer-number'; number.innerText='5'; 
+        timerOverlay.appendChild(circle); timerOverlay.appendChild(number); btn.appendChild(timerOverlay); 
+        let timeLeft=5; const interval=setInterval(()=>{ timeLeft--; number.innerText=timeLeft; if(timeLeft<=0)clearInterval(interval); },1000); 
+        const res=document.getElementById('result'); const stat=document.getElementById('status'); 
+        res.classList.remove('visible'); stat.style.display='flex'; 
+        setTimeout(()=>{ stat.style.display='none'; res.classList.add('visible'); const isUp=Math.random()>0.5; res.style.color=isUp?'#00ff88':'#ff4d4d'; res.style.borderColor=isUp?'#00ff88':'#ff4d4d'; res.innerHTML=`${dict[curLang][isUp?'up':'down']} (${Math.floor(Math.random()*15+82)}%)`; if(window.Telegram?.WebApp?.HapticFeedback){ window.Telegram.WebApp.HapticFeedback.notificationOccurred(isUp?'success':'error'); } },1500); 
         setTimeout(()=>{ clearInterval(interval); cooldownActive=false; btn.classList.remove('cooldown'); const overlay=btn.querySelector('.timer-overlay'); if(overlay)overlay.remove(); },5000); 
     }
     window.startAnalysis = startAnalysis;
     
     function selectTf(btn){ 
         if(!isActivated){ showActivationModal(); return; }
-        document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('active')); 
-        btn.classList.add('active'); 
+        document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); 
         if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('light'); 
     }
     window.selectTf = selectTf;
     if(window.Telegram?.WebApp) window.Telegram.WebApp.expand();
 
-    // ---------- ЛОГИКА ВЫБОРА ДЕЙСТВИЯ ----------
+    // ---------- МГНОВЕННЫЙ ЗАПУСК ПРИ КЛИКЕ ----------
     useAppAction.addEventListener('click', () => {
-        // Убираем класс выбранного со всех остальных элементов (если бы они были кликабельны в меню)
-        useAppAction.classList.add('selected');
-        // Активируем кнопку "Начать работать"
-        startBtn.classList.add('visible');
-    });
-    
-    startBtn.addEventListener('click', () => {
         welcomeOverlay.classList.remove('visible');
         mainApp.style.display = 'flex';
         
@@ -1096,5 +565,3 @@
 </script>
 </body>
 </html>
-
-```
