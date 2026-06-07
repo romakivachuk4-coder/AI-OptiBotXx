@@ -61,7 +61,7 @@
             border-radius: 40px;
             padding: 30px 20px;
             width: 85%;
-            max-width: 340px;
+            max-width: 320px;
             text-align: center;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             transform: scale(0.9);
@@ -85,12 +85,13 @@
             color: #aaa;
             margin-bottom: 25px;
         }
-        .navigation-list {
+        .language-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
+            margin-bottom: 10px;
         }
-        .nav-item-btn {
+        .language-item {
             background: rgba(255,255,255,0.05);
             border: 1px solid var(--glass-border);
             border-radius: 30px;
@@ -99,33 +100,18 @@
             font-weight: 600;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
             gap: 15px;
             cursor: pointer;
-            color: white;
-            text-decoration: none;
             transition: all 0.3s;
             backdrop-filter: blur(5px);
-            box-sizing: border-box;
         }
-        .nav-item-btn:hover {
+        .language-item:hover {
             background: rgba(255,255,255,0.15);
             transform: scale(1.02);
             box-shadow: 0 0 20px var(--accent-glow);
         }
-        .nav-item-btn.action-work {
-            background: var(--accent);
-            border-color: var(--accent);
-            box-shadow: 0 0 25px var(--accent-glow);
-        }
-        .nav-item-btn.action-work:hover {
-            background: #6c60ff;
-            box-shadow: 0 0 35px var(--accent-glow);
-        }
-        .nav-item-btn .icon {
-            font-size: 1.4rem;
-            min-width: 24px;
-            text-align: center;
+        .language-item .flag {
+            font-size: 1.5rem;
         }
 
         .register-overlay {
@@ -161,22 +147,7 @@
             text-align: center;
             box-shadow: 0 25px 50px rgba(0,0,0,0.6);
             animation: glassAppear 0.4s forwards;
-            position: relative;
         }
-
-        .close-register {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.2s;
-        }
-        .close-register:hover { opacity: 1; }
 
         .register-glass h3 {
             font-size: 1.7rem;
@@ -320,20 +291,10 @@
             overflow-y: auto;
         }
         @media (max-height: 700px) {
-            .app-container {
-                padding: 8px 12px;
-            }
-            .chart-container {
-                height: 180px;
-            }
-            .tf-btn {
-                padding: 6px 0;
-                font-size: 10px;
-            }
-            .analyze-btn {
-                padding: 12px;
-                margin: 6px 0;
-            }
+            .app-container { padding: 8px 12px; }
+            .chart-container { height: 180px; }
+            .tf-btn { padding: 6px 0; font-size: 10px; }
+            .analyze-btn { padding: 12px; margin: 6px 0; }
         }
         header { 
             display: flex; 
@@ -425,24 +386,11 @@
             border: 1px solid var(--border-color);
             border-radius: 10px;
             padding: 5px 0;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent) var(--secondary-bg);
             display: none;
             position: absolute;
             width: 100%;
             z-index: 100;
             box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-        }
-        .pairs-container::-webkit-scrollbar {
-            width: 6px;
-        }
-        .pairs-container::-webkit-scrollbar-track {
-            background: var(--secondary-bg);
-            border-radius: 10px;
-        }
-        .pairs-container::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 10px;
         }
         .pair-option {
             padding: 8px 12px;
@@ -454,40 +402,11 @@
             border-bottom: 1px solid rgba(255,255,255,0.05);
             font-size: 13px;
         }
-        .pair-option:last-child {
-            border-bottom: none;
-        }
-        .pair-option:hover {
-            background: var(--hover-color);
-        }
-        .pair-option.selected {
-            background: var(--accent);
-            color: white;
-        }
-        .pair-option .pair-flag {
-            font-size: 1.2rem;
-            min-width: 24px;
-            text-align: center;
-        }
-        .pair-option .pair-name {
-            flex: 1;
-            font-weight: 500;
-        }
-        .pair-option .pair-type {
-            font-size: 10px;
-            color: #8899ac;
-            background: rgba(0,0,0,0.3);
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-        .pair-option.selected .pair-type {
-            color: white;
-            background: rgba(255,255,255,0.2);
-        }
-
-        #pair {
-            display: none;
-        }
+        .pair-option:hover { background: var(--hover-color); }
+        .pair-option.selected { background: var(--accent); color: white; }
+        .pair-option .pair-flag { font-size: 1.2rem; min-width: 24px; text-align: center; }
+        .pair-option .pair-name { flex: 1; font-weight: 500; }
+        .pair-option .pair-type { font-size: 10px; color: #8899ac; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; }
 
         .chart-container {
             position: relative;
@@ -495,11 +414,6 @@
             height: 240px;
             margin-bottom: 8px;
             flex-shrink: 0;
-        }
-        @media (max-height: 700px) {
-            .chart-container {
-                height: 180px;
-            }
         }
         .chart-box { 
             width: 100%; 
@@ -511,250 +425,54 @@
             overflow: hidden;
             transition: box-shadow 0.3s;
         }
-        .chart-box:hover { 
-            box-shadow: 0 0 20px var(--accent-glow); 
-        }
-        #mainChart { 
-            width: 100%; 
-            height: 100%; 
-            display: block; 
-        }
+        .chart-box:hover { box-shadow: 0 0 20px var(--accent-glow); }
+        #mainChart { width: 100%; height: 100%; display: block; }
         .watermark {
-            position: absolute;
-            bottom: 5px;
-            right: 10px;
-            font-size: 10px;
-            color: rgba(255,255,255,0.2);
-            pointer-events: none;
-            z-index: 5;
-            text-shadow: 0 0 2px rgba(0,0,0,0.5);
+            position: absolute; bottom: 5px; right: 10px; font-size: 10px;
+            color: rgba(255,255,255,0.2); pointer-events: none; z-index: 5;
         }
-        body.light-theme .watermark {
-            color: rgba(0,0,0,0.2);
-        }
-        .chart-controls {
-            position: absolute; 
-            top: 5px; 
-            right: 5px; 
-            display: flex; 
-            gap: 5px; 
-            z-index: 10;
-        }
+        .chart-controls { position: absolute; top: 5px; right: 5px; display: flex; gap: 5px; z-index: 10; }
         .chart-controls button {
-            background: var(--secondary-bg); 
-            border: 1px solid var(--border-color); 
-            color: var(--text-color);
-            width: 28px; 
-            height: 28px; 
-            border-radius: 14px; 
-            cursor: pointer; 
-            font-weight: bold;
-            transition: all 0.3s;
-            font-size: 14px;
+            background: var(--secondary-bg); border: 1px solid var(--border-color); color: var(--text-color);
+            width: 28px; height: 28px; border-radius: 14px; cursor: pointer; font-weight: bold; transition: all 0.3s;
         }
-        .chart-controls button:hover { 
-            background: var(--accent); 
-            color: white; 
-        }
+        .chart-controls button:hover { background: var(--accent); color: white; }
 
-        .tf-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 5px; 
-            margin-bottom: 5px; 
-            flex-shrink: 0;
-        }
-        
-        .tf-btn, .analyze-btn {
-            will-change: transform;
-        }
+        .tf-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 5px; flex-shrink: 0; }
         .tf-btn { 
-            background: var(--secondary-bg); 
-            border: 1px solid var(--border-color); 
-            color: #666; 
-            padding: 8px 0; 
-            border-radius: 8px; 
-            font-size: 11px; 
-            cursor: pointer; 
-            transition: all 0.3s ease;
-            position: relative; 
-            overflow: hidden;
+            background: var(--secondary-bg); border: 1px solid var(--border-color); color: #666; 
+            padding: 8px 0; border-radius: 8px; font-size: 11px; cursor: pointer; transition: all 0.3s ease;
             font-weight: 600;
         }
-        
-        .tf-btn:hover {
-            transform: scale(1.05);
-            background: var(--hover-color);
-            color: var(--text-color);
-            border-color: var(--accent);
-            z-index: 10;
-            box-shadow: 0 0 15px var(--accent-glow);
-        }
-
-        .tf-btn.active { 
-            background: var(--accent); 
-            color: white; 
-            border-color: var(--accent); 
-            box-shadow: 0 0 15px var(--accent-glow);
-            animation: pulse 1.5s infinite;
-        }
+        .tf-btn:hover { background: var(--hover-color); color: var(--text-color); border-color: var(--accent); }
+        .tf-btn.active { background: var(--accent); color: white; border-color: var(--accent); animation: pulse 1.5s infinite; }
 
         .analyze-btn { 
-            width: 100%; 
-            background: var(--accent); 
-            border: none; 
-            padding: 14px; 
-            border-radius: 12px; 
-            color: white; 
-            font-weight: bold; 
-            cursor: pointer; 
-            font-size: clamp(14px, 4vw, 16px); 
-            margin: 5px 0;
-            transition: all 0.3s; 
-            position: relative; 
-            overflow: hidden;
-            flex-shrink: 0;
+            width: 100%; background: var(--accent); border: none; padding: 14px; border-radius: 12px; 
+            color: white; font-weight: bold; cursor: pointer; font-size: clamp(14px, 4vw, 16px); margin: 5px 0;
+            transition: all 0.3s; flex-shrink: 0; position: relative;
         }
-        .analyze-btn:hover { 
-            background: var(--accent); 
-            transform: translateY(-2px); 
-            box-shadow: 0 10px 20px var(--accent-glow);
-        }
-        .analyze-btn.cooldown {
-            pointer-events: none;
-            opacity: 0.7;
-        }
-        .analyze-btn .btn-text {
-            transition: opacity 0.2s;
-        }
-        .analyze-btn.cooldown .btn-text {
-            opacity: 0;
-        }
-        .timer-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-        }
-        .timer-circle {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top-color: white;
-            animation: spin 1s linear infinite;
-            position: absolute;
-        }
-        .timer-number {
-            position: absolute;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            text-shadow: 0 0 5px var(--accent);
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .status-area { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 8px; 
-            height: 24px; 
-            margin: 5px 0;
-            font-size: 13px;
-            flex-shrink: 0;
-        }
-        .dot { 
-            width: 10px; 
-            height: 10px; 
-            background: #2575fc; 
-            border-radius: 50%; 
-            box-shadow: 0 0 10px #2575fc;
-            animation: pulseDot 1.2s infinite;
-        }
+        .analyze-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px var(--accent-glow); }
+        
+        .status-area { display: flex; justify-content: center; align-items: center; gap: 8px; height: 24px; margin: 5px 0; font-size: 13px; flex-shrink: 0; }
+        .dot { width: 10px; height: 10px; background: #2575fc; border-radius: 50%; animation: pulseDot 1.2s infinite; }
         
         .result-display { 
-            width: 100%;
-            height: 36px;
-            background: var(--secondary-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            text-align: center;
-            font-weight: bold;
-            line-height: 36px;
-            margin-bottom: 5px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.2s, visibility 0.2s;
-            box-sizing: border-box;
-            font-size: 14px;
-            flex-shrink: 0;
+            width: 100%; height: 36px; background: var(--secondary-bg); border: 1px solid var(--border-color);
+            border-radius: 10px; text-align: center; font-weight: bold; line-height: 36px; margin-bottom: 5px;
+            opacity: 0; visibility: hidden; transition: opacity 0.2s; font-size: 14px; flex-shrink: 0;
         }
-        .result-display.visible {
-            opacity: 1;
-            visibility: visible;
-        }
+        .result-display.visible { opacity: 1; visibility: visible; }
+        #snow-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; }
+        #tooltip { position: absolute; background: rgba(0,0,0,0.8); color: white; padding: 4px 8px; border-radius: 4px; font-size: 10px; pointer-events: none; z-index: 1001; display: none; }
+        .indicator-btn { background: var(--secondary-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; }
+        .indicator-btn.active { background: var(--accent); color: white; }
 
-        #snow-layer { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            pointer-events: none; 
-            z-index: 1000; 
-            transition: opacity 0.3s;
-        }
-        #tooltip {
-            position: absolute; 
-            background: rgba(0,0,0,0.8); 
-            color: white; 
-            padding: 4px 8px;
-            border-radius: 4px; 
-            font-size: 10px; 
-            pointer-events: none; 
-            z-index: 1001;
-            display: none;
-        }
-        .indicator-btn {
-            background: var(--secondary-bg); 
-            border: 1px solid var(--border-color); 
-            color: var(--text-color);
-            padding: 4px 8px; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-size: 10px;
-            transition: all 0.3s; 
-            margin-right: 5px;
-        }
-        .indicator-btn.active { 
-            background: var(--accent); 
-            color: white; 
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes fadeInScale { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 var(--accent-glow); } 70% { box-shadow: 0 0 0 10px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
         @keyframes pulseDot { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.3); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes glowPulse { 0% { text-shadow: 0 0 2px var(--accent); } 50% { text-shadow: 0 0 15px var(--accent), 0 0 30px var(--accent); } 100% { text-shadow: 0 0 2px var(--accent); } }
-        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 80% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
-
-        .chart-box::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle at 30% 50%, rgba(91, 77, 255, 0.05), transparent 50%);
-            animation: rotate 20s linear infinite;
-            pointer-events: none;
-        }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
@@ -762,19 +480,18 @@
 <div id="welcome-overlay" class="welcome-overlay visible">
     <div class="welcome-glass">
         <h1 class="welcome-title">OptiBotX PRO</h1>
-        <p class="welcome-subtitle">Выберите действие для начала</p>
-        <div class="navigation-list">
-            <a href="#" target="_blank" id="btn-vlog" class="nav-item-btn"><span class="icon">📺</span> Влог Правды</a>
-            <div id="btn-activate-modal" class="nav-item-btn"><span class="icon">🔐</span> Активировать доступ</div>
-            <div id="btn-start-work" class="nav-item-btn action-work"><span class="icon">🚀</span> Начать работать</div>
-            <a href="#" target="_blank" id="btn-reviews" class="nav-item-btn"><span class="icon">💬</span> Отзывы</a>
+        <p class="welcome-subtitle">Добро пожаловать! Выберите раздел:</p>
+        <div class="language-list">
+            <div class="language-item" id="menu-vlog"><span class="flag">🎬</span> .влог правды.</div>
+            <div class="language-item" id="menu-activate"><span class="flag">🔑</span> активировать доступ</div>
+            <div class="language-item" id="menu-start" style="background: var(--accent); border-color: var(--accent); color: white; box-shadow: 0 0 15px var(--accent-glow);"><span class="flag">💼</span> .начать работать .</div>
+            <div class="language-item" id="menu-reviews"><span class="flag">💬</span> отзывы</div>
         </div>
     </div>
 </div>
 
 <div id="register-overlay" class="register-overlay">
     <div class="register-glass">
-        <button class="close-register" id="close-register-btn">✕</button>
         <h3 id="register-title">🔐 Активация доступа</h3>
         <p id="register-desc">Для входа в платформу <strong>OptiBotX PRO</strong> необходим лицензионный код</p>
         
@@ -809,13 +526,13 @@
         <div class="header-buttons">
             <button id="themeBtn" class="icon-btn">🌓</button>
             <button id="snowToggle" class="icon-btn">☃️</button>
-            <button id="langBtn" class="icon-btn" style="display:none;">🇬🇧 EN</button>
+            <button id="langBtn" class="icon-btn" style="display: none;">🇷🇺 RU</button>
         </div>
     </header>
 
     <div class="selector-container">
         <span class="search-icon">🔍</span>
-        <input type="text" id="pair-search" placeholder="🔍 Поиск пары (EUR, USD, OTC...)" autocomplete="off">
+        <input type="text" id="pair-search" placeholder="Выбери валютную пару" autocomplete="off">
         <div class="pairs-container" id="pairs-container"></div>
     </div>
     <select id="pair" style="display: none;"></select>
@@ -857,14 +574,6 @@
 </div>
 
 <script>
-    // ======================== НАСТРОЙКА ССЫЛОК (ЗАГЛУШКИ) ========================
-    const URL_VLOG = "https://example.com/vlog";     // Поставьте вашу ссылку на Влог Правды
-    const URL_REVIEWS = "https://example.com/reviews"; // Поставьте вашу ссылку на Отзывы
-
-    // Установка ссылок в элементы
-    document.getElementById('btn-vlog').href = URL_VLOG;
-    document.getElementById('btn-reviews').href = URL_REVIEWS;
-
     // ======================== СИСТЕМА АКТИВАЦИИ ========================
     const VALID_ACCESS_CODES = [
         "OPTIX777", "PRO2026", "TRADE99", "BOTX100", "VIPACCESS",
@@ -885,7 +594,6 @@
     const registerMessageDiv = document.getElementById('register-message');
     const mainApp = document.getElementById('main-app');
     const welcomeOverlay = document.getElementById('welcome-overlay');
-    const closeRegisterBtn = document.getElementById('close-register-btn');
 
     function setActivated(bypass = false) {
         if (bypass || isValidCode(codeInput.value)) {
@@ -897,10 +605,7 @@
             setTimeout(() => {
                 registerOverlay.classList.remove('visible');
                 registerMessageDiv.innerText = '';
-                // Если мы уже нажимали "Начать работать", переводим в приложение
-                if(welcomeOverlay.classList.contains('hidden-by-user') || !welcomeOverlay.classList.contains('visible')) {
-                    switchToMainApp();
-                }
+                initChart(); // Перезапуск живого графика
             }, 1000);
         } else {
             registerMessageDiv.innerText = getTranslation('wrongCode');
@@ -915,10 +620,6 @@
         setActivated(false);
     });
 
-    closeRegisterBtn.addEventListener('click', () => {
-        registerOverlay.classList.remove('visible');
-    });
-
     function showActivationModal() {
         if (!isActivated) {
             updateRegisterLang();
@@ -928,12 +629,11 @@
     }
 
     const activationDict = {
-        en: { title: "🔐 Activation", desc: "To access <strong>OptiBotX PRO</strong> you need a license code", hintTitle: "How to get a code?", step1: "1️⃣ Click the <strong>«Write to me»</strong> button below", step2: "2️⃣ Write the word <strong style='color:#5b4dff;'>«CODE»</strong> in Telegram", step3: "3️⃣ The manager will give you a personal activation code ✅", placeholder: "Enter the received code", btnText: "🎯 Activate", contactBtn: "✍️ Write to me — get code", success: "✅ Activation successful! Welcome.", wrongCode: "❌ Invalid activation code. Try again." },
         ru: { title: "🔐 Активация доступа", desc: "Для входа в платформу <strong>OptiBotX PRO</strong> необходим лицензионный код", hintTitle: "Как получить код?", step1: "1️⃣ Нажмите кнопку <strong>«Написать мне»</strong> ниже", step2: "2️⃣ Напишите слово <strong style='color:#5b4dff;'>«КОД»</strong> в Telegram", step3: "3️⃣ Менеджер выдаст вам персональный код активации ✅", placeholder: "Введите полученный код", btnText: "🎯 Активировать", contactBtn: "✍️ Написать мне — получить код", success: "✅ Активация успешна! Добро пожаловать.", wrongCode: "❌ Неверный код активации. Попробуйте снова." }
     };
 
     function updateRegisterLang() {
-        const langData = activationDict[curLang] || activationDict.ru;
+        const langData = activationDict.ru;
         document.getElementById('register-title').innerHTML = langData.title;
         document.getElementById('register-desc').innerHTML = langData.desc;
         document.getElementById('hint-title').innerHTML = langData.hintTitle;
@@ -946,7 +646,7 @@
     }
 
     function getTranslation(key) {
-        return (activationDict[curLang] || activationDict.ru)[key] || activationDict.ru[key];
+        return activationDict.ru[key];
     }
 
     // --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ---
@@ -958,11 +658,10 @@
     let showSMA = false;
     let candleCount = 14;
     let snowEnabled = false;
-    let curLang = 'ru'; // По умолчанию Русский язык
+    let curLang = 'ru'; // Всегда русский по умолчанию
     let cooldownActive = false;
 
     const dict = {
-        en: { sub: "Select currency pair", an: "Analyze", wait: "Waiting...", up: "BUY ", down: "SELL ", flag: "🇬🇧" },
         ru: { sub: "Выбери валютную пару", an: "Анализировать", wait: "Ожидание...", up: "ВВЕРХ ", down: "ВНИЗ ", flag: "🇷🇺" }
     };
 
@@ -978,11 +677,11 @@
     const contactMeBtn = document.getElementById('contactMeBtn');
 
     function updateUILang() {
-        if (subHeader) subHeader.innerText = dict[curLang].sub;
+        if (subHeader) subHeader.innerText = dict.ru.sub;
         const btnSpan = anBtn.querySelector('.btn-text');
-        if (btnSpan) btnSpan.innerText = dict[curLang].an;
-        waitMsg.innerText = dict[curLang].wait;
-        searchInput.placeholder = "🔍 Поиск пары (EUR, USD, OTC...)";
+        if (btnSpan) btnSpan.innerText = dict.ru.an;
+        waitMsg.innerText = dict.ru.wait;
+        searchInput.placeholder = dict.ru.sub;
     }
 
     function toggleTheme() { document.body.classList.toggle('light-theme'); }
@@ -1010,7 +709,7 @@
 
     // Пары
     const allPairs = [
-        { name: "EUR/USD", flag: "🇪🇺🇺🇸", type: "Major" }, { name: "GBP/USD", flag: "🇬🇧🇺🇸", type: "Major" }, { name: "USD/JPY", flag: "🇺🇸🇯🇵", type: "Major" }, { name: "AUD/USD", flag: "🇦🇺🇺🇸", type: "Major" }, { name: "USD/CAD", flag: "🇺🇸🇨🇦", type: "Major" }, { name: "USD/CHF", flag: "🇺🇸🇨🇭", type: "Major" }, { name: "NZD/USD", flag: "🇳🇿🇺🇸", type: "Major" }, { name: "EUR/GBP", flag: "🇪🇺🇬🇧", type: "Cross" }, { name: "EUR/JPY", flag: "🇪🇺🇯🇵", type: "Cross" }, { name: "GBP/JPY", flag: "🇬🇧🇯🇵", type: "Cross" }, { name: "AUD/JPY", flag: "🇦🇺🇯🇵", type: "Cross" }, { name: "EUR/CAD", flag: "🇪🇺🇨🇦", type: "Cross" }, { name: "AUD/CAD", flag: "🇦🇺🇨🇦", type: "Cross" }, { name: "AUD/NZD", flag: "🇦🇺🇳🇿", type: "Cross" }, { name: "NZD/JPY", flag: "🇳🇿🇯🇵", type: "Cross" }, { name: "CAD/JPY", flag: "🇨🇦🇯🇵", type: "Cross" }, { name: "CHF/JPY", flag: "🇨🇭🇯🇵", type: "Cross" }, { name: "EUR/AUD", flag: "🇪🇺🇦🇺", type: "Cross" }, { name: "GBP/AUD", flag: "🇬🇧🇦🇺", type: "Cross" }, { name: "EUR/CHF", flag: "🇪🇺🇨🇭", type: "Cross" }, { name: "GBP/CHF", flag: "🇬🇧🇨🇭", type: "Cross" }, { name: "EUR/NZD", flag: "🇪🇺🇳🇿", type: "Cross" }, { name: "GBP/NZD", flag: "🇬🇧🇳🇿", type: "Cross" }, { name: "USD/RUB", flag: "🇺🇸🇷🇺", type: "Exotic" }, { name: "EUR/RUB", flag: "🇪🇺🇷🇺", type: "Exotic" }, { name: "USD/TRY", flag: "🇺🇸🇹🇷", type: "Exotic" }, { name: "USD/MXN", flag: "🇺🇸🇲🇽", type: "Exotic" }, { name: "USD/ZAR", flag: "🇺🇸🇿🇦", type: "Exotic" }, { name: "USD/BRL", flag: "🇺🇸🇧🇷", type: "Exotic" }, { name: "USD/INR", flag: "🇺🇸🇮🇳", type: "Exotic" }, { name: "USD/IDR", flag: "🇺🇸🇮🇩", type: "Exotic" }, { name: "USD/PHP", flag: "🇺🇸🇵🇭", type: "Exotic" }, { name: "USD/THB", flag: "🇺🇸🇹🇭", type: "Exotic" }, { name: "USD/VND", flag: "🇺🇸🇻🇳", type: "Exotic" }, { name: "EUR/USD OTC", flag: "🇪🇺🇺🇸", type: "OTC" }, { name: "GBP/USD OTC", flag: "🇬🇧🇺🇸", type: "OTC" }
+        { name: "EUR/USD", flag: "🇪🇺🇺🇸", type: "Major" }, { name: "GBP/USD", flag: "🇬🇧🇺🇸", type: "Major" }, { name: "USD/JPY", flag: "🇺🇸🇯🇵", type: "Major" }, { name: "AUD/USD", flag: "🇦🇺🇺🇸", type: "Major" }, { name: "USD/CAD", flag: "🇺🇸🇨🇦", type: "Major" }, { name: "EUR/USD OTC", flag: "🇪🇺🇺🇸", type: "OTC" }, { name: "GBP/USD OTC", flag: "🇬🇧🇺🇸", type: "OTC" }
     ];
 
     function renderPairs(filter = '') {
@@ -1030,7 +729,6 @@
             });
             pairsContainer.appendChild(div);
         });
-        if(filtered.length === 0) { const empty = document.createElement('div'); empty.className = 'pair-option'; empty.style.justifyContent = 'center'; empty.style.padding = '20px'; empty.innerText = '❌ Ничего не найдено'; pairsContainer.appendChild(empty); }
     }
     searchInput.addEventListener('focus', () => { pairsContainer.style.display = 'block'; });
     document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !pairsContainer.contains(e.target)) pairsContainer.style.display = 'none'; });
@@ -1040,42 +738,29 @@
     function setupCanvas() { const rect = canvas.parentElement.getBoundingClientRect(); canvas.width = rect.width * dpr; canvas.height = rect.height * dpr; ctx.scale(dpr, dpr); canvas.style.width = rect.width + 'px'; canvas.style.height = rect.height + 'px'; }
     function initChart() { setupCanvas(); candles = []; let price = 100; for(let i=0; i<candleCount; i++) { let open = price; let close = price + (Math.random() - 0.5) * 15; candles.push({ open, close, high: Math.max(open, close)+Math.random()*5+3, low: Math.min(open, close)-Math.random()*5-3, progress:1 }); price = close; } calculateSMA(); render(); }
     function calculateSMA(period=7) { smaData = []; for(let i=period-1; i<candles.length; i++) { let sum=0; for(let j=i-period+1; j<=i; j++) sum+=candles[j].close; smaData.push({ index:i, value:sum/period }); } }
-    function drawGrid(w,h,minP,maxP) { ctx.strokeStyle="#1e1e2f"; ctx.lineWidth=0.5; const levels=5; for(let i=0;i<=levels;i++){ let y=h*0.15+(h*0.7/levels)*i; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.strokeStyle=document.body.classList.contains('light-theme')?"#ccc":"#1e1e2f"; ctx.stroke(); let price=maxP-(i/levels)*(maxP-minP); ctx.fillStyle="#666"; ctx.font="8px 'Segoe UI'"; ctx.fillText(price.toFixed(2),5,y-2); } for(let i=1;i<candles.length;i++){ let x=(i/candles.length)*w; ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.strokeStyle=document.body.classList.contains('light-theme')?"#ddd":"#1a1a2a"; ctx.stroke(); } }
-    function render() { const w=canvas.width/dpr; const h=canvas.height/dpr; ctx.clearRect(0,0,w,h); const allPrices=candles.flatMap(c=>[c.high,c.low]); const minP=Math.min(...allPrices); const maxP=Math.max(...allPrices); const range=(maxP-minP)||10; const getY=(p)=>h-((p-minP)/range)*(h*0.7)-(h*0.15); drawGrid(w,h,minP,maxP); const candleWidth=w/candles.length; candles.forEach((c,i)=>{ const x=i*candleWidth+(candleWidth*0.15); const isUp=c.close>=c.open; const color=isUp?'#00ff88':'#ff4d4d'; ctx.strokeStyle=color; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x+(candleWidth*0.35),getY(c.high)); ctx.lineTo(x+(candleWidth*0.35),getY(c.low)); ctx.stroke(); let openY=getY(c.open); let closeY=getY(c.close); let bodyY,bodyH; if(isUp){ let currentCloseY=openY-(openY-closeY)*c.progress; bodyY=currentCloseY; bodyH=openY-currentCloseY; } else { let currentCloseY=openY+(closeY-openY)*c.progress; bodyY=openY; bodyH=currentCloseY-openY; } if(c.progress>0&&bodyH>0.5){ ctx.fillStyle=color; let rectX=x, rectY=bodyY, rectW=candleWidth*0.7, rectH=bodyH, radius=2; ctx.beginPath(); ctx.moveTo(rectX+radius,rectY); ctx.lineTo(rectX+rectW-radius,rectY); ctx.quadraticCurveTo(rectX+rectW,rectY,rectX+rectW,rectY+radius); ctx.lineTo(rectX+rectW,rectY+rectH-radius); ctx.quadraticCurveTo(rectX+rectW,rectY+rectH,rectX+rectW-radius,rectY+rectH); ctx.lineTo(rectX+radius,rectY+rectH); ctx.quadraticCurveTo(rectX,rectY+rectH,rectX,rectY+rectH-radius); ctx.lineTo(rectX,rectY+radius); ctx.quadraticCurveTo(rectX,rectY,rectX+radius,rectY); ctx.closePath(); ctx.fill(); } }); if(showSMA&&smaData.length>1){ ctx.beginPath(); ctx.strokeStyle='#ffaa00'; ctx.lineWidth=2; smaData.forEach((pt,idx)=>{ let x=(pt.index/candles.length)*w+candleWidth/2; let y=getY(pt.value); if(idx===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }); ctx.stroke(); } }
+    function drawGrid(w,h,minP,maxP) { ctx.strokeStyle="#1e1e2f"; ctx.lineWidth=0.5; const levels=5; for(let i=0;i<=levels;i++){ let y=h*0.15+(h*0.7/levels)*i; ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(w,y); ctx.strokeStyle=document.body.classList.contains('light-theme')?"#ccc":"#1e1e2f"; ctx.stroke(); let price=maxP-(i/levels)*(maxP-minP); ctx.fillStyle="#666"; ctx.font="8px 'Segoe UI'"; ctx.fillText(price.toFixed(2),5,y-2); } }
+    function render() { const w=canvas.width/dpr; const h=canvas.height/dpr; ctx.clearRect(0,0,w,h); const allPrices=candles.flatMap(c=>[c.high,c.low]); const minP=Math.min(...allPrices); const maxP=Math.max(...allPrices); const range=(maxP-minP)||10; const getY=(p)=>h-((p-minP)/range)*(h*0.7)-(h*0.15); drawGrid(w,h,minP,maxP); const candleWidth=w/candles.length; candles.forEach((c,i)=>{ const x=i*candleWidth+(candleWidth*0.15); const isUp=c.close>=c.open; const color=isUp?'#00ff88':'#ff4d4d'; ctx.strokeStyle=color; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x+(candleWidth*0.35),getY(c.high)); ctx.lineTo(x+(candleWidth*0.35),getY(c.low)); ctx.stroke(); let openY=getY(c.open); let closeY=getY(c.close); let bodyY,bodyH; if(isUp){ let currentCloseY=openY-(openY-closeY)*c.progress; bodyY=currentCloseY; bodyH=openY-currentCloseY; } else { let currentCloseY=openY+(closeY-openY)*c.progress; bodyY=openY; bodyH=currentCloseY-openY; } if(c.progress>0&&bodyH>0.5){ ctx.fillStyle=color; ctx.fillRect(x, bodyY, candleWidth*0.7, bodyH); } }); }
+    
     setInterval(()=>{ if(candles.length===0 || !isActivated) return; candles.shift(); let last=candles[candles.length-1]; let nO=last.close; let nC=nO+(Math.random()-0.5)*8; let newCandle={ open:nO, close:nC, high:Math.max(nO,nC)+Math.random()*4+2, low:Math.min(nO,nC)-Math.random()*4-2, progress:0 }; candles.push(newCandle); calculateSMA(); let progress=0; function animateNew(){ progress+=0.05; newCandle.progress=Math.min(progress,1); render(); if(progress<1) requestAnimationFrame(animateNew); } animateNew(); },3000);
     function zoomIn(){ if(candleCount>5) candleCount-=2; initChart(); }
     function zoomOut(){ if(candleCount<30) candleCount+=2; initChart(); }
     window.zoomIn=zoomIn; window.zoomOut=zoomOut;
     function toggleSMA(){ showSMA=!showSMA; smaBtn.classList.toggle('active',showSMA); render(); }
     window.toggleSMA=toggleSMA;
-    canvas.addEventListener('mousemove',(e)=>{ if(!isActivated) return; const rect=canvas.getBoundingClientRect(); const scaleX=canvas.width/rect.width; const x=(e.clientX-rect.left)*scaleX/dpr; const candleWidth=(canvas.width/dpr)/candles.length; const idx=Math.floor(x/candleWidth); if(idx>=0&&idx<candles.length){ const c=candles[idx]; document.getElementById('tooltip').style.display='block'; document.getElementById('tooltip').style.left=e.pageX+10+'px'; document.getElementById('tooltip').style.top=e.pageY-20+'px'; document.getElementById('tooltip').innerHTML=`O: ${c.open.toFixed(2)} H: ${c.high.toFixed(2)} L: ${c.low.toFixed(2)} C: ${c.close.toFixed(2)}`; } else document.getElementById('tooltip').style.display='none'; });
-    canvas.addEventListener('mouseleave',()=>document.getElementById('tooltip').style.display='none');
-    function changePair(){ canvas.style.opacity='0.3'; setTimeout(()=>{ initChart(); canvas.style.opacity='1'; document.querySelectorAll('.pair-option').forEach(el=>{ if(el.querySelector('.pair-name')?.innerText===hiddenSelect.value) el.classList.add('selected'); else el.classList.remove('selected'); }); },500); }
+    function changePair(){ canvas.style.opacity='0.3'; setTimeout(()=>{ initChart(); canvas.style.opacity='1'; },500); }
     window.changePair=changePair;
 
     function startAnalysis(btn){ 
         if(!isActivated){ showActivationModal(); return; } 
         if(cooldownActive)return; 
         cooldownActive=true; 
-        btn.classList.add('cooldown'); 
-        const timerOverlay=document.createElement('div'); 
-        timerOverlay.className='timer-overlay'; 
-        const circle=document.createElement('div'); 
-        circle.className='timer-circle'; 
-        const number=document.createElement('span'); 
-        number.className='timer-number'; 
-        number.innerText='5'; 
-        timerOverlay.appendChild(circle); 
-        timerOverlay.appendChild(number); 
-        btn.appendChild(timerOverlay); 
-        let timeLeft=5; 
-        const interval=setInterval(()=>{ timeLeft--; number.innerText=timeLeft; if(timeLeft<=0)clearInterval(interval); },1000); 
+        btn.style.opacity = '0.5';
         const res=document.getElementById('result'); 
         const stat=document.getElementById('status'); 
         res.classList.remove('visible'); 
         stat.style.display='flex'; 
-        setTimeout(()=>{ stat.style.display='none'; res.classList.add('visible'); const isUp=Math.random()>0.5; res.style.color=isUp?'#00ff88':'#ff4d4d'; res.style.borderColor=isUp?'#00ff88':'#ff4d4d'; res.innerHTML=`${dict[curLang][isUp?'up':'down']} (${Math.floor(Math.random()*15+82)}%)`; res.style.animation='popIn 0.4s'; setTimeout(()=>res.style.animation='',400); if(window.Telegram?.WebApp?.HapticFeedback){ if(isUp) window.Telegram.WebApp.HapticFeedback.notificationOccurred('success'); else window.Telegram.WebApp.HapticFeedback.notificationOccurred('error'); window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy'); } },1500); 
-        setTimeout(()=>{ clearInterval(interval); cooldownActive=false; btn.classList.remove('cooldown'); const overlay=btn.querySelector('.timer-overlay'); if(overlay)overlay.remove(); },5000); 
+        setTimeout(()=>{ stat.style.display='none'; res.classList.add('visible'); const isUp=Math.random()>0.5; res.style.color=isUp?'#00ff88':'#ff4d4d'; res.style.borderColor=isUp?'#00ff88':'#ff4d4d'; res.innerHTML=`${isUp?'ВВЕРХ':'ВНИЗ'} (${Math.floor(Math.random()*15+82)}%)`; setTimeout(()=>res.style.animation='',400); },1500); 
+        setTimeout(()=>{ cooldownActive=false; btn.style.opacity = '1'; },5000); 
     }
     window.startAnalysis = startAnalysis;
     
@@ -1083,54 +768,65 @@
         if(!isActivated){ showActivationModal(); return; }
         document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('active')); 
         btn.classList.add('active'); 
-        if(window.Telegram?.WebApp?.HapticFeedback) window.Telegram.WebApp.HapticFeedback.impactOccurred('light'); 
     }
     window.selectTf = selectTf;
     if(window.Telegram?.WebApp) window.Telegram.WebApp.expand();
 
-    // ---------- ОБРАБОТЧИКИ НОВЫХ КНОПОК ----------
-    
-    // Кнопка "Активировать доступ" на приветственном экране
-    document.getElementById('btn-activate-modal').addEventListener('click', () => {
-        showActivationModal();
+    // ---------- ЛОГИКА НОВОГО ГЛАВНОГО МЕНЮ И ПЕРЕХОДОВ ----------
+    updateUILang();
+    updateRegisterLang();
+
+    // Кнопки-заглушки
+    document.getElementById('menu-vlog').addEventListener('click', () => {
+        alert("🎬 Раздел '.влог правды.' временно находится в разработке.");
     });
 
-    // Кнопка "Начать работать"
-    document.getElementById('btn-start-work').addEventListener('click', () => {
-        switchToMainApp();
+    document.getElementById('menu-reviews').addEventListener('click', () => {
+        alert("💬 Раздел 'отзывы' временно находится в разработке.");
     });
 
-    function switchToMainApp() {
-        updateUILang();
-        updateRegisterLang();
-        
+    // Функция перехода к приложению или активации
+    function launchApp() {
         welcomeOverlay.classList.remove('visible');
-        welcomeOverlay.classList.add('hidden-by-user');
         mainApp.style.display = 'flex';
         
-        if(isActivated) {
+        if (isActivated) {
             initChart();
             setupSnow();
         } else {
+            // Если не активирован, подготавливаем размытый задний фон и выводим окно ввода кода
             setupCanvas();
             ctx.fillStyle = 'rgba(0,0,0,0.5)';
             ctx.fillRect(0, 0, canvas.width/dpr, canvas.height/dpr);
             ctx.fillStyle = 'white';
-            ctx.font = '12px sans-serif';
+            ctx.font = '14px sans-serif';
             ctx.textAlign = 'center';
-            let notActiveText = "🔐 Требуется активация";
-            ctx.fillText(notActiveText, (canvas.width/dpr)/2, (canvas.height/dpr)/2);
-            ctx.fillText("Анализировать → Активировать", (canvas.width/dpr)/2, (canvas.height/dpr)/2 + 25);
+            ctx.fillText("🔐 Требуется активация", (canvas.width/dpr)/2, (canvas.height/dpr)/2);
             setupSnow();
+            
+            // Сразу выкатываем окно ввода кода поверх приложения
+            showActivationModal();
+        }
+
+        // Ленивая инициализация списка валютных пар
+        if (hiddenSelect.children.length === 0) {
+            allPairs.forEach(p => { 
+                const option = document.createElement('option'); 
+                option.value = p.name; 
+                option.text = p.name; 
+                hiddenSelect.appendChild(option); 
+            });
+            if(allPairs.length > 0) { 
+                hiddenSelect.value = allPairs[0].name; 
+                searchInput.value = allPairs[0].name; 
+            }
+            renderPairs();
         }
     }
 
-    // Инициализация списков пар при загрузке
-    window.addEventListener('DOMContentLoaded', () => {
-        allPairs.forEach(p => { const option = document.createElement('option'); option.value = p.name; option.text = p.name; hiddenSelect.appendChild(option); });
-        if(allPairs.length > 0) { hiddenSelect.value = allPairs[0].name; searchInput.value = allPairs[0].name; }
-        renderPairs();
-    });
+    // Привязываем запуск к нужным кнопкам
+    document.getElementById('menu-activate').addEventListener('click', launchApp);
+    document.getElementById('menu-start').addEventListener('click', launchApp);
 </script>
 </body>
 </html>
