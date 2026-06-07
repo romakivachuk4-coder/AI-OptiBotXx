@@ -60,8 +60,8 @@
             border: 1px solid var(--glass-border);
             border-radius: 40px;
             padding: 30px 20px;
-            width: 80%;
-            max-width: 320px;
+            width: 85%;
+            max-width: 340px;
             text-align: center;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             transform: scale(0.9);
@@ -85,64 +85,47 @@
             color: #aaa;
             margin-bottom: 25px;
         }
-        .language-list {
+        .navigation-list {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            margin-bottom: 30px;
         }
-        .language-item {
+        .nav-item-btn {
             background: rgba(255,255,255,0.05);
             border: 1px solid var(--glass-border);
             border-radius: 30px;
             padding: 14px 20px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             display: flex;
             align-items: center;
+            justify-content: flex-start;
             gap: 15px;
             cursor: pointer;
+            color: white;
+            text-decoration: none;
             transition: all 0.3s;
             backdrop-filter: blur(5px);
+            box-sizing: border-box;
         }
-        .language-item:hover {
+        .nav-item-btn:hover {
             background: rgba(255,255,255,0.15);
             transform: scale(1.02);
             box-shadow: 0 0 20px var(--accent-glow);
         }
-        .language-item.selected {
+        .nav-item-btn.action-work {
             background: var(--accent);
-            color: white;
             border-color: var(--accent);
-            box-shadow: 0 0 30px var(--accent-glow);
+            box-shadow: 0 0 25px var(--accent-glow);
         }
-        .language-item .flag {
-            font-size: 1.8rem;
+        .nav-item-btn.action-work:hover {
+            background: #6c60ff;
+            box-shadow: 0 0 35px var(--accent-glow);
         }
-        .start-btn {
-            background: var(--accent);
-            border: none;
-            color: white;
-            font-size: 1.3rem;
-            font-weight: 700;
-            padding: 16px 30px;
-            border-radius: 40px;
-            cursor: pointer;
-            box-shadow: 0 0 30px var(--accent-glow);
-            transition: all 0.3s;
-            opacity: 0;
-            transform: translateY(20px);
-            pointer-events: none;
-            width: 100%;
-        }
-        .start-btn.visible {
-            opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
-        }
-        .start-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 50px var(--accent-glow);
+        .nav-item-btn .icon {
+            font-size: 1.4rem;
+            min-width: 24px;
+            text-align: center;
         }
 
         .register-overlay {
@@ -180,6 +163,20 @@
             animation: glassAppear 0.4s forwards;
             position: relative;
         }
+
+        .close-register {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+        .close-register:hover { opacity: 1; }
 
         .register-glass h3 {
             font-size: 1.7rem;
@@ -273,41 +270,12 @@
             gap: 10px;
             text-decoration: none;
             box-sizing: border-box;
-            margin-bottom: 12px;
         }
         .contact-btn:hover {
             background: rgba(91,77,255,0.2);
             border-color: var(--accent);
             transform: scale(1.01);
             box-shadow: 0 0 12px var(--accent-glow);
-        }
-
-        /* Кнопка "Назад" для окна регистрации */
-        .register-back-btn {
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: var(--text-color);
-            font-size: 0.95rem;
-            font-weight: 600;
-            padding: 10px 20px;
-            border-radius: 60px;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s;
-            box-sizing: border-box;
-            opacity: 0.7;
-        }
-        .register-back-btn:hover {
-            opacity: 1;
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-        body.light-theme .register-back-btn {
-            border-color: rgba(0, 0, 0, 0.2);
-        }
-        body.light-theme .register-back-btn:hover {
-            background: rgba(0, 0, 0, 0.05);
-            border-color: rgba(0, 0, 0, 0.4);
         }
 
         .register-message {
@@ -793,22 +761,20 @@
 
 <div id="welcome-overlay" class="welcome-overlay visible">
     <div class="welcome-glass">
-        <h1 class="welcome-title">Welcome</h1>
-        <p class="welcome-subtitle">Choose your language</p>
-        <div class="language-list">
-            <div class="language-item" data-lang="en"><span class="flag">🇬🇧</span> English</div>
-            <div class="language-item" data-lang="es"><span class="flag">🇪🇸</span> Español</div>
-            <div class="language-item" data-lang="ru"><span class="flag">🇷🇺</span> Русский</div>
-            <div class="language-item" data-lang="pl"><span class="flag">🇵🇱</span> Polski</div>
-            <div class="language-item" data-lang="de"><span class="flag">🇩🇪</span> Deutsch</div>
-            <div class="language-item" data-lang="fr"><span class="flag">🇫🇷</span> Français</div>
+        <h1 class="welcome-title">OptiBotX PRO</h1>
+        <p class="welcome-subtitle">Выберите действие для начала</p>
+        <div class="navigation-list">
+            <a href="#" target="_blank" id="btn-vlog" class="nav-item-btn"><span class="icon">📺</span> Влог Правды</a>
+            <div id="btn-activate-modal" class="nav-item-btn"><span class="icon">🔐</span> Активировать доступ</div>
+            <div id="btn-start-work" class="nav-item-btn action-work"><span class="icon">🚀</span> Начать работать</div>
+            <a href="#" target="_blank" id="btn-reviews" class="nav-item-btn"><span class="icon">💬</span> Отзывы</a>
         </div>
-        <button id="start-btn" class="start-btn">Start</button>
     </div>
 </div>
 
 <div id="register-overlay" class="register-overlay">
     <div class="register-glass">
+        <button class="close-register" id="close-register-btn">✕</button>
         <h3 id="register-title">🔐 Активация доступа</h3>
         <p id="register-desc">Для входа в платформу <strong>OptiBotX PRO</strong> необходим лицензионный код</p>
         
@@ -826,8 +792,6 @@
         <a id="contactMeBtn" class="contact-btn" href="https://t.me/ZentixTrade" target="_blank">
             ✍️ Написать мне — получить код
         </a>
-
-        <button id="register-back-btn" class="register-back-btn">⬅️ Назад</button>
         
         <div id="register-message" class="register-message"></div>
     </div>
@@ -840,19 +804,18 @@
     <header>
         <div class="logo">
             <h1>AI OptiBotX <span>PRO</span></h1>
-            <div id="sub-header" class="sub-header">Select currency pair</div>
+            <div id="sub-header" class="sub-header">Выбери валютную пару</div>
         </div>
         <div class="header-buttons">
-            <button id="appBackBtn" class="icon-btn" title="Activation Status">🔐</button>
             <button id="themeBtn" class="icon-btn">🌓</button>
             <button id="snowToggle" class="icon-btn">☃️</button>
-            <button id="langBtn" class="icon-btn">🇬🇧 EN</button>
+            <button id="langBtn" class="icon-btn" style="display:none;">🇬🇧 EN</button>
         </div>
     </header>
 
     <div class="selector-container">
         <span class="search-icon">🔍</span>
-        <input type="text" id="pair-search" placeholder="🔍 Search pair (EUR, USD, OTC...)" autocomplete="off">
+        <input type="text" id="pair-search" placeholder="🔍 Поиск пары (EUR, USD, OTC...)" autocomplete="off">
         <div class="pairs-container" id="pairs-container"></div>
     </div>
     <select id="pair" style="display: none;"></select>
@@ -883,17 +846,25 @@
     </div>
 
     <button id="anBtn" class="analyze-btn" onclick="startAnalysis(this)">
-        <span class="btn-text">Analyze</span>
+        <span class="btn-text">Анализировать</span>
     </button>
 
     <div id="status" class="status-area">
-        <div class="dot"></div> <span id="wait-msg">Waiting...</span>
+        <div class="dot"></div> <span id="wait-msg">Ожидание...</span>
     </div>
 
     <div id="result" class="result-display"></div>
 </div>
 
 <script>
+    // ======================== НАСТРОЙКА ССЫЛОК (ЗАГЛУШКИ) ========================
+    const URL_VLOG = "https://example.com/vlog";     // Поставьте вашу ссылку на Влог Правды
+    const URL_REVIEWS = "https://example.com/reviews"; // Поставьте вашу ссылку на Отзывы
+
+    // Установка ссылок в элементы
+    document.getElementById('btn-vlog').href = URL_VLOG;
+    document.getElementById('btn-reviews').href = URL_REVIEWS;
+
     // ======================== СИСТЕМА АКТИВАЦИИ ========================
     const VALID_ACCESS_CODES = [
         "OPTIX777", "PRO2026", "TRADE99", "BOTX100", "VIPACCESS",
@@ -911,11 +882,10 @@
     const registerOverlay = document.getElementById('register-overlay');
     const codeInput = document.getElementById('code-input');
     const activateBtn = document.getElementById('activate-btn');
-    const registerBackBtn = document.getElementById('register-back-btn');
-    const appBackBtn = document.getElementById('appBackBtn');
     const registerMessageDiv = document.getElementById('register-message');
     const mainApp = document.getElementById('main-app');
     const welcomeOverlay = document.getElementById('welcome-overlay');
+    const closeRegisterBtn = document.getElementById('close-register-btn');
 
     function setActivated(bypass = false) {
         if (bypass || isValidCode(codeInput.value)) {
@@ -927,8 +897,10 @@
             setTimeout(() => {
                 registerOverlay.classList.remove('visible');
                 registerMessageDiv.innerText = '';
-                // Инициализируем график, если мы перешли на главный экран активированными
-                initChart();
+                // Если мы уже нажимали "Начать работать", переводим в приложение
+                if(welcomeOverlay.classList.contains('hidden-by-user') || !welcomeOverlay.classList.contains('visible')) {
+                    switchToMainApp();
+                }
             }, 1000);
         } else {
             registerMessageDiv.innerText = getTranslation('wrongCode');
@@ -943,28 +915,8 @@
         setActivated(false);
     });
 
-    // Обработчик кнопки Назад на экране Активации (Возврат к выбору языка)
-    registerBackBtn.addEventListener('click', () => {
+    closeRegisterBtn.addEventListener('click', () => {
         registerOverlay.classList.remove('visible');
-        mainApp.style.display = 'none';
-        welcomeOverlay.classList.add('visible');
-        
-        // Сбрасываем выбор языка
-        selectedLanguage = null;
-        langItems.forEach(i => i.classList.remove('selected'));
-        startBtn.classList.remove('visible');
-        registerMessageDiv.innerText = '';
-    });
-
-    // Обработчик кнопки Назад (Замок) на главном экране (Возврат к окну активации)
-    appBackBtn.addEventListener('click', () => {
-        updateRegisterLang();
-        registerOverlay.classList.add('visible');
-        if (isActivated) {
-            registerMessageDiv.innerText = getTranslation('activateSuccess');
-            registerMessageDiv.classList.add('success');
-            registerMessageDiv.classList.remove('error');
-        }
     });
 
     function showActivationModal() {
@@ -976,16 +928,12 @@
     }
 
     const activationDict = {
-        en: { title: "🔐 Activation", desc: "To access <strong>OptiBotX PRO</strong> you need a license code", hintTitle: "How to get a code?", step1: "1️⃣ Click the <strong>«Write to me»</strong> button below", step2: "2️⃣ Write the word <strong style='color:#5b4dff;'>«CODE»</strong> in Telegram", step3: "3️⃣ The manager will give you a personal activation code ✅", placeholder: "Enter the received code", btnText: "🎯 Activate", contactBtn: "✍️ Write to me — get code", backBtn: "⬅️ Back", success: "✅ Activation successful! Welcome.", wrongCode: "❌ Invalid activation code. Try again.", activateSuccess: "✅ Activation successful! Welcome." },
-        es: { title: "🔐 Activación", desc: "Para acceder a <strong>OptiBotX PRO</strong> necesitas un código de licencia", hintTitle: "¿Cómo obtener un código?", step1: "1️⃣ Haz clic en el botón <strong>«Escríbeme»</strong> abajo", step2: "2️⃣ Escribe la palabra <strong style='color:#5b4dff;'>«CODE»</strong> in Telegram", step3: "3️⃣ El gerente te dará un código de activación personal ✅", placeholder: "Ingresa el código recibido", btnText: "🎯 Activar", contactBtn: "✍️ Escríbeme — obtener código", backBtn: "⬅️ Atrás", success: "✅ ¡Activación exitosa! Bienvenido.", wrongCode: "❌ Código de activación inválido. Intenta de nuevo.", activateSuccess: "✅ ¡Activación exitosa! Bienvenido." },
-        ru: { title: "🔐 Активация доступа", desc: "Для входа в платформу <strong>OptiBotX PRO</strong> необходим лицензионный код", hintTitle: "Как получить код?", step1: "1️⃣ Нажмите кнопку <strong>«Написать мне»</strong> ниже", step2: "2️⃣ Напишите слово <strong style='color:#5b4dff;'>«КОД»</strong> в Telegram", step3: "3️⃣ Менеджер выдаст вам персональный код активации ✅", placeholder: "Введите полученный код", btnText: "🎯 Активировать", contactBtn: "✍️ Написать мне — получить код", backBtn: "⬅️ Назад", success: "✅ Активация успешна! Добро пожаловать.", wrongCode: "❌ Неверный код активации. Попробуйте снова.", activateSuccess: "✅ Активация успешна! Добро пожаловать." },
-        pl: { title: "🔐 Aktywacja", desc: "Aby uzyskać dostęp do <strong>OptiBotX PRO</strong> potrzebny jest kod licencyjny", hintTitle: "Jak uzyskać kod?", step1: "1️⃣ Kliknij przycisk <strong>«Napisz do mnie»</strong> poniżej", step2: "2️⃣ Napisz słowo <strong style='color:#5b4dff;'>«KOD»</strong> w Telegramie", step3: "3️⃣ Menedżer wyda Ci osobisty kod aktywacyjny ✅", placeholder: "Wprowadź otrzymany kod", btnText: "🎯 Aktywuj", contactBtn: "✍️ Napisz do mnie — uzyskaj kod", backBtn: "⬅️ Wstecz", success: "✅ Aktywacja udana! Witamy.", wrongCode: "❌ Nieprawidłowy kod aktywacyjny. Spróbuj ponownie.", activateSuccess: "✅ Aktywacja udana! Witamy." },
-        de: { title: "🔐 Aktivierung", desc: "Für den Zugriff auf <strong>OptiBotX PRO</strong> benötigen Sie einen Lizenzcode", hintTitle: "Wie erhalte ich einen Code?", step1: "1️⃣ Klicken Sie unten auf die Schaltfläche <strong>«Schreib mir»</strong>", step2: "2️⃣ Schreiben Sie das Wort <strong style='color:#5b4dff;'>«CODE»</strong> in Telegram", step3: "3️⃣ Der Manager gibt Ihnen einen persönlichen Aktivierungscode ✅", placeholder: "Geben Sie den erhaltenen Code ein", btnText: "🎯 Aktivieren", contactBtn: "✍️ Schreib mir — Code erhalten", backBtn: "⬅️ Zurück", success: "✅ Aktivierung erfolgreich! Willkommen.", wrongCode: "❌ Ungültiger Aktivierungscode. Versuchen Sie es erneut.", activateSuccess: "✅ Aktivierung erfolgreich! Willkommen." },
-        fr: { title: "🔐 Activation", desc: "Pour accéder à <strong>OptiBotX PRO</strong> vous avez besoin d'un code de licence", hintTitle: "Comment Micro obtenir un code ?", step1: "1️⃣ Cliquez sur le bouton <strong>«Écris-moi»</strong> ci-dessous", step2: "2️⃣ Écrivez le mot <strong style='color:#5b4dff;'>«CODE»</strong> dans Telegram", step3: "3️⃣ Le gestionnaire vous donnera un code d'activation personnel ✅", placeholder: "Entrez le code reçu", btnText: "🎯 Activer", contactBtn: "✍️ Écris-moi — obtenir un code", backBtn: "⬅️ Retour", success: "✅ Activation réussie ! Bienvenue.", wrongCode: "❌ Code d'activation invalide. Réessayez.", activateSuccess: "✅ Activation réussie ! Bienvenue." }
+        en: { title: "🔐 Activation", desc: "To access <strong>OptiBotX PRO</strong> you need a license code", hintTitle: "How to get a code?", step1: "1️⃣ Click the <strong>«Write to me»</strong> button below", step2: "2️⃣ Write the word <strong style='color:#5b4dff;'>«CODE»</strong> in Telegram", step3: "3️⃣ The manager will give you a personal activation code ✅", placeholder: "Enter the received code", btnText: "🎯 Activate", contactBtn: "✍️ Write to me — get code", success: "✅ Activation successful! Welcome.", wrongCode: "❌ Invalid activation code. Try again." },
+        ru: { title: "🔐 Активация доступа", desc: "Для входа в платформу <strong>OptiBotX PRO</strong> необходим лицензионный код", hintTitle: "Как получить код?", step1: "1️⃣ Нажмите кнопку <strong>«Написать мне»</strong> ниже", step2: "2️⃣ Напишите слово <strong style='color:#5b4dff;'>«КОД»</strong> в Telegram", step3: "3️⃣ Менеджер выдаст вам персональный код активации ✅", placeholder: "Введите полученный код", btnText: "🎯 Активировать", contactBtn: "✍️ Написать мне — получить код", success: "✅ Активация успешна! Добро пожаловать.", wrongCode: "❌ Неверный код активации. Попробуйте снова." }
     };
 
     function updateRegisterLang() {
-        const langData = activationDict[curLang] || activationDict.en;
+        const langData = activationDict[curLang] || activationDict.ru;
         document.getElementById('register-title').innerHTML = langData.title;
         document.getElementById('register-desc').innerHTML = langData.desc;
         document.getElementById('hint-title').innerHTML = langData.hintTitle;
@@ -995,11 +943,10 @@
         codeInput.placeholder = langData.placeholder;
         activateBtn.innerHTML = langData.btnText;
         contactMeBtn.innerHTML = langData.contactBtn;
-        registerBackBtn.innerHTML = langData.backBtn;
     }
 
     function getTranslation(key) {
-        return (activationDict[curLang] || activationDict.en)[key] || activationDict.en[key];
+        return (activationDict[curLang] || activationDict.ru)[key] || activationDict.ru[key];
     }
 
     // --- ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ---
@@ -1011,27 +958,20 @@
     let showSMA = false;
     let candleCount = 14;
     let snowEnabled = false;
-    let curLang = 'en';
+    let curLang = 'ru'; // По умолчанию Русский язык
     let cooldownActive = false;
 
     const dict = {
         en: { sub: "Select currency pair", an: "Analyze", wait: "Waiting...", up: "BUY ", down: "SELL ", flag: "🇬🇧" },
-        es: { sub: "Seleccione un par de divisas", an: "Analizar", wait: "Esperando...", up: "COMPRAR ", down: "VENDER ", flag: "🇪🇸" },
-        ru: { sub: "Выбери валютную пару", an: "Анализировать", wait: "Ожидание...", up: "ВВЕРХ ", down: "ВНИЗ ", flag: "🇷🇺" },
-        pl: { sub: "Wybierz parę walutową", an: "Analizuj", wait: "Oczekiwanie...", up: "W GÓRĘ ", down: "W DÓŁ ", flag: "🇵🇱" },
-        de: { sub: "Währungspaar auswählen", an: "Analysieren", wait: "Warten...", up: "KAUFEN ", down: "VERKAUFEN ", flag: "🇩🇪" },
-        fr: { sub: "Choisissez une paire de devises", an: "Analyser", wait: "Attente...", up: "ACHAT ", down: "VENTE ", flag: "🇫🇷" }
+        ru: { sub: "Выбери валютную пару", an: "Анализировать", wait: "Ожидание...", up: "ВВЕРХ ", down: "ВНИЗ ", flag: "🇷🇺" }
     };
 
-    const startBtn = document.getElementById('start-btn');
-    const langItems = document.querySelectorAll('.language-item');
     const pairsContainer = document.getElementById('pairs-container');
     const searchInput = document.getElementById('pair-search');
     const hiddenSelect = document.getElementById('pair');
     const anBtn = document.getElementById('anBtn');
     const waitMsg = document.getElementById('wait-msg');
     const snowToggle = document.getElementById('snowToggle');
-    const langBtn = document.getElementById('langBtn');
     const themeBtn = document.getElementById('themeBtn');
     const smaBtn = document.getElementById('smaBtn');
     const subHeader = document.getElementById('sub-header');
@@ -1042,18 +982,9 @@
         const btnSpan = anBtn.querySelector('.btn-text');
         if (btnSpan) btnSpan.innerText = dict[curLang].an;
         waitMsg.innerText = dict[curLang].wait;
-        searchInput.placeholder = dict[curLang].sub;
+        searchInput.placeholder = "🔍 Поиск пары (EUR, USD, OTC...)";
     }
 
-    langBtn.onclick = function() {
-        const langs = ['en', 'es', 'ru', 'pl', 'de', 'fr'];
-        let idx = langs.indexOf(curLang);
-        idx = (idx + 1) % langs.length;
-        curLang = langs[idx];
-        this.innerHTML = `${dict[curLang].flag} ${curLang.toUpperCase()}`;
-        updateUILang();
-        updateRegisterLang();
-    };
     function toggleTheme() { document.body.classList.toggle('light-theme'); }
     themeBtn.onclick = toggleTheme;
 
@@ -1099,7 +1030,7 @@
             });
             pairsContainer.appendChild(div);
         });
-        if(filtered.length === 0) { const empty = document.createElement('div'); empty.className = 'pair-option'; empty.style.justifyContent = 'center'; empty.style.padding = '20px'; empty.innerText = '❌ Nothing found'; pairsContainer.appendChild(empty); }
+        if(filtered.length === 0) { const empty = document.createElement('div'); empty.className = 'pair-option'; empty.style.justifyContent = 'center'; empty.style.padding = '20px'; empty.innerText = '❌ Ничего не найдено'; pairsContainer.appendChild(empty); }
     }
     searchInput.addEventListener('focus', () => { pairsContainer.style.display = 'block'; });
     document.addEventListener('click', (e) => { if (!searchInput.contains(e.target) && !pairsContainer.contains(e.target)) pairsContainer.style.display = 'none'; });
@@ -1157,29 +1088,24 @@
     window.selectTf = selectTf;
     if(window.Telegram?.WebApp) window.Telegram.WebApp.expand();
 
-    // ---------- СТАРТ: Выбор языка и переход ----------
-    let selectedLanguage = null;
-    langItems.forEach(item => {
-        item.addEventListener('click', () => {
-            langItems.forEach(i => i.classList.remove('selected'));
-            item.classList.add('selected');
-            selectedLanguage = item.dataset.lang;
-            startBtn.classList.add('visible');
-        });
-    });
+    // ---------- ОБРАБОТЧИКИ НОВЫХ КНОПОК ----------
     
-    startBtn.addEventListener('click', () => {
-        if (!selectedLanguage) {
-            selectedLanguage = 'en';
-            const defaultItem = document.querySelector('.language-item[data-lang="en"]');
-            if(defaultItem) defaultItem.classList.add('selected');
-        }
-        curLang = selectedLanguage;
+    // Кнопка "Активировать доступ" на приветственном экране
+    document.getElementById('btn-activate-modal').addEventListener('click', () => {
+        showActivationModal();
+    });
+
+    // Кнопка "Начать работать"
+    document.getElementById('btn-start-work').addEventListener('click', () => {
+        switchToMainApp();
+    });
+
+    function switchToMainApp() {
         updateUILang();
         updateRegisterLang();
-        langBtn.innerHTML = `${dict[curLang].flag} ${curLang.toUpperCase()}`;
         
         welcomeOverlay.classList.remove('visible');
+        welcomeOverlay.classList.add('hidden-by-user');
         mainApp.style.display = 'flex';
         
         if(isActivated) {
@@ -1192,14 +1118,15 @@
             ctx.fillStyle = 'white';
             ctx.font = '12px sans-serif';
             ctx.textAlign = 'center';
-            let notActiveText = dict[curLang].wait === "Waiting..." ? "🔐 Activation required" : "🔐 Требуется активация";
+            let notActiveText = "🔐 Требуется активация";
             ctx.fillText(notActiveText, (canvas.width/dpr)/2, (canvas.height/dpr)/2);
-            ctx.fillText(dict[curLang].an + " → Activate", (canvas.width/dpr)/2, (canvas.height/dpr)/2 + 25);
+            ctx.fillText("Анализировать → Активировать", (canvas.width/dpr)/2, (canvas.height/dpr)/2 + 25);
             setupSnow();
-            
-            // Если не активировано, сразу показываем модалку ввода кода
-            showActivationModal();
         }
+    }
+
+    // Инициализация списков пар при загрузке
+    window.addEventListener('DOMContentLoaded', () => {
         allPairs.forEach(p => { const option = document.createElement('option'); option.value = p.name; option.text = p.name; hiddenSelect.appendChild(option); });
         if(allPairs.length > 0) { hiddenSelect.value = allPairs[0].name; searchInput.value = allPairs[0].name; }
         renderPairs();
