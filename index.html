@@ -175,11 +175,17 @@
         .glow-button:hover:not(:disabled) {
             transform: translateY(-2px); box-shadow: 0 6px 25px var(--accent-glow); filter: brightness(1.1);
         }
-        /* Стили для заблокированной кнопки анализа */
-        .glow-button:disabled {
-            background: #222533; color: #52667d; cursor: not-allowed;
-            box-shadow: none; transform: none; filter: none; opacity: 0.6;
-            border: 1px solid rgba(255,255,255,0.05);
+        
+        /* Стиль для кнопки в заблокированном состоянии (под оплату/ввод кода) */
+        .glow-button.locked-style {
+            background: linear-gradient(135deg, #1f1a3a, #0d0b1a);
+            color: #ff4d79;
+            box-shadow: 0 4px 15px rgba(255, 77, 121, 0.15);
+            border: 1px solid rgba(255, 77, 121, 0.25);
+        }
+        .glow-button.locked-style:hover {
+            box-shadow: 0 4px 22px rgba(255, 77, 121, 0.35);
+            background: linear-gradient(135deg, #2a224d, #141026);
         }
 
         .register-message { font-size: 0.85rem; min-height: 20px; margin-top: 10px; transition: all 0.2s; }
@@ -365,8 +371,8 @@
         <div id="tv-chart-wrapper"></div>
     </div>
 
-    <button id="anBtn" class="glow-button analyze-btn" onclick="startAnalysis()" disabled>
-        🔒 Требуется код доступа
+    <button id="anBtn" class="glow-button analyze-btn" onclick="startAnalysis()">
+        🚀 Запустить анализ
     </button>
 
     <div id="status" class="status-area" style="visibility: hidden;">
@@ -464,26 +470,23 @@
         });
     }
 
-    // Проверка статуса кнопки анализа при загрузке страницы
+    // Изменение внешнего вида кнопки в зависимости от статуса активации
     function checkAnalyzeButtonStatus() {
         if (isActivated) {
-            anBtn.disabled = false;
+            anBtn.classList.remove('locked-style');
             anBtn.innerHTML = "🚀 Запустить анализ";
         } else {
-            anBtn.disabled = true;
-            anBtn.innerHTML = "🔒 Требуется код доступа";
+            anBtn.classList.add('locked-style');
+            anBtn.innerHTML = "🔒 Активировать PRO доступ";
         }
     }
 
+    // Теперь в приложение пускает СРАЗУ, без проверки флага активации
     document.getElementById('menu-start').onclick = () => {
-        if (isActivated) {
-            welcomeOverlay.classList.remove('visible');
-            mainApp.style.display = 'flex';
-            checkAnalyzeButtonStatus();
-            setTimeout(() => { initTradingView(currentSymbol); }, 200);
-        } else {
-            registerOverlay.classList.add('visible');
-        }
+        welcomeOverlay.classList.remove('visible');
+        mainApp.style.display = 'flex';
+        checkAnalyzeButtonStatus();
+        setTimeout(() => { initTradingView(currentSymbol); }, 200);
     };
 
     document.getElementById('menu-activate').onclick = () => { registerOverlay.classList.add('visible'); };
@@ -546,7 +549,6 @@
             registerMessageDiv.innerText = "✅ Доступ активирован!";
             registerMessageDiv.className = "register-message success";
             
-            // Сразу разблокируем кнопку при вводе верного кода
             checkAnalyzeButtonStatus();
 
             setTimeout(() => {
@@ -589,7 +591,13 @@
 
     let isAnalyzing = false;
     function startAnalysis() {
-        if (isAnalyzing || !isActivated) return; // Жесткая защита от запуска без активации
+        // Если доступ НЕ активирован, выкидываем окно, объединяющее покупку и ввод кода
+        if (!isActivated) {
+            registerOverlay.classList.add('visible');
+            return;
+        }
+
+        if (isAnalyzing) return;
         isAnalyzing = true;
         
         anBtn.disabled = true;
@@ -617,7 +625,6 @@
 
     searchInput.value = allPairs[0].name;
     updatePaymentUI();
-    // Обязательный запуск проверки состояния при старте
     checkAnalyzeButtonStatus();
 </script>
 </body>
