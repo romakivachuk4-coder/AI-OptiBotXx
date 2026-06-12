@@ -60,7 +60,7 @@
         }
         .welcome-overlay.visible { opacity: 1; visibility: visible; }
         .welcome-glass {
-            padding: 30px 20px; width: 90%; max-width: 340px; text-align: center;
+            padding: 35px 25px; width: 90%; max-width: 340px; text-align: center;
             transform: scale(0.9); opacity: 0;
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1), opacity 0.4s;
         }
@@ -71,12 +71,12 @@
             background: linear-gradient(135deg, #fff, #aaccff);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .welcome-subtitle { font-size: 0.95rem; color: #8899ac; margin-bottom: 25px; }
+        .welcome-subtitle { font-size: 0.95rem; color: #8899ac; margin-bottom: 30px; }
         
-        .menu-list { display: flex; flex-direction: column; gap: 12px; }
+        .menu-list { display: flex; flex-direction: column; gap: 14px; }
         .menu-item {
             background: var(--secondary-bg); border: 1px solid var(--glass-border);
-            border-radius: 18px; padding: 14px 20px; font-size: 1rem; font-weight: 600;
+            border-radius: 18px; padding: 16px 20px; font-size: 1.05rem; font-weight: 600;
             display: flex; align-items: center; gap: 15px; cursor: pointer; transition: all 0.3s;
             color: var(--text-color); text-decoration: none;
         }
@@ -92,33 +92,7 @@
             box-shadow: 0 8px 25px rgba(255, 0, 127, 0.5);
         }
 
-        /* Окно приветственного Гида для Новичков */
-        .onboarding-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(3, 3, 10, 0.85); backdrop-filter: blur(25px);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 40000; opacity: 0; visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-        }
-        .onboarding-overlay.visible { opacity: 1; visibility: visible; }
-        .onboarding-glass {
-            padding: 30px 20px; width: 92%; max-width: 360px; text-align: center;
-            transform: translateY(20px); transition: transform 0.3s, opacity 0.3s; opacity: 0;
-        }
-        .onboarding-overlay.visible .onboarding-glass { transform: translateY(0); opacity: 1; }
-        
-        .onboard-slide { display: none; }
-        .onboard-slide.active { display: block; animation: fadeInScale 0.3s ease-out; }
-        .onboard-icon { font-size: 3.5rem; margin-bottom: 15px; display: inline-block; }
-        .onboard-glass h3 { font-size: 1.35rem; margin: 0 0 12px 0; font-weight: 800; color: #fff; }
-        .onboard-glass p { font-size: 0.92rem; color: #cedceb; line-height: 1.5; margin: 0 0 20px 0; }
-        
-        /* Прогресс-точки гида */
-        .onboard-dots { display: flex; justify-content: center; gap: 8px; margin-bottom: 20px; }
-        .onboard-dot { width: 8px; height: 8px; background: rgba(255,255,255,0.2); border-radius: 50%; transition: all 0.3s; }
-        .onboard-dot.active { background: var(--accent); width: 24px; border-radius: 4px; }
-
-        /* Окно тарифов и активации */
+        /* Окно активации и тарифов */
         .register-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); backdrop-filter: blur(15px);
@@ -140,7 +114,7 @@
         }
         .register-glass p { font-size: 0.9rem; color: #8899ac; margin-bottom: 20px; line-height: 1.4; }
 
-        /* Окно Обучения (Академия) */
+        /* Окно Обучения */
         .education-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.7); backdrop-filter: blur(20px);
@@ -347,49 +321,11 @@
         <p class="welcome-subtitle">Professional Trading Platform</p>
         <div class="menu-list">
             <div class="menu-item pro-btn" id="menu-start">📈 Торговая Панель</div>
-            <div class="menu-item" id="menu-onboard-trigger" style="background: rgba(91, 77, 255, 0.15); border-color: var(--accent);">❓ Инструкция для новичков</div>
             <div class="menu-item" id="menu-edu-trigger">📚 Полное Обучение</div>
             <div class="menu-item" id="menu-activate">🔐 Активация PRO</div>
             <a class="menu-item" href="https://t.me/ZentixTrade" target="_blank">🎬 Влог Правды</a>
             <a class="menu-item" href="https://t.me/ZentixTrade" target="_blank">⭐ Отзывы Клиентов</a>
         </div>
-    </div>
-</div>
-
-<div id="onboarding-overlay" class="onboarding-overlay">
-    <div class="onboarding-glass glass-panel">
-        <div class="onboard-slide active" id="onboard-slide-1">
-            <span class="onboard-icon">👋</span>
-            <h3>Куда я попал?</h3>
-            <p>Вы открыли <strong>OptiBotX PRO</strong> — мощный аналитический инструмент на базе искусственного интеллекта для заработка на финансовых рынках.</p>
-        </div>
-
-        <div class="onboard-slide" id="onboard-slide-2">
-            <span class="onboard-icon">🤖</span>
-            <h3>Что делает этот робот?</h3>
-            <p>Нейросеть круглосуточно сканирует графики, заменяет технический анализ и выдает готовые сигналы: куда пойдет цена — <strong>ВВЕРХ ⬆</strong> или <strong>ВНИЗ ⬇</strong>.</p>
-        </div>
-
-        <div class="onboard-slide" id="onboard-slide-3">
-            <span class="onboard-icon">💰</span>
-            <h3>Как мне заработать?</h3>
-            <p>Всё просто: берете сигнал из робота, заходите на платформу своего брокера (Pocket Option, Quotex и др.), открываете сделку в ту же сторону и получаете прибыль!</p>
-        </div>
-
-        <div class="onboard-slide" id="onboard-slide-4">
-            <span class="onboard-icon">🚀</span>
-            <h3>Готовы начать?</h3>
-            <p>Внутри панели вас ждет живой график. Вы можете изучить его прямо сейчас, а для получения точных сигналов — активируйте PRO доступ.</p>
-        </div>
-
-        <div class="onboard-dots">
-            <div class="onboard-dot active" data-dot="1"></div>
-            <div class="onboard-dot" data-dot="2"></div>
-            <div class="onboard-dot" data-dot="3"></div>
-            <div class="onboard-dot" data-dot="4"></div>
-        </div>
-
-        <button id="onboard-next-btn" class="glow-button" style="padding: 12px;">Далее</button>
     </div>
 </div>
 
@@ -461,7 +397,7 @@
                 <div class="edu-badge">ОСНОВЫ ПЛАТФОРМЫ</div>
                 <h4>Как устроен робот?</h4>
                 <p>OptiBotX PRO — это продвинутый аналитический комплекс на базе искусственного интеллекта, интегрированный с ликвидностью TradingView.</p>
-                <p>Нейросеть сканирует рынок по 14 техническим индикаторам (RSI, MACD, Bollinger Bands) на таймфрейме М1 и ищет зоны критической перекупленности.</p>
+                <p>Нейросеть сканирует рынок по 14 техническим индикаторам (RSI, MACD, Bollinger Bands) на таймфрейме М1 и ищет зоны критической перекупленности и перепроданности.</p>
                 <h4>С чего начать?</h4>
                 <ul>
                     <li>Выберите нужную валютную пару в поисковой строке сверху.</li>
@@ -477,8 +413,8 @@
                 <h4>Золотые правила:</h4>
                 <ul>
                     <li><strong>Время экспирации:</strong> Всегда открывайте сделку строго на 1-3 минуты (оптимально — 2 минуты).</li>
-                    <li><strong>Процент проходимости (WinRate):</strong> Если бот выдает WinRate выше 88%, это сигнал повышенной надежности. Если ниже 85% — лучше сменить пару.</li>
-                    <li><strong>Задержки:</strong> Не входите в сделку, если с момента выдачи сигнала прошло более 15 секунд.</li>
+                    <li><strong>Процент проходимости (WinRate):</strong> Если бот выдает WinRate выше 88%, это сигнал повышенной надежности. Если ниже 85% — лучше пропустить сделку и сменить пару.</li>
+                    <li><strong>Задержки:</strong> Не входите в сделку, если с момента выдачи сигнала прошло более 15 секунд. Цена могла уйти.</li>
                 </ul>
             </div>
 
@@ -489,8 +425,8 @@
                 <h4>Правила сохранения капитала:</h4>
                 <ul>
                     <li><strong>Объем сделки:</strong> Сумма одной инвестиции должна составлять от 1% до 3% от вашего общего баланса.</li>
-                    <li><strong>Система перекрытий (Мартингейл):</strong> Допускается использовать не более 2-х колен перекрытий. Если сигнал не зашел, открываем перекрытие, увеличив сумму в 2.2 раза.</li>
-                    <li><strong>Дневной стоп-лосс:</strong> Получили 3 минуса подряд? Закрывайте платформу и вернитесь завтра.</li>
+                    <li><strong>Система перекрытий (Мартингейл):</strong> Допускается использовать не более 2-х колен перекрытий. Если сигнал «ВВЕРХ» не зашел, следующую сделку на этой же паре открываем в том же направлении, увеличив сумму в 2.2 раза.</li>
+                    <li><strong>Дневной стоп-лосс:</strong> Получили 3 минуса подряд? Закрывайте платформу. Рынок сегодня штормит, вернитесь завтра.</li>
                 </ul>
             </div>
         </div>
@@ -541,36 +477,50 @@
     // Коды доступа
     const VALID_ACCESS_CODES = ["OPTIX777", "PRO2026", "TRADE99", "BOTX100", "VIPACCESS"];
 
-    const TARIFF_PRICES = { week: "2 500 ₽", month: "4 000 ₽", forever: "10 000 ₽" };
+    // Цены для текстовых условий
+    const TARIFF_PRICES = {
+        week: "2 500 ₽",
+        month: "4 000 ₽",
+        forever: "10 000 ₽"
+    };
 
+    // Ссылки на оплату под тарифы и методы
     const PAYMENT_LINKS = {
-        week: { crypto: "https://t.me/optixbot_bot?start=pay_week_crypto", card_ru: "https://dalink.to/optibotx", card_world: "https://dalink.to/optibotx" },
-        month: { crypto: "https://t.me/optixbot_bot?start=pay_month_crypto", card_ru: "https://dalink.to/optibotx", card_world: "https://dalink.to/optibotx" },
-        forever: { crypto: "https://t.me/optixbot_bot?start=pay_forever_crypto", card_ru: "https://dalink.to/optibotx", card_world: "https://dalink.to/optibotx" }
+        week: {
+            crypto: "https://t.me/optixbot_bot?start=pay_week_crypto",
+            card_ru: "https://dalink.to/optibotx",
+            card_world: "https://dalink.to/optibotx"
+        },
+        month: {
+            crypto: "https://t.me/optixbot_bot?start=pay_month_crypto",
+            card_ru: "https://dalink.to/optibotx",
+            card_world: "https://dalink.to/optibotx"
+        },
+        forever: {
+            crypto: "https://t.me/optixbot_bot?start=pay_forever_crypto",
+            card_ru: "https://dalink.to/optibotx",
+            card_world: "https://dalink.to/optibotx"
+        }
     };
 
     let selectedTariff = "week";
     let selectedMethod = "crypto";
+
     let isActivated = localStorage.getItem('optibotx_activated') === 'true';
     let tvWidget = null;
     let currentSymbol = "FX:EURUSD";
-
-    // Переменные для контроля слайдов гида
-    let currentOnboardSlide = 1;
-    const totalOnboardSlides = 4;
 
     // Элементы UI
     const welcomeOverlay = document.getElementById('welcome-overlay');
     const registerOverlay = document.getElementById('register-overlay');
     const educationOverlay = document.getElementById('education-overlay');
-    const onboardingOverlay = document.getElementById('onboarding-overlay');
-    const onboardNextBtn = document.getElementById('onboard-next-btn');
     const mainApp = document.getElementById('main-app');
     const codeInput = document.getElementById('code-input');
     const activateBtn = document.getElementById('activate-btn');
     const registerMessageDiv = document.getElementById('register-message');
     const pairsContainer = document.getElementById('pairs-container');
     const searchInput = document.getElementById('pair-search');
+    const hiddenSelect = document.getElementById('pair');
     const anBtn = document.getElementById('anBtn');
     const statusArea = document.getElementById('status');
     const resultDisplay = document.getElementById('result');
@@ -608,6 +558,7 @@
         });
     }
 
+    // Изменение внешнего вида кнопки в зависимости от статуса активации
     function checkAnalyzeButtonStatus() {
         if (isActivated) {
             anBtn.classList.remove('locked-style');
@@ -618,50 +569,7 @@
         }
     }
 
-    // Автоматический запуск приветствия для новичков при первом посещении
-    window.addEventListener('DOMContentLoaded', () => {
-        const hasVisited = localStorage.getItem('optibotx_visited_guide');
-        if (!hasVisited) {
-            setTimeout(() => {
-                onboardingOverlay.classList.add('visible');
-            }, 600);
-        }
-    });
-
-    // Логика переключения слайдов Onboarding гида
-    function showSlide(slideNum) {
-        document.querySelectorAll('.onboard-slide').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.onboard-dot').forEach(d => d.classList.remove('active'));
-        
-        document.getElementById(`onboard-slide-${slideNum}`).classList.add('active');
-        document.querySelector(`.onboard-dot[data-dot="${slideNum}"]`).classList.add('active');
-        
-        if (slideNum === totalOnboardSlides) {
-            onboardNextBtn.innerText = "Всё понятно!";
-        } else {
-            onboardNextBtn.innerText = "Далее";
-        }
-    }
-
-    onboardNextBtn.onclick = () => {
-        if (currentOnboardSlide < totalOnboardSlides) {
-            currentOnboardSlide++;
-            showSlide(currentOnboardSlide);
-        } else {
-            // Закрытие гида
-            onboardingOverlay.classList.remove('visible');
-            localStorage.setItem('optibotx_visited_guide', 'true');
-            // Сбросим счетчик для повторных вызовов
-            currentOnboardSlide = 1;
-            setTimeout(() => showSlide(1), 300);
-        }
-    };
-
-    // Принудительный запуск инструкции из главного меню
-    document.getElementById('menu-onboard-trigger').onclick = () => {
-        onboardingOverlay.classList.add('visible');
-    };
-
+    // Вход в торговую панель пускает сразу
     document.getElementById('menu-start').onclick = () => {
         welcomeOverlay.classList.remove('visible');
         mainApp.style.display = 'flex';
@@ -669,14 +577,17 @@
         setTimeout(() => { initTradingView(currentSymbol); }, 200);
     };
 
+    // Логика управления окном обучения
     document.getElementById('menu-edu-trigger').onclick = () => { educationOverlay.classList.add('visible'); };
     document.getElementById('headerEduBtn').onclick = () => { educationOverlay.classList.add('visible'); };
     document.getElementById('close-edu-btn').onclick = () => { educationOverlay.classList.remove('visible'); };
 
+    // Переключение вкладок обучения
     document.querySelectorAll('.edu-tab').forEach(tab => {
         tab.onclick = () => {
             document.querySelectorAll('.edu-tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.edu-step').forEach(s => s.classList.remove('active'));
+            
             tab.classList.add('active');
             const stepNum = tab.getAttribute('data-step');
             document.getElementById(`edu-step-${stepNum}`).classList.add('active');
@@ -691,6 +602,7 @@
         initTradingView(currentSymbol);
     };
 
+    // Логика выбора тарифа
     document.querySelectorAll('.tariff-card').forEach(card => {
         card.onclick = () => {
             document.querySelectorAll('.tariff-card').forEach(c => c.classList.remove('selected'));
@@ -700,6 +612,7 @@
         };
     });
 
+    // Логика выбора метода оплаты
     document.querySelectorAll('.method-btn[data-method]').forEach(btn => {
         btn.onclick = () => {
             document.querySelectorAll('.method-btn[data-method]').forEach(b => b.classList.remove('selected'));
@@ -709,6 +622,7 @@
         };
     });
 
+    // Показ/скрытие блока промокода
     togglePromoLink.onclick = () => {
         if(promoBlock.style.display === "block") {
             promoBlock.style.display = "none";
@@ -719,9 +633,11 @@
         }
     };
 
+    // Обновление интерфейса оплаты
     function updatePaymentUI() {
         const url = PAYMENT_LINKS[selectedTariff][selectedMethod];
         payLinkBtn.href = url;
+
         if (selectedMethod === "card_ru" || selectedMethod === "card_world") {
             condPriceSpan.innerText = TARIFF_PRICES[selectedTariff];
             conditionsBlock.style.display = "block";
@@ -737,7 +653,9 @@
             localStorage.setItem('optibotx_activated', 'true');
             registerMessageDiv.innerText = "✅ Доступ активирован!";
             registerMessageDiv.className = "register-message success";
+            
             checkAnalyzeButtonStatus();
+
             setTimeout(() => {
                 registerOverlay.classList.remove('visible');
                 welcomeOverlay.classList.remove('visible');
@@ -761,6 +679,7 @@
             div.className = 'pair-option';
             if(pair.ticker === currentSymbol) div.classList.add('selected');
             div.innerHTML = `<span class="pair-flag">${pair.flag}</span><span class="pair-name">${pair.name}</span><span class="pair-type">${pair.type}</span>`;
+            
             div.addEventListener('click', () => { 
                 currentSymbol = pair.ticker;
                 searchInput.value = pair.name;
@@ -781,8 +700,10 @@
             registerOverlay.classList.add('visible');
             return;
         }
+
         if (isAnalyzing) return;
         isAnalyzing = true;
+        
         anBtn.disabled = true;
         statusArea.style.visibility = 'visible';
         resultDisplay.className = 'result-display';
@@ -792,8 +713,10 @@
             isAnalyzing = false;
             anBtn.disabled = false;
             statusArea.style.visibility = 'hidden';
+
             const winRate = Math.floor(Math.random() * (98 - 82 + 1)) + 82;
             const direction = Math.random() > 0.5 ? "ВВЕРХ" : "ВНИЗ";
+            
             if (direction === "ВВЕРХ") {
                 resultDisplay.innerText = `⬆ ВВЕРХ ${winRate}%`;
                 resultDisplay.classList.add('visible', 'result-up');
