@@ -172,8 +172,14 @@
             box-shadow: 0 4px 20px var(--accent-glow); display: flex; align-items: center; justify-content: center; gap: 10px;
             text-decoration: none; box-sizing: border-box;
         }
-        .glow-button:hover {
+        .glow-button:hover:not(:disabled) {
             transform: translateY(-2px); box-shadow: 0 6px 25px var(--accent-glow); filter: brightness(1.1);
+        }
+        /* Стили для заблокированной кнопки анализа */
+        .glow-button:disabled {
+            background: #222533; color: #52667d; cursor: not-allowed;
+            box-shadow: none; transform: none; filter: none; opacity: 0.6;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .register-message { font-size: 0.85rem; min-height: 20px; margin-top: 10px; transition: all 0.2s; }
@@ -371,9 +377,9 @@
         <div id="tv-chart-wrapper"></div>
     </div>
 
-    <!-- Анализ и Получение сигналов -->
-    <button id="anBtn" class="glow-button analyze-btn" onclick="startAnalysis()">
-        🚀 Запустить анализ
+    <!-- Анализ и Получение сигналов (Изначально заблокирована) -->
+    <button id="anBtn" class="glow-button analyze-btn" onclick="startAnalysis()" disabled>
+        🔒 Требуется код доступа
     </button>
 
     <div id="status" class="status-area" style="visibility: hidden;">
@@ -472,10 +478,22 @@
         });
     }
 
+    // Проверка статуса кнопки анализа при загрузке страницы
+    function checkAnalyzeButtonStatus() {
+        if (isActivated) {
+            anBtn.disabled = false;
+            anBtn.innerHTML = "🚀 Запустить анализ";
+        } else {
+            anBtn.disabled = true;
+            anBtn.innerHTML = "🔒 Требуется код доступа";
+        }
+    }
+
     document.getElementById('menu-start').onclick = () => {
         if (isActivated) {
             welcomeOverlay.classList.remove('visible');
             mainApp.style.display = 'flex';
+            checkAnalyzeButtonStatus();
             setTimeout(() => { initTradingView(currentSymbol); }, 200);
         } else {
             registerOverlay.classList.add('visible');
@@ -523,11 +541,9 @@
 
     // Обновление интерфейса оплаты (ссылка + условия для карт)
     function updatePaymentUI() {
-        // Меняем ссылку в кнопке
         const url = PAYMENT_LINKS[selectedTariff][selectedMethod];
         payLinkBtn.href = url;
 
-        // Показываем условия, если выбрана карта (Рус или Другие страны)
         if (selectedMethod === "card_ru" || selectedMethod === "card_world") {
             condPriceSpan.innerText = TARIFF_PRICES[selectedTariff];
             conditionsBlock.style.display = "block";
@@ -543,6 +559,10 @@
             localStorage.setItem('optibotx_activated', 'true');
             registerMessageDiv.innerText = "✅ Доступ активирован!";
             registerMessageDiv.className = "register-message success";
+            
+            // Сразу разблокируем кнопку
+            checkAnalyzeButtonStatus();
+
             setTimeout(() => {
                 registerOverlay.classList.remove('visible');
                 welcomeOverlay.classList.remove('visible');
@@ -583,7 +603,7 @@
 
     let isAnalyzing = false;
     function startAnalysis() {
-        if (isAnalyzing) return;
+        if (isAnalyzing || !isActivated) return; // Защита от запуска без активации
         isAnalyzing = true;
         
         anBtn.disabled = true;
@@ -610,8 +630,8 @@
     }
 
     searchInput.value = allPairs[0].name;
-    // Первичный вызов для установки верной дефолтной ссылки
     updatePaymentUI();
+    checkAnalyzeButtonStatus();
 </script>
 </body>
 </html>
