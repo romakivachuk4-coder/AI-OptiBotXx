@@ -273,12 +273,10 @@
         @keyframes pulseDot { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes logoGlow { from { filter: drop-shadow(0 0 2px var(--accent)); } to { filter: drop-shadow(0 0 8px #ff007f); } }
     </style>
-    <!-- Подключаем библиотеку TradingView Widget -->
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 </head>
 <body>
 
-<!-- Главный экран (Выбор разделов) -->
 <div id="welcome-overlay" class="welcome-overlay visible">
     <div class="welcome-glass glass-panel">
         <h1 class="welcome-title">OptiBotX PRO</h1>
@@ -292,13 +290,11 @@
     </div>
 </div>
 
-<!-- Окно тарифов и активации -->
 <div id="register-overlay" class="register-overlay">
     <div class="register-glass glass-panel">
         <h3>⚡ Подписка OptiBotX PRO</h3>
         <p>Выберите подходящий тариф и способ оплаты</p>
         
-        <!-- Выбор Тарифа -->
         <div class="tariffs-grid">
             <div class="tariff-card selected" data-tariff="week">
                 <div class="tariff-info">
@@ -323,28 +319,23 @@
             </div>
         </div>
 
-        <!-- Выбор способа оплаты -->
         <div class="pay-methods">
             <div class="method-btn" data-method="card_ru">💳 Рус. Карты</div>
             <div class="method-btn" data-method="card_world">🌍 Другие страны</div>
             <div class="method-btn selected" data-method="crypto">🪙 Crypto</div>
         </div>
 
-        <!-- Условия оплаты (показываются только для карт) -->
         <div class="payment-conditions" id="payment-conditions">
             ⚠️ <strong>Важно:</strong> В комментарии к оплате обязательно укажите ваш <u>юз ТГ</u> и сумму тарифа (<span id="cond-price">2 500 ₽</span>)!
         </div>
 
-        <!-- Переключатель для ввода промокода -->
         <span class="toggle-promo-link" id="toggle-promo">У меня уже есть код доступа</span>
 
-        <!-- Скрытый блок ввода промокода -->
         <div class="promo-block" id="promo-block">
             <input type="text" id="code-input" class="register-input" placeholder="Введите код активации" autocomplete="off" style="margin-bottom: 10px;">
             <button id="activate-btn" class="method-btn" style="width: 100%; background: rgba(91, 77, 255, 0.2); border-color: var(--accent);">Применить код</button>
         </div>
         
-        <!-- Кнопка Перейти к оплате -->
         <a id="pay-link-btn" class="glow-button" href="https://t.me/optixbot_bot?start=pay_week_crypto" target="_blank">🚀 Оплатить</a>
         
         <div id="register-message" class="register-message"></div>
@@ -352,7 +343,6 @@
     </div>
 </div>
 
-<!-- Главное приложение -->
 <div class="app-container" id="main-app">
     <header>
         <div class="logo">
@@ -364,7 +354,6 @@
         </div>
     </header>
 
-    <!-- Поиск и выбор пар -->
     <div class="selector-container">
         <span class="search-icon">🔍</span>
         <input type="text" id="pair-search" placeholder="Поиск валютной пары..." autocomplete="off">
@@ -372,12 +361,10 @@
     </div>
     <select id="pair" style="display: none;"></select>
 
-    <!-- График TradingView -->
     <div class="chart-container">
         <div id="tv-chart-wrapper"></div>
     </div>
 
-    <!-- Анализ и Получение сигналов (Изначально заблокирована) -->
     <button id="anBtn" class="glow-button analyze-btn" onclick="startAnalysis()" disabled>
         🔒 Требуется код доступа
     </button>
@@ -388,7 +375,6 @@
 
     <div id="result" class="result-display"></div>
 
-    <!-- Кнопка возврата в меню -->
     <div class="back-to-menu">
         <a href="#" id="back-link" class="back-link">🏠 Главный экран</a>
     </div>
@@ -560,7 +546,7 @@
             registerMessageDiv.innerText = "✅ Доступ активирован!";
             registerMessageDiv.className = "register-message success";
             
-            // Сразу разблокируем кнопку
+            // Сразу разблокируем кнопку при вводе верного кода
             checkAnalyzeButtonStatus();
 
             setTimeout(() => {
@@ -603,7 +589,7 @@
 
     let isAnalyzing = false;
     function startAnalysis() {
-        if (isAnalyzing || !isActivated) return; // Защита от запуска без активации
+        if (isAnalyzing || !isActivated) return; // Жесткая защита от запуска без активации
         isAnalyzing = true;
         
         anBtn.disabled = true;
@@ -631,6 +617,7 @@
 
     searchInput.value = allPairs[0].name;
     updatePaymentUI();
+    // Обязательный запуск проверки состояния при старте
     checkAnalyzeButtonStatus();
 </script>
 </body>
