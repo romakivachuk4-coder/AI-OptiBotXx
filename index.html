@@ -234,7 +234,7 @@
             transform: translateY(-2px); box-shadow: 0 6px 25px var(--accent-glow); filter: brightness(1.1);
         }
         
-        /* Стиль для кнопки в заблокированном состоянии */
+        /* Стиль для кнопки в заблокированном состоянии (под оплату/ввод кода) */
         .glow-button.locked-style {
             background: linear-gradient(135deg, #1f1a3a, #0d0b1a);
             color: #ff4d79;
@@ -286,16 +286,11 @@
         #pair-search:focus { border-color: var(--accent); background: rgba(0,0,0,0.2); }
         
         .pairs-container {
-            max-height: 250px; overflow-y: auto; background: var(--app-bg);
+            max-height: 220px; overflow-y: auto; background: var(--app-bg);
             border: 1px solid var(--border-color); border-radius: 14px;
             position: absolute; width: 100%; z-index: 100; display: none; margin-top: 5px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
-        /* Стилизация скроллбара списка пар */
-        .pairs-container::-webkit-scrollbar { width: 5px; }
-        .pairs-container::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
-        .pairs-container::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
-        
         .pair-option {
             padding: 12px 16px; cursor: pointer; transition: all 0.2s;
             display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border-color);
@@ -342,12 +337,10 @@
         @keyframes pulseDot { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes logoGlow { from { filter: drop-shadow(0 0 2px var(--accent)); } to { filter: drop-shadow(0 0 8px #ff007f); } }
     </style>
-    <!-- Подключаем библиотеку TradingView Widget -->
     <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 </head>
 <body>
 
-<!-- Главный экран -->
 <div id="welcome-overlay" class="welcome-overlay visible">
     <div class="welcome-glass glass-panel">
         <h1 class="welcome-title">OptiBotX PRO</h1>
@@ -363,38 +356,32 @@
     </div>
 </div>
 
-<!-- ОКНО ГИДА ДЛЯ НОВИЧКОВ (Onboarding) -->
 <div id="onboarding-overlay" class="onboarding-overlay">
     <div class="onboarding-glass glass-panel">
-        <!-- Слайд 1 -->
         <div class="onboard-slide active" id="onboard-slide-1">
             <span class="onboard-icon">👋</span>
             <h3>Куда я попал?</h3>
             <p>Вы открыли <strong>OptiBotX PRO</strong> — мощный аналитический инструмент на базе искусственного интеллекта для заработка на финансовых рынках.</p>
         </div>
 
-        <!-- Слайд 2 -->
         <div class="onboard-slide" id="onboard-slide-2">
             <span class="onboard-icon">🤖</span>
             <h3>Что делает этот робот?</h3>
             <p>Нейросеть круглосуточно сканирует графики, заменяет технический анализ и выдает готовые сигналы: куда пойдет цена — <strong>ВВЕРХ ⬆</strong> или <strong>ВНИЗ ⬇</strong>.</p>
         </div>
 
-        <!-- Слайд 3 -->
         <div class="onboard-slide" id="onboard-slide-3">
             <span class="onboard-icon">💰</span>
             <h3>Как мне заработать?</h3>
             <p>Всё просто: берете сигнал из робота, заходите на платформу своего брокера (Pocket Option, Quotex и др.), открываете сделку в ту же сторону и получаете прибыль!</p>
         </div>
 
-        <!-- Слайд 4 -->
         <div class="onboard-slide" id="onboard-slide-4">
             <span class="onboard-icon">🚀</span>
             <h3>Готовы начать?</h3>
             <p>Внутри панели вас ждет живой график. Вы можете изучить его прямо сейчас, а для получения точных сигналов — активируйте PRO доступ.</p>
         </div>
 
-        <!-- Элементы навигации гида -->
         <div class="onboard-dots">
             <div class="onboard-dot active" data-dot="1"></div>
             <div class="onboard-dot" data-dot="2"></div>
@@ -406,13 +393,11 @@
     </div>
 </div>
 
-<!-- Окно тарифов и активации -->
 <div id="register-overlay" class="register-overlay">
     <div class="register-glass glass-panel">
         <h3>⚡ Подписка OptiBotX PRO</h3>
         <p>Выберите подходящий тариф и способ оплаты</p>
         
-        <!-- Выбор Тарифа -->
         <div class="tariffs-grid">
             <div class="tariff-card selected" data-tariff="week">
                 <div class="tariff-info">
@@ -437,28 +422,23 @@
             </div>
         </div>
 
-        <!-- Выбор способа оплаты -->
         <div class="pay-methods">
             <div class="method-btn" data-method="card_ru">💳 Рус. Карты</div>
             <div class="method-btn" data-method="card_world">🌍 Другие страны</div>
             <div class="method-btn selected" data-method="crypto">🪙 Crypto</div>
         </div>
 
-        <!-- Условия оплаты -->
         <div class="payment-conditions" id="payment-conditions">
             ⚠️ <strong>Важно:</strong> В комментарии к оплате обязательно укажите ваш <u>юз ТГ</u> и сумму тарифа (<span id="cond-price">2 500 ₽</span>)!
         </div>
 
-        <!-- Переключатель для ввода промокода -->
         <span class="toggle-promo-link" id="toggle-promo">У меня уже есть код доступа</span>
 
-        <!-- Скрытый блок ввода промокода -->
         <div class="promo-block" id="promo-block">
             <input type="text" id="code-input" class="register-input" placeholder="Введите код активации" autocomplete="off" style="margin-bottom: 10px;">
             <button id="activate-btn" class="method-btn" style="width: 100%; background: rgba(91, 77, 255, 0.2); border-color: var(--accent);">Применить код</button>
         </div>
         
-        <!-- Кнопка Перейти к оплате -->
         <a id="pay-link-btn" class="glow-button" href="https://t.me/optixbot_bot?start=pay_week_crypto" target="_blank">🚀 Оплатить</a>
         
         <div id="register-message" class="register-message"></div>
@@ -466,21 +446,17 @@
     </div>
 </div>
 
-<!-- Модальное окно Полного Обучения -->
 <div id="education-overlay" class="education-overlay">
     <div class="education-glass glass-panel">
         <div class="edu-header">🎓 Академия OptiBotX</div>
         
-        <!-- Вкладки -->
         <div class="edu-tabs">
             <div class="edu-tab active" data-step="1">1. База</div>
             <div class="edu-tab" data-step="2">2. Сигналы</div>
             <div class="edu-tab" data-step="3">3. Риски</div>
         </div>
 
-        <!-- Контент с прокруткой -->
         <div class="edu-content-scroll">
-            <!-- Шаг 1 -->
             <div class="edu-step active" id="edu-step-1">
                 <div class="edu-badge">ОСНОВЫ ПЛАТФОРМЫ</div>
                 <h4>Как устроен робот?</h4>
@@ -494,7 +470,6 @@
                 </ul>
             </div>
 
-            <!-- Шаг 2 -->
             <div class="edu-step" id="edu-step-2">
                 <div class="edu-badge">ПРАВИЛА ВХОДА</div>
                 <h4>Как открывать сделки по сигналам?</h4>
@@ -507,7 +482,6 @@
                 </ul>
             </div>
 
-            <!-- Шаг 3 -->
             <div class="edu-step" id="edu-step-3">
                 <div class="edu-badge">МАНИ-МЕНЕДЖМЕНТ</div>
                 <h4>Защита вашего депозита</h4>
@@ -525,7 +499,6 @@
     </div>
 </div>
 
-<!-- Главное приложение -->
 <div class="app-container" id="main-app">
     <header>
         <div class="logo">
@@ -538,7 +511,6 @@
         </div>
     </header>
 
-    <!-- Поиск и выбор пар -->
     <div class="selector-container">
         <span class="search-icon">🔍</span>
         <input type="text" id="pair-search" placeholder="Поиск валютной пары..." autocomplete="off">
@@ -546,12 +518,10 @@
     </div>
     <select id="pair" style="display: none;"></select>
 
-    <!-- График TradingView -->
     <div class="chart-container">
         <div id="tv-chart-wrapper"></div>
     </div>
 
-    <!-- Кнопка анализа -->
     <button id="anBtn" class="glow-button analyze-btn" onclick="startAnalysis()">
         🚀 Запустить анализ
     </button>
@@ -562,7 +532,6 @@
 
     <div id="result" class="result-display"></div>
 
-    <!-- Кнопка возврата в меню -->
     <div class="back-to-menu">
         <a href="#" id="back-link" class="back-link">🏠 Главный экран</a>
     </div>
@@ -586,6 +555,7 @@
     let tvWidget = null;
     let currentSymbol = "FX:EURUSD";
 
+    // Переменные для контроля слайдов гида
     let currentOnboardSlide = 1;
     const totalOnboardSlides = 4;
 
@@ -610,24 +580,12 @@
     const conditionsBlock = document.getElementById('payment-conditions');
     const condPriceSpan = document.getElementById('cond-price');
 
-    // ОБНОВЛЕННЫЙ И РАСШИРЕННЫЙ СПИСОК ВАЛЮТНЫХ ПАР (16 штук)
     const allPairs = [
         { name: "EUR/USD", ticker: "FX:EURUSD", flag: "🇪🇺🇺🇸", type: "Forex" },
         { name: "GBP/USD", ticker: "FX:GBPUSD", flag: "🇬🇧🇺🇸", type: "Forex" },
         { name: "USD/JPY", ticker: "FX:USDJPY", flag: "🇺🇸🇯🇵", type: "Forex" },
         { name: "AUD/USD", ticker: "FX:AUDUSD", flag: "🇦🇺🇺🇸", type: "Forex" },
-        { name: "USD/CAD", ticker: "FX:USDCAD", flag: "🇺🇸🇨🇦", type: "Forex" },
-        { name: "USD/CHF", ticker: "FX:USDCHF", flag: "🇺🇸🇨🇭", type: "Forex" },
-        { name: "EUR/GBP", ticker: "FX:EURGBP", flag: "🇪🇺🇬🇧", type: "Forex" },
-        { name: "EUR/JPY", ticker: "FX:EURJPY", flag: "🇪🇺🇯🇵", type: "Forex" },
-        { name: "GBP/JPY", ticker: "FX:GBPJPY", flag: "🇬🇧🇯🇵", type: "Forex" },
-        { name: "AUD/JPY", ticker: "FX:AUDJPY", flag: "🇦🇺🇯🇵", type: "Forex" },
-        { name: "EUR/AUD", ticker: "FX:EURAUD", flag: "🇪🇺🇦🇺", type: "Forex" },
-        { name: "NZD/USD", ticker: "FX:NZDUSD", flag: "🇳🇿🇺🇸", type: "Forex" },
-        { name: "GBP/CAD", ticker: "FX:GBPCAD", flag: "🇬🇧🇨🇦", type: "Forex" },
-        { name: "EUR/CAD", ticker: "FX:EURCAD", flag: "🇪🇺🇨🇦", type: "Forex" },
-        { name: "AUD/CAD", ticker: "FX:AUDCAD", flag: "🇦🇺🇨🇦", type: "Forex" },
-        { name: "CHF/JPY", ticker: "FX:CHFJPY", flag: "🇨🇭🇯🇵", type: "Forex" }
+        { name: "USD/CAD", ticker: "FX:USDCAD", flag: "🇺🇸🇨🇦", type: "Forex" }
     ];
 
     function initTradingView(symbol) {
@@ -660,6 +618,7 @@
         }
     }
 
+    // Автоматический запуск приветствия для новичков при первом посещении
     window.addEventListener('DOMContentLoaded', () => {
         const hasVisited = localStorage.getItem('optibotx_visited_guide');
         if (!hasVisited) {
@@ -669,6 +628,7 @@
         }
     });
 
+    // Логика переключения слайдов Onboarding гида
     function showSlide(slideNum) {
         document.querySelectorAll('.onboard-slide').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.onboard-dot').forEach(d => d.classList.remove('active'));
@@ -688,13 +648,16 @@
             currentOnboardSlide++;
             showSlide(currentOnboardSlide);
         } else {
+            // Закрытие гида
             onboardingOverlay.classList.remove('visible');
             localStorage.setItem('optibotx_visited_guide', 'true');
+            // Сбросим счетчик для повторных вызовов
             currentOnboardSlide = 1;
             setTimeout(() => showSlide(1), 300);
         }
     };
 
+    // Принудительный запуск инструкции из главного меню
     document.getElementById('menu-onboard-trigger').onclick = () => {
         onboardingOverlay.classList.add('visible');
     };
