@@ -140,11 +140,13 @@
         .edu-content-scroll { flex: 1; overflow-y: auto; padding-right: 5px; margin-bottom: 15px; text-align: left; }
         .edu-step { display: none; }
         .edu-step.active { display: block; animation: fadeInScale 0.2s ease-out; }
-        .edu-step h4 { font-size: 1rem; color: #b9aaff; margin: 0 0 10px 0; font-weight: 700; }
+        .edu-step h4 { font-size: 1rem; color: #b9aaff; margin: 20px 0 10px 0; font-weight: 700; }
+        .edu-step h4:first-of-type { margin-top: 0; }
         .edu-step p { font-size: 0.88rem; color: #cedceb; line-height: 1.5; margin: 0 0 12px 0; }
         .edu-step ul { margin: 0 0 12px 0; padding-left: 20px; color: #cedceb; font-size: 0.88rem; line-height: 1.5; }
         .edu-step li { margin-bottom: 6px; }
         .edu-badge { display: inline-block; padding: 4px 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.8rem; font-weight: 600; color: #00e676; margin-bottom: 10px; }
+        .edu-warning { background: rgba(255, 61, 0, 0.1); border: 1px solid rgba(255, 61, 0, 0.3); padding: 12px; border-radius: 12px; margin: 15px 0; font-size: 0.85rem; color: #ff6b4a; line-height: 1.4; }
 
         /* Сетка тарифов */
         .tariffs-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
@@ -323,8 +325,8 @@
             <div class="menu-item pro-btn" id="menu-start">📈 Торговая Панель</div>
             <div class="menu-item" id="menu-edu-trigger">📚 Полное Обучение</div>
             <div class="menu-item" id="menu-activate">🔐 Активация PRO</div>
-            <a class="menu-item" href="https://t.me/ZentixTrade" target="_blank">🎬 Влог Правды</a>
-            <a class="menu-item" href="https://t.me/ZentixTrade" target="_blank">⭐ Отзывы Клиентов</a>
+            <a class="menu-item" href="https://t.me/+KeKZdfLZqEljNjZh" target="_blank">🎬 Влог Правды</a>
+            <a class="menu-item" href="https://t.me/optibotxx" target="_blank">⭐ Отзывы Клиентов</a>
         </div>
     </div>
 </div>
@@ -394,16 +396,27 @@
 
         <div class="edu-content-scroll">
             <div class="edu-step active" id="edu-step-1">
-                <div class="edu-badge">ОСНОВЫ ПЛАТФОРМЫ</div>
-                <h4>Как устроен робот?</h4>
-                <p>OptiBotX PRO — это продвинутый аналитический комплекс на базе искусственного интеллекта, интегрированный с ликвидностью TradingView.</p>
-                <p>Нейросеть сканирует рынок по 14 техническим индикаторам (RSI, MACD, Bollinger Bands) на таймфрейме М1 и ищет зоны критической перекупленности и перепроданности.</p>
-                <h4>С чего начать?</h4>
+                <div class="edu-badge">БЫСТРЫЙ СТАРТ</div>
+                <h4>Выбор брокера и регистрация</h4>
+                <p>Для работы подойдет абсолютно любой брокер на ваш выбор. Лично мы рекомендуем использовать проверенные платформы, такие как <strong>Pocket Option</strong> или <strong>Bybit</strong>.</p>
+                
+                <h4>Практика на демо-балансе</h4>
+                <p>После регистрации сразу переходите на учебный (демо) счет. Потренируйтесь открывать сделки, чтобы полностью разобраться в интерфейсе выбранного брокера. Все устроено максимально просто и интуитивно понятно.</p>
+
+                <h4>Как открыть тестовую сделку?</h4>
                 <ul>
-                    <li>Выберите нужную валютную пару в поисковой строке сверху.</li>
-                    <li>Изучите текущее направление тренда на живом интерактивном графике.</li>
-                    <li>Нажмите кнопку анализа для получения точной точки входа.</li>
+                    <li>Зайдите на платформу брокера и найдите ту же валютную пару, что выбрана в боте (например, EUR/USD).</li>
+                    <li>Установите время сделки (рекомендуется 2 минуты) и сумму (для демо-счета можно выбрать любую).</li>
+                    <li>Посмотрите направление в панели OptiBotX и нажмите на брокере кнопку соответствующего цвета: зеленую (Вверх) или красную (Вниз).</li>
                 </ul>
+
+                <div class="edu-warning">
+                    <strong>ВАЖНОЕ ПРЕДУПРЕЖДЕНИЕ:</strong><br>
+                    Ни в коем случае не заходите на биржу и не пытайтесь открывать сделки наобум, без точных сигналов нашего бота! Если будете полагаться чисто на везение — рано или поздно поведетесь на эмоции и просто сольете весь свой баланс.
+                </div>
+
+                <h4>⚠️ Про партнерские программы-ловушки</h4>
+                <p>Будьте максимально бдительны: никогда не регистрируйтесь по чужим реферальным ссылкам из интернета и не вводите сомнительные промокоды. Практически все подобные ссылки ведут на скрытые партнерские программы, которые изначально настроены и работают на слив баланса пользователя. Регистрируйтесь только самостоятельно напрямую!</p>
             </div>
 
             <div class="edu-step" id="edu-step-2">
