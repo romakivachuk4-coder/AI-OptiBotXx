@@ -102,7 +102,7 @@
         }
         .register-overlay.visible { opacity: 1; visibility: visible; }
         .register-glass {
-            padding: 30px 20px; width: 95%; max-width: 380px; text-align: center;
+            padding: 30px 20px; width: 95%; max-width: 390px; text-align: center;
             transform: translateY(20px); transition: transform 0.3s, opacity 0.3s; opacity: 0;
             max-height: 90vh; overflow-y: auto;
         }
@@ -218,8 +218,12 @@
         }
         .tariff-info .tariff-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; }
         .tariff-info .tariff-desc { font-size: 0.8rem; color: #8899ac; }
-        .tariff-price { font-weight: 800; font-size: 1.05rem; color: #fff; }
-        .tariff-card.selected .tariff-price { color: #b9aaff; }
+        
+        /* Стили байтовых ценников со скидками */
+        .tariff-pricing-box { text-align: right; display: flex; align-items: center; gap: 10px; }
+        .tariff-price-old { font-size: 0.85rem; color: #ff4d6a; text-decoration: line-through; opacity: 0.7; }
+        .tariff-price-new { font-weight: 800; font-size: 1.1rem; color: #00e676; }
+        .tariff-card.selected .tariff-price-new { color: #fff; text-shadow: 0 0 10px var(--accent-glow); }
 
         /* Выбор способа оплаты */
         .pay-methods { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 20px; }
@@ -243,6 +247,15 @@
             animation: fadeInScale 0.3s ease-out;
         }
         .payment-conditions strong { color: #ff007f; }
+
+        /* Информационный текст под криптой */
+        .crypto-info-text {
+            background: rgba(0, 230, 118, 0.04); border: 1px solid rgba(0, 230, 118, 0.15);
+            border-radius: 12px; padding: 10px; font-size: 0.82rem; color: #cedceb;
+            line-height: 1.4; margin-top: 10px; margin-bottom: 5px; text-align: center;
+            animation: fadeInScale 0.3s ease-out;
+        }
+        .crypto-info-text strong { color: #00e676; }
 
         /* Поле ввода промокода (скрыто) */
         .promo-block { display: none; margin-bottom: 15px; animation: fadeInScale 0.3s ease-out; }
@@ -398,21 +411,30 @@
                     <div class="tariff-name">🌱 Недельный доступ</div>
                     <div class="tariff-desc">Доступ на 7 дней</div>
                 </div>
-                <div class="tariff-price">2 500 ₽</div>
+                <div class="tariff-pricing-box">
+                    <span class="tariff-price-old">1 000 ₽</span>
+                    <span class="tariff-price-new">4 000 ₽</span>
+                </div>
             </div>
             <div class="tariff-card" data-tariff="month">
                 <div class="tariff-info">
                     <div class="tariff-name">🔥 Месячный доступ</div>
                     <div class="tariff-desc">Доступ на 30 дней</div>
                 </div>
-                <div class="tariff-price">4 000 ₽</div>
+                <div class="tariff-pricing-box">
+                    <span class="tariff-price-old">50 000 ₽</span>
+                    <span class="tariff-price-new">10 000 ₽</span>
+                </div>
             </div>
             <div class="tariff-card" data-tariff="forever">
                 <div class="tariff-info">
                     <div class="tariff-name">👑 Безлимит (PRO)</div>
                     <div class="tariff-desc">Пожизненный доступ</div>
                 </div>
-                <div class="tariff-price">10 000 ₽</div>
+                <div class="tariff-pricing-box">
+                    <span class="tariff-price-old">80 000 ₽</span>
+                    <span class="tariff-price-new">25 000 ₽</span>
+                </div>
             </div>
         </div>
 
@@ -423,7 +445,7 @@
         </div>
 
         <div class="payment-conditions" id="payment-conditions">
-            ⚠️ <strong>Важно:</strong> В комментарии к оплате обязательно укажите ваш <u>юз ТГ</u> и сумму тарифа (<span id="cond-price">2 500 ₽</span>)!
+            ⚠️ <strong>Важно:</strong> В комментарии к оплате обязательно укажите ваш <u>юз ТГ</u> и сумму тарифа (<span id="cond-price">4 000 ₽</span>)!
         </div>
 
         <span class="toggle-promo-link" id="toggle-promo">У меня уже есть код доступа</span>
@@ -434,6 +456,10 @@
         </div>
         
         <a id="pay-link-btn" class="glow-button" href="https://t.me/optixbot_bot?start=pay_week_crypto" target="_blank">🚀 Оплатить</a>
+        
+        <div class="crypto-info-text" id="crypto-info-text">
+            ℹ️ После нажатия <strong>"Оплатить"</strong> вас перенаправит в бот, выберите <strong>Крипту</strong> и вам вышлют реквизиты.
+        </div>
         
         <div id="register-message" class="register-message"></div>
         <div style="margin-top: 15px;"><a href="#" id="close-activation" style="color: #52667d; font-size: 0.85rem; text-decoration: none;">Назад</a></div>
@@ -573,11 +599,11 @@
     // Коды доступа
     const VALID_ACCESS_CODES = ["OPTIX777", "PRO2026", "TRADE99", "BOTX100", "VIPACCESS"];
 
-    // Цены для текстовых условий
+    // Новые цены для условий оплаты
     const TARIFF_PRICES = {
-        week: "2 500 ₽",
-        month: "4 000 ₽",
-        forever: "10 000 ₽"
+        week: "4 000 ₽",
+        month: "10 000 ₽",
+        forever: "25 000 ₽"
     };
 
     // Ссылки на оплату под тарифы и методы
@@ -691,13 +717,22 @@
     const conditionsBlock = document.getElementById('payment-conditions');
     const condPriceSpan = document.getElementById('cond-price');
     const reviewsList = document.getElementById('reviews-list');
+    const cryptoInfoText = document.getElementById('crypto-info-text');
 
+    // Расширенный список валютных пар
     const allPairs = [
         { name: "EUR/USD", ticker: "FX:EURUSD", flag: "🇪🇺🇺🇸", type: "Forex" },
         { name: "GBP/USD", ticker: "FX:GBPUSD", flag: "🇬🇧🇺🇸", type: "Forex" },
         { name: "USD/JPY", ticker: "FX:USDJPY", flag: "🇺🇸🇯🇵", type: "Forex" },
         { name: "AUD/USD", ticker: "FX:AUDUSD", flag: "🇦🇺🇺🇸", type: "Forex" },
-        { name: "USD/CAD", ticker: "FX:USDCAD", flag: "🇺🇸🇨🇦", type: "Forex" }
+        { name: "USD/CAD", ticker: "FX:USDCAD", flag: "🇺🇸🇨🇦", type: "Forex" },
+        { name: "EUR/GBP", ticker: "FX:EURGBP", flag: "🇪🇺🇬🇧", type: "Forex" },
+        { name: "EUR/JPY", ticker: "FX:EURJPY", flag: "🇪🇺🇯🇵", type: "Forex" },
+        { name: "GBP/JPY", ticker: "FX:GBPJPY", flag: "🇬🇧🇯🇵", type: "Forex" },
+        { name: "BTC/USD", ticker: "BINANCE:BTCUSDT", flag: "🪙🇺🇸", type: "Crypto" },
+        { name: "ETH/USD", ticker: "BINANCE:ETHUSDT", flag: "🪙🇺🇸", type: "Crypto" },
+        { name: "EUR/USD (OTC)", ticker: "FX_IDC:EURUSD", flag: "🇪🇺🇺🇸", type: "OTC" },
+        { name: "GBP/USD (OTC)", ticker: "FX_IDC:GBPUSD", flag: "🇬🇧🇺🇸", type: "OTC" }
     ];
 
     function initTradingView(symbol) {
@@ -720,7 +755,6 @@
         });
     }
 
-    // Изменение внешнего вида кнопки в зависимости от статуса активации
     function checkAnalyzeButtonStatus() {
         if (isActivated) {
             anBtn.classList.remove('locked-style');
@@ -731,7 +765,6 @@
         }
     }
 
-    // Вход в торговую панель пускает сразу
     document.getElementById('menu-start').onclick = () => {
         welcomeOverlay.classList.remove('visible');
         mainApp.style.display = 'flex';
@@ -739,12 +772,10 @@
         setTimeout(() => { initTradingView(currentSymbol); }, 200);
     };
 
-    // Логика управления окном обучения
     document.getElementById('menu-edu-trigger').onclick = () => { educationOverlay.classList.add('visible'); };
     document.getElementById('headerEduBtn').onclick = () => { educationOverlay.classList.add('visible'); };
     document.getElementById('close-edu-btn').onclick = () => { educationOverlay.classList.remove('visible'); };
 
-    // Переключение вкладок обучения
     document.querySelectorAll('.edu-tab').forEach(tab => {
         tab.onclick = () => {
             document.querySelectorAll('.edu-tab').forEach(t => t.classList.remove('active'));
@@ -756,40 +787,27 @@
         };
     });
 
-    // Логика управления окном отзывов
     document.getElementById('menu-reviews-trigger').onclick = () => {
         loadReviews();
         reviewsOverlay.classList.add('visible');
     };
     document.getElementById('close-reviews-btn').onclick = () => { reviewsOverlay.classList.remove('visible'); };
 
-    // Загрузка и рендеринг отзывов
     function loadReviews() {
         reviewsList.innerHTML = '';
-        
-        // Получаем отзывы пользователя из localStorage
         let userReviews = [];
         try {
             userReviews = JSON.parse(localStorage.getItem('optibotx_user_reviews')) || [];
         } catch(e) { userReviews = []; }
 
-        // Сначала выводим отзывы текущего пользователя (будут сверху)
-        userReviews.forEach(rev => {
-            renderReviewCard(rev.name, rev.stars, rev.text);
-        });
-
-        // Затем выводим статичную базу отзывов
-        STATIC_REVIEWS.forEach(rev => {
-            renderReviewCard(rev.name, rev.stars, rev.text);
-        });
+        userReviews.forEach(rev => { renderReviewCard(rev.name, rev.stars, rev.text); });
+        STATIC_REVIEWS.forEach(rev => { renderReviewCard(rev.name, rev.stars, rev.text); });
     }
 
     function renderReviewCard(name, stars, text) {
         const card = document.createElement('div');
         card.className = 'review-card';
-        
         let starStr = '⭐'.repeat(stars);
-        
         card.innerHTML = `
             <div class="review-author-row">
                 <span class="review-name">${escapeHTML(name)}</span>
@@ -800,7 +818,6 @@
         reviewsList.appendChild(card);
     }
 
-    // Обработка отправки нового отзыва
     document.getElementById('submit-review-btn').onclick = () => {
         const nameInput = document.getElementById('rev-name');
         const textInput = document.getElementById('rev-text');
@@ -816,22 +833,17 @@
         }
 
         const newReview = { name, stars, text };
-
-        // Сохраняем в localStorage
         let userReviews = [];
         try {
             userReviews = JSON.parse(localStorage.getItem('optibotx_user_reviews')) || [];
         } catch(e) { userReviews = []; }
         
-        userReviews.unshift(newReview); // добавляем в начало массива
+        userReviews.unshift(newReview);
         localStorage.setItem('optibotx_user_reviews', JSON.stringify(userReviews));
 
-        // Очищаем поля ввода
         nameInput.value = '';
         textInput.value = '';
         starsSelect.value = '5';
-
-        // Перезагружаем список
         loadReviews();
     };
 
@@ -849,7 +861,6 @@
         initTradingView(currentSymbol);
     };
 
-    // Логика выбора тарифа
     document.querySelectorAll('.tariff-card').forEach(card => {
         card.onclick = () => {
             document.querySelectorAll('.tariff-card').forEach(c => c.classList.remove('selected'));
@@ -859,7 +870,6 @@
         };
     });
 
-    // Логика выбора метода оплаты
     document.querySelectorAll('.method-btn[data-method]').forEach(btn => {
         btn.onclick = () => {
             document.querySelectorAll('.method-btn[data-method]').forEach(b => b.classList.remove('selected'));
@@ -869,7 +879,6 @@
         };
     });
 
-    // Показ/скрытие блока промокода
     togglePromoLink.onclick = () => {
         if(promoBlock.style.display === "block") {
             promoBlock.style.display = "none";
@@ -880,7 +889,6 @@
         }
     };
 
-    // Обновление интерфейса оплаты
     function updatePaymentUI() {
         const url = PAYMENT_LINKS[selectedTariff][selectedMethod];
         payLinkBtn.href = url;
@@ -888,8 +896,13 @@
         if (selectedMethod === "card_ru" || selectedMethod === "card_world") {
             condPriceSpan.innerText = TARIFF_PRICES[selectedTariff];
             conditionsBlock.style.display = "block";
+            cryptoInfoText.style.display = "none";
+        } else if (selectedMethod === "crypto") {
+            conditionsBlock.style.display = "none";
+            cryptoInfoText.style.display = "block";
         } else {
             conditionsBlock.style.display = "none";
+            cryptoInfoText.style.display = "none";
         }
     }
 
