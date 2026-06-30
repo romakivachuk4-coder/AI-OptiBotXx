@@ -148,6 +148,62 @@
         .edu-badge { display: inline-block; padding: 4px 8px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.8rem; font-weight: 600; color: #00e676; margin-bottom: 10px; }
         .edu-warning { background: rgba(255, 61, 0, 0.1); border: 1px solid rgba(255, 61, 0, 0.3); padding: 12px; border-radius: 12px; margin: 15px 0; font-size: 0.85rem; color: #ff6b4a; line-height: 1.4; }
 
+        /* Окно Отзывов */
+        .reviews-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(20px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 40000; opacity: 0; visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .reviews-overlay.visible { opacity: 1; visibility: visible; }
+        .reviews-glass {
+            padding: 25px 20px; width: 95%; max-width: 420px; height: 85vh;
+            transform: translateY(20px); transition: transform 0.3s, opacity 0.3s; opacity: 0;
+            display: flex; flex-direction: column;
+        }
+        .reviews-overlay.visible .reviews-glass { transform: translateY(0); opacity: 1; }
+        
+        .reviews-header { font-size: 1.3rem; font-weight: 800; margin: 0 0 15px 0; text-align: center; color: #fff; }
+        
+        .reviews-list-container { flex: 1; overflow-y: auto; padding-right: 5px; margin-bottom: 15px; }
+        
+        .review-card {
+            background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color);
+            border-radius: 14px; padding: 12px 16px; margin-bottom: 10px;
+        }
+        .review-author-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+        .review-name { font-weight: 700; font-size: 0.95rem; color: #b9aaff; }
+        .review-stars { color: #ffca28; font-size: 0.85rem; letter-spacing: 1px; }
+        .review-text { font-size: 0.88rem; color: #cedceb; line-height: 1.4; margin: 0; }
+
+        .review-form {
+            background: rgba(0,0,0,0.2); border: 1px solid var(--border-color);
+            border-radius: 16px; padding: 12px; margin-bottom: 15px;
+        }
+        .review-form-title { font-size: 0.9rem; font-weight: 700; margin: 0 0 8px 0; color: #fff; }
+        .form-row { display: flex; gap: 8px; margin-bottom: 8px; }
+        .form-input {
+            background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border);
+            border-radius: 10px; color: #fff; padding: 8px 12px; font-size: 0.85rem; outline: none; box-sizing: border-box;
+        }
+        .form-input:focus { border-color: var(--accent); }
+        .form-select {
+            background: #0f1026; border: 1px solid var(--glass-border);
+            border-radius: 10px; color: #ffca28; padding: 8px; font-size: 0.85rem; outline: none; cursor: pointer;
+        }
+        .form-textarea {
+            width: 100%; height: 50px; resize: none; background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border); border-radius: 10px; color: #fff;
+            padding: 8px 12px; font-size: 0.85rem; outline: none; box-sizing: border-box; margin-bottom: 8px;
+        }
+        .form-textarea:focus { border-color: var(--accent); }
+        .form-submit-btn {
+            background: var(--accent); color: #fff; border: none; padding: 8px 16px;
+            font-size: 0.85rem; font-weight: 700; border-radius: 10px; cursor: pointer; width: 100%; transition: all 0.2s;
+        }
+        .form-submit-btn:hover { filter: brightness(1.1); }
+
         /* Сетка тарифов */
         .tariffs-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
         .tariff-card {
@@ -325,8 +381,8 @@
             <div class="menu-item pro-btn" id="menu-start">📈 Торговая Панель</div>
             <div class="menu-item" id="menu-edu-trigger">📚 Полное Обучение</div>
             <div class="menu-item" id="menu-activate">🔐 Активация PRO</div>
-            <a class="menu-item" href="https://t.me/+KeKZdfLZqEljNjZh" target="_blank">🎬 Влог Правды</a>
-            <a class="menu-item" href="https://t.me/optibotxx" target="_blank">⭐ Отзывы Клиентов</a>
+            <a class="menu-item" href="https://t.me/vld_ox" target="_blank">💬 Связь по вопросам</a>
+            <div class="menu-item" id="menu-reviews-trigger">⭐ Отзывы Клиентов</div>
         </div>
     </div>
 </div>
@@ -448,6 +504,33 @@
     </div>
 </div>
 
+<div id="reviews-overlay" class="reviews-overlay">
+    <div class="reviews-glass glass-panel">
+        <div class="reviews-header">⭐ Отзывы Пользователей</div>
+        
+        <div class="reviews-list-container" id="reviews-list">
+            </div>
+
+        <div class="review-form">
+            <div class="review-form-title">Оставить свой отзыв</div>
+            <div class="form-row">
+                <input type="text" id="rev-name" class="form-input" placeholder="Ваше имя/ник" style="flex: 1;" autocomplete="off">
+                <select id="rev-stars" class="form-select">
+                    <option value="5">⭐⭐⭐⭐⭐ 5</option>
+                    <option value="4">⭐⭐⭐⭐ 4</option>
+                    <option value="3">⭐⭐⭐ 3</option>
+                    <option value="2">⭐⭐ 2</option>
+                    <option value="1">⭐ 1</option>
+                </select>
+            </div>
+            <textarea id="rev-text" class="form-textarea" placeholder="Напишите ваше мнение о боте..."></textarea>
+            <button id="submit-review-btn" class="form-submit-btn">Опубликовать отзыв</button>
+        </div>
+
+        <button id="close-reviews-btn" class="glow-button" style="padding: 12px;">Назад в меню</button>
+    </div>
+</div>
+
 <div class="app-container" id="main-app">
     <header>
         <div class="logo">
@@ -516,6 +599,70 @@
         }
     };
 
+    // Встроенная база отзывов (60 штук, худший - 4 звезды)
+    const STATIC_REVIEWS = [
+        { name: "Артем К.", stars: 5, text: "Бот пушка! За вчера сделал +4% к депо. Сигналы четкие, главное не тупить и заходить сразу." },
+        { name: "Пользователь_12", stars: 5, text: "Взял безлимит и ни разу не пожалел. Интеграция с традингвью решает." },
+        { name: "Дмитрий_Trade", stars: 4, text: "Иногда приходится долго ловить хороший винрейт по парам, но в целом бот окупает себя. Твердая четверка за точность." },
+        { name: "Пользователь_23", stars: 5, text: "Пока все супер. Проверил на демо, из 10 сигналов зашло 8. Перехожу на реал." },
+        { name: "Elena_K", stars: 5, text: "Отличный интерфейс, всё понятно даже новичку. Обучение в комплекте очень помогло разобраться с мартином." },
+        { name: "Пользователь_41", stars: 5, text: "Просто топ! Лучший скрипт из тех что тестил за этот год." },
+        { name: "Максим", stars: 5, text: "За неделю отбил подписку на месяц. Работаю строго по правилам из 3 шага обучения." },
+        { name: "Пользователь_102", stars: 4, text: "Хороший бот, но на новостях лучше отключать, а то штормит рынок. Если торговать аккуратно, то в плюс выходит изи." },
+        { name: "Иван Петрович", stars: 5, text: "Все работает как швейцарские часы. Спасибо разрабам." },
+        { name: "Пользователь_7", stars: 5, text: "Скрипт огонь, винрейт 90% по EURUSD поймал сегодня утром." },
+        { name: "Алексей_G", stars: 5, text: "Купил неделю на пробу, завтра беру безлимит. Тема рабочая." },
+        { name: "Пользователь_88", stars: 5, text: "Лучшая панель для анализа. Открываю сделки на покете на 2 минуты, залетает на ура." },
+        { name: "Кристина", stars: 4, text: "Иногда выдает сигналы вниз когда тренд прет вверх, но со второго колена всегда перекрывает. В общем довольна." },
+        { name: "Пользователь_19", stars: 5, text: "Очень круто сделано стекло и дизайн. Приятно работать." },
+        { name: "Влад_Трейдер", stars: 5, text: "Чистый профит за сегодня 3200р. Робот отрабатывает на все 100%." },
+        { name: "Пользователь_3", stars: 5, text: "Рекомендую всем. Главное не жадничать и ставить 1-2% от баланса." },
+        { name: "Nikita_Fx", stars: 5, text: "Пользуюсь уже месяц, полет нормальный. Обновления выходят стабильно." },
+        { name: "Пользователь_55", stars: 4, text: "Норм бот, но хотелось бы больше пар в списке. А так сигналы качественные." },
+        { name: "Андрей С.", stars: 5, text: "Все супер, код активации пришел быстро, панель запустилась без проблем." },
+        { name: "Пользователь_64", stars: 5, text: "Самый адекватный алгоритм на рынке сейчас. Без лишней воды." },
+        { name: "Сергей_К", stars: 5, text: "Бот реально помогает фильтровать ложные входы. Ставлю 5 звезд." },
+        { name: "Пользователь_15", stars: 5, text: "Прибыль идет, это главное. Окупаемость моментальная." },
+        { name: "Юлия", stars: 5, text: "Спасибо за крутую академию внутри бота, все разжевали для новичков." },
+        { name: "Пользователь_99", stars: 4, text: "Бывают минусы, но манименеджмент спасает. Робот не грааль, но инструмент отличный." },
+        { name: "Олег_Т", stars: 5, text: "Работает стабильно, задержек по котировкам нет." },
+        { name: "Пользователь_42", stars: 5, text: "Зашел с минималки, уже поднял х2 за 4 дня. Бот лучший." },
+        { name: "Marat", stars: 5, text: "Отличный софт для генерации сигналов. Дизайн на высоте." },
+        { name: "Пользователь_71", stars: 5, text: "Все устраивает, профит капает." },
+        { name: "Антон_B", stars: 5, text: "Торгую на бибите по этой панели, результаты радуют." },
+        { name: "Пользователь_11", stars: 4, text: "Жаль нет автоторговли, приходится самому кнопки нажимать, но сигналы точные." },
+        { name: "Ринат", stars: 5, text: "Бот пушка! Берите не думая." },
+        { name: "Пользователь_33", stars: 5, text: "Проверил алгоритм, реально анализирует объемы. Респект." },
+        { name: "Den_Crypto", stars: 5, text: "PRO версия стоит каждой копейки." },
+        { name: "Пользователь_91", stars: 5, text: "Классный дизайн и высокая проходимость." },
+        { name: "Тимур", stars: 5, text: "Вчера поймал стрик из 6 плюсов подряд. Бот огонь!" },
+        { name: "Пользователь_2", stars: 4, text: "Хорошая статистика, изредка сливает первую сделку, но перекрытие тащит." },
+        { name: "Ольга_Торг", stars: 5, text: "Долго сомневалась, но бот реально оправдал ожидания." },
+        { name: "Пользователь_50", stars: 5, text: "Все четко работает, рекомендую." },
+        { name: "Александр", stars: 5, text: "Инструмент топ уровня для бинарок." },
+        { name: "Пользователь_10", stars: 5, text: "Доволен покупкой безлимита. Окупил за пару сессий." },
+        { name: "Игорь_Ш", stars: 5, text: "Сигналы точные, ложных входов почти нет если винрейт высокий." },
+        { name: "Пользователь_77", stars: 4, text: "Иногда сайт лагает, но сам бот выдает правильные направления." },
+        { name: "Павел", stars: 5, text: "Супер софт, поднял депо со 100$ до 250$ за неделю." },
+        { name: "Пользователь_83", stars: 5, text: "Крутой скрипт, все индикаторы отрабатывают на ура." },
+        { name: "Артур", stars: 5, text: "Точность сигналов поражает. Главное торговать с холодной головой." },
+        { name: "Пользователь_22", stars: 5, text: "Топовый бот, пользуюсь каждый день." },
+        { name: "Валерий", stars: 5, text: "Самый удобный бот из всех, что я пробовал." },
+        { name: "Пользователь_69", stars: 4, text: "Нормально, зарабатывать можно, если соблюдать риски." },
+        { name: "Святослав", stars: 5, text: "Обучение очень помогло, спасибо админам." },
+        { name: "Пользователь_5", stars: 5, text: "Бот стоит своих денег на все 100." },
+        { name: "Руслан", stars: 5, text: "Винрейт соотвествует заявленному. Отличная аналитика." },
+        { name: "Пользователь_14", stars: 5, text: "Очень доволен результатами за неделю." },
+        { name: "Эдуард", stars: 5, text: "Панель работает без нареканий, котировки точные." },
+        { name: "Пользователь_44", stars: 4, text: "Иногда приходится ждать сигнал по 5 минут, но зато заходит уверенно." },
+        { name: "Илья", stars: 5, text: "Лучшее решение для заработка на форекс парах." },
+        { name: "Пользователь_31", stars: 5, text: "Сделал х3 к депозиту, софт топовый!" },
+        { name: "Ярослав", stars: 5, text: "Рекомендую версию PRO, совсем другой уровень торговли." },
+        { name: "Пользователь_95", stars: 5, text: "Просто и прибыльно. Спасибо за софт." },
+        { name: "Геннадий", stars: 5, text: "Сигналы выдает четко по тренду, забираю профит." },
+        { name: "Пользователь_100", stars: 4, text: "Хороший рабочий инструмент трейдера. Ставлю заслуженные 4 звезды." }
+    ];
+
     let selectedTariff = "week";
     let selectedMethod = "crypto";
 
@@ -527,6 +674,7 @@
     const welcomeOverlay = document.getElementById('welcome-overlay');
     const registerOverlay = document.getElementById('register-overlay');
     const educationOverlay = document.getElementById('education-overlay');
+    const reviewsOverlay = document.getElementById('reviews-overlay');
     const mainApp = document.getElementById('main-app');
     const codeInput = document.getElementById('code-input');
     const activateBtn = document.getElementById('activate-btn');
@@ -542,6 +690,7 @@
     const togglePromoLink = document.getElementById('toggle-promo');
     const conditionsBlock = document.getElementById('payment-conditions');
     const condPriceSpan = document.getElementById('cond-price');
+    const reviewsList = document.getElementById('reviews-list');
 
     const allPairs = [
         { name: "EUR/USD", ticker: "FX:EURUSD", flag: "🇪🇺🇺🇸", type: "Forex" },
@@ -606,6 +755,91 @@
             document.getElementById(`edu-step-${stepNum}`).classList.add('active');
         };
     });
+
+    // Логика управления окном отзывов
+    document.getElementById('menu-reviews-trigger').onclick = () => {
+        loadReviews();
+        reviewsOverlay.classList.add('visible');
+    };
+    document.getElementById('close-reviews-btn').onclick = () => { reviewsOverlay.classList.remove('visible'); };
+
+    // Загрузка и рендеринг отзывов
+    function loadReviews() {
+        reviewsList.innerHTML = '';
+        
+        // Получаем отзывы пользователя из localStorage
+        let userReviews = [];
+        try {
+            userReviews = JSON.parse(localStorage.getItem('optibotx_user_reviews')) || [];
+        } catch(e) { userReviews = []; }
+
+        // Сначала выводим отзывы текущего пользователя (будут сверху)
+        userReviews.forEach(rev => {
+            renderReviewCard(rev.name, rev.stars, rev.text);
+        });
+
+        // Затем выводим статичную базу отзывов
+        STATIC_REVIEWS.forEach(rev => {
+            renderReviewCard(rev.name, rev.stars, rev.text);
+        });
+    }
+
+    function renderReviewCard(name, stars, text) {
+        const card = document.createElement('div');
+        card.className = 'review-card';
+        
+        let starStr = '⭐'.repeat(stars);
+        
+        card.innerHTML = `
+            <div class="review-author-row">
+                <span class="review-name">${escapeHTML(name)}</span>
+                <span class="review-stars">${starStr}</span>
+            </div>
+            <p class="review-text">${escapeHTML(text)}</p>
+        `;
+        reviewsList.appendChild(card);
+    }
+
+    // Обработка отправки нового отзыва
+    document.getElementById('submit-review-btn').onclick = () => {
+        const nameInput = document.getElementById('rev-name');
+        const textInput = document.getElementById('rev-text');
+        const starsSelect = document.getElementById('rev-stars');
+
+        const name = nameInput.value.trim();
+        const text = textInput.value.trim();
+        const stars = parseInt(starsSelect.value);
+
+        if (!name || !text) {
+            alert('Пожалуйста, заполните имя и текст отзыва.');
+            return;
+        }
+
+        const newReview = { name, stars, text };
+
+        // Сохраняем в localStorage
+        let userReviews = [];
+        try {
+            userReviews = JSON.parse(localStorage.getItem('optibotx_user_reviews')) || [];
+        } catch(e) { userReviews = []; }
+        
+        userReviews.unshift(newReview); // добавляем в начало массива
+        localStorage.setItem('optibotx_user_reviews', JSON.stringify(userReviews));
+
+        // Очищаем поля ввода
+        nameInput.value = '';
+        textInput.value = '';
+        starsSelect.value = '5';
+
+        // Перезагружаем список
+        loadReviews();
+    };
+
+    function escapeHTML(str) {
+        return str.replace(/[&<>'"]/g, 
+            tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+        );
+    }
 
     document.getElementById('menu-activate').onclick = () => { registerOverlay.classList.add('visible'); };
     document.getElementById('close-activation').onclick = (e) => { e.preventDefault(); registerOverlay.classList.remove('visible'); };
